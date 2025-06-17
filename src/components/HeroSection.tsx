@@ -32,7 +32,7 @@ const HeroSection = () => {
         {/* Animated Hero Badge */}
         <div
           className={`
-          inline-flex items-center px-6 py-3 rounded-full 
+          inline-flex items-center px-6 py-3 rounded-full
           glass-effect neon-border text-swapeo-primary text-sm font-medium mb-8
           transition-all duration-1000 hover:scale-105 hover-lift
           ${isVisible ? "animate-slide-in-from-top" : "opacity-0"}
@@ -89,24 +89,28 @@ const HeroSection = () => {
           ${isVisible ? "animate-slide-in-from-bottom" : "opacity-0 translate-y-10"}
         `}
         >
-          <Button className="swapeo-button text-lg px-10 py-5 h-auto group relative overflow-hidden hover:scale-110 transition-all duration-300">
-            <span className="relative z-10 flex items-center">
-              Commencer gratuitement
-              <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light via-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <Sparkles className="absolute top-1 right-1 h-4 w-4 text-yellow-400 opacity-0 group-hover:opacity-100 animate-pulse" />
-          </Button>
+          <a href="/register">
+            <Button className="swapeo-button text-lg px-10 py-5 h-auto group relative overflow-hidden hover:scale-110 transition-all duration-300">
+              <span className="relative z-10 flex items-center">
+                Commencer gratuitement
+                <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light via-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <Sparkles className="absolute top-1 right-1 h-4 w-4 text-yellow-400 opacity-0 group-hover:opacity-100 animate-pulse" />
+            </Button>
+          </a>
 
-          <Button
-            variant="outline"
-            className="glass-effect neon-border text-lg px-10 py-5 h-auto group hover:scale-105 transition-all duration-300"
-          >
-            <span className="flex items-center text-white">
-              Découvrir
-              <ChevronDown className="ml-3 h-6 w-6 group-hover:translate-y-1 transition-transform duration-300 animate-bounce" />
-            </span>
-          </Button>
+          <a href="/dashboard">
+            <Button
+              variant="outline"
+              className="glass-effect neon-border text-lg px-10 py-5 h-auto group hover:scale-105 transition-all duration-300"
+            >
+              <span className="flex items-center text-white">
+                Voir Dashboard
+                <Zap className="ml-3 h-6 w-6 group-hover:animate-pulse transition-transform duration-300" />
+              </span>
+            </Button>
+          </a>
         </div>
 
         {/* Enhanced Scroll Indicator */}
