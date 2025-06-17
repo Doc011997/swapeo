@@ -62,6 +62,21 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Swapeo brand colors
+        swapeo: {
+          primary: "#1bc870",
+          "primary-dark": "#0f9954",
+          "primary-light": "#4dd88a",
+          navy: "#1a1d3a",
+          "navy-light": "#2d3157",
+          "navy-dark": "#0f1125",
+          purple: "#3b2b5d",
+          "purple-light": "#4a3970",
+          "purple-dark": "#2d1f4a",
+          slate: "#64748b",
+          "slate-light": "#94a3b8",
+          "slate-dark": "#475569",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -85,10 +100,25 @@ export default {
             height: "0",
           },
         },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float: "float 6s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
