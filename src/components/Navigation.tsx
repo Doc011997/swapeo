@@ -44,16 +44,25 @@ const Navigation = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4 animate-slide-in-from-right">
             <a
-              href="#connexion"
+              href="/login"
               className="text-gray-300 hover:text-white transition-all duration-300 hover-lift relative group"
             >
               Connexion
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-swapeo-primary group-hover:w-full transition-all duration-300" />
             </a>
-            <Button className="swapeo-button group relative overflow-hidden">
-              <span className="relative z-10">Rejoindre</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Button>
+            <a
+              href="/dashboard"
+              className="text-swapeo-primary hover:text-white transition-all duration-300 hover-lift relative group font-medium"
+            >
+              Dashboard
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300" />
+            </a>
+            <a href="/register">
+              <Button className="swapeo-button group relative overflow-hidden">
+                <span className="relative z-10">Rejoindre</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </Button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -88,8 +97,24 @@ const Navigation = () => {
                   {item.label}
                 </a>
               ))}
-              <div className="pt-4 animate-fade-in">
-                <Button className="w-full swapeo-button">Rejoindre</Button>
+              <a
+                href="/login"
+                className="block px-3 py-2 text-gray-300 hover:text-swapeo-primary hover:bg-swapeo-primary/10 rounded-lg transition-all duration-300 hover-lift"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Connexion
+              </a>
+              <a
+                href="/dashboard"
+                className="block px-3 py-2 text-swapeo-primary hover:text-white hover:bg-swapeo-primary/10 rounded-lg transition-all duration-300 hover-lift font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Dashboard ✨
+              </a>
+              <div className="pt-4 space-y-2 animate-fade-in">
+                <a href="/register" className="block">
+                  <Button className="w-full swapeo-button">Rejoindre</Button>
+                </a>
               </div>
             </div>
           </div>
