@@ -81,71 +81,88 @@ interface Movement {
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
-  const [walletData, setWalletData] = useState<any>(null);
-  const [userSwaps, setUserSwaps] = useState<Swap[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        // Vérifier si l'utilisateur est connecté
-        const token = auth.getToken();
-        const savedUser = auth.getUser();
-
-        if (!token || !savedUser) {
-          navigate("/login");
-          return;
-        }
-
-        // Charger les données utilisateur
-        const [profileResponse, walletResponse, swapsResponse] =
-          await Promise.all([
-            users.getProfile(),
-            wallet.getInfo(),
-            swaps.getAll(),
-          ]);
-
-        setUser(profileResponse.user);
-        setWalletData(walletResponse.wallet);
-        setUserSwaps(swapsResponse.swaps || []);
-      } catch (error: any) {
-        console.error("Erreur chargement données:", error);
-
-        // Si token expiré, rediriger vers login
-        if (error.message.includes("Token")) {
-          auth.logout();
-          navigate("/login");
-          return;
-        }
-
-        toast({
-          title: "Erreur",
-          description: "Impossible de charger les données",
-          variant: "destructive",
-        });
-
-        // Utiliser les données sauvegardées en fallback
-        const savedUser = auth.getUser();
-        if (savedUser) {
-          setUser(savedUser);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUserData();
-  }, [navigate, toast]);
+    // Récupérer l'utilisateur depuis localStorage
+    const savedUser = localStorage.getItem("swapeo_user");
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    } else {
+      // Rediriger vers login si pas connecté
+      window.location.href = "/login";
+    }
+    setLoading(false);
+  }, []);
 
   const handleLogout = () => {
-    auth.logout();
-    toast({
-      title: "Déconnexion",
-      description: "À bientôt !",
-    });
-    navigate("/login");
+    localStorage.removeItem("swapeo_token");
+    localStorage.removeItem("swapeo_user");
+    setMessage("À bientôt !");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1000);
+  };
+
+  const handleDeposit = async () => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/wallet/deposit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+          body: JSON.stringify({ amount: 10000 }),
+        },
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage(`✅ ${data.message}`);
+        // Mettre à jour l'utilisateur local
+        const updatedUser = { ...user };
+        updatedUser.wallet.balance = data.newBalance;
+        setUser(updatedUser);
+        localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+      } else {
+        setMessage(`❌ ${data.error}`);
+      }
+    } catch (error) {
+      setMessage("❌ Erreur lors du dépôt");
+    }
+  };
+
+  const handleWithdraw = async () => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/wallet/withdraw",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+          body: JSON.stringify({ amount: 5000 }),
+        },
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage(`✅ ${data.message}`);
+        // Mettre à jour l'utilisateur local
+        const updatedUser = { ...user };
+        updatedUser.wallet.balance = data.newBalance;
+        setUser(updatedUser);
+        localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+      } else {
+        setMessage(`❌ ${data.error}`);
+      }
+    } catch (error) {
+      setMessage("❌ Erreur lors du retrait");
+    }
   };
 
   if (loading) {
