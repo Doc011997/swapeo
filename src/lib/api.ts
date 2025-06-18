@@ -1,5 +1,5 @@
 // Configuration API pour Swapeo
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_BASE_URL = "https://swapeo.netlify.app";
 
 // Helper pour les appels API
 export async function apiCall(endpoint: string, options: RequestInit = {}) {
