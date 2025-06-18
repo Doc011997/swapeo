@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, Eye, EyeOff, Check } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Check, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,70 @@ const Register = () => {
   const [selectedRole, setSelectedRole] = useState<
     "emprunteur" | "financeur" | null
   >(null);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Erreur",
+        description: "Les mots de passe ne correspondent pas",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!selectedRole) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez sélectionner votre rôle",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await auth.register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        company: formData.company,
+        password: formData.password,
+        role: selectedRole,
+      });
+
+      auth.setToken(response.token);
+      auth.setUser(response.user);
+
+      toast({
+        title: "Inscription réussie !",
+        description: `Bienvenue ${response.user.firstName} !`,
+      });
+
+      navigate("/dashboard");
+    } catch (error: any) {
+      toast({
+        title: "Erreur d'inscription",
+        description: error.message || "Une erreur est survenue",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen swapeo-gradient flex items-center justify-center py-12">
