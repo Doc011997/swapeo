@@ -180,14 +180,12 @@ const Dashboard = () => {
     return null;
   }
 
-  const [wallet] = useState({
-    balance: 245890,
-    monthlyChange: 2.43,
-    monthlyLimit: 50000,
-    monthlyUsed: 12400,
-    pendingIn: 15000,
-    pendingOut: 8500,
-  });
+  // Utiliser les données du wallet de l'utilisateur
+  const walletData = user?.wallet || {
+    balance: 25000,
+    totalDeposited: 50000,
+    totalWithdrawn: 25000,
+  };
 
   const [swaps] = useState<Swap[]>([
     {
