@@ -1335,7 +1335,7 @@ const Dashboard = () => {
                     <Card className="glass-effect p-4">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-green-400 mb-1">
-                          +{wallet.pendingIn.toLocaleString()}€
+                          +15 000€
                         </div>
                         <div className="text-gray-400 text-sm">
                           En attente d'arrivée
@@ -1345,7 +1345,7 @@ const Dashboard = () => {
                     <Card className="glass-effect p-4">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-orange-400 mb-1">
-                          -{wallet.pendingOut.toLocaleString()}€
+                          -8 500€
                         </div>
                         <div className="text-gray-400 text-sm">
                           En attente de sortie
@@ -1367,14 +1367,11 @@ const Dashboard = () => {
                       <div className="flex justify-between text-sm mb-2">
                         <span className="text-gray-400">Limite mensuelle</span>
                         <span className="text-white">
-                          {Math.round(
-                            (wallet.monthlyUsed / wallet.monthlyLimit) * 100,
-                          )}
-                          %
+                          24%
                         </span>
                       </div>
                       <Progress
-                        value={(wallet.monthlyUsed / wallet.monthlyLimit) * 100}
+                        value={24}
                         className="h-2 bg-swapeo-navy"
                       />
                       <div className="flex justify-between text-xs text-gray-400 mt-1">
