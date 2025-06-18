@@ -80,18 +80,88 @@ interface Movement {
 }
 
 const Dashboard = () => {
-  const [user] = useState({
-    name: "John",
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    siret: "12345678901234",
-    role: "emprunteur" as "emprunteur" | "financeur",
-    kycStatus: 85,
-    isVerified: true,
-    memberSince: "2024",
-    trustScore: 96,
-  });
+  const [user, setUser] = useState<any>(null);
+  const [walletData, setWalletData] = useState<any>(null);
+  const [userSwaps, setUserSwaps] = useState<Swap[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        // Vérifier si l'utilisateur est connecté
+        const token = auth.getToken();
+        const savedUser = auth.getUser();
+
+        if (!token || !savedUser) {
+          navigate("/login");
+          return;
+        }
+
+        // Charger les données utilisateur
+        const [profileResponse, walletResponse, swapsResponse] =
+          await Promise.all([
+            users.getProfile(),
+            wallet.getInfo(),
+            swaps.getAll(),
+          ]);
+
+        setUser(profileResponse.user);
+        setWalletData(walletResponse.wallet);
+        setUserSwaps(swapsResponse.swaps || []);
+      } catch (error: any) {
+        console.error("Erreur chargement données:", error);
+
+        // Si token expiré, rediriger vers login
+        if (error.message.includes("Token")) {
+          auth.logout();
+          navigate("/login");
+          return;
+        }
+
+        toast({
+          title: "Erreur",
+          description: "Impossible de charger les données",
+          variant: "destructive",
+        });
+
+        // Utiliser les données sauvegardées en fallback
+        const savedUser = auth.getUser();
+        if (savedUser) {
+          setUser(savedUser);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, [navigate, toast]);
+
+  const handleLogout = () => {
+    auth.logout();
+    toast({
+      title: "Déconnexion",
+      description: "À bientôt !",
+    });
+    navigate("/login");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen swapeo-gradient flex items-center justify-center">
+        <div className="text-white text-center">
+          <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p>Chargement de votre espace...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   const [wallet] = useState({
     balance: 245890,
