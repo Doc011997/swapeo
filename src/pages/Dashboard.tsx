@@ -107,17 +107,14 @@ const Dashboard = () => {
 
   const handleDeposit = async () => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/wallet/deposit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
-          body: JSON.stringify({ amount: 10000 }),
+      const response = await fetch("https://swapeo.netlify.app/api/wallet/deposit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+        body: JSON.stringify({ amount: 10000 }),
+      });
 
       const data = await response.json();
       if (response.ok) {
@@ -137,17 +134,14 @@ const Dashboard = () => {
 
   const handleWithdraw = async () => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/wallet/withdraw",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
-          body: JSON.stringify({ amount: 5000 }),
+      const response = await fetch("https://swapeo.netlify.app/api/wallet/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+        body: JSON.stringify({ amount: 5000 }),
+      });
 
       const data = await response.json();
       if (response.ok) {
@@ -691,7 +685,7 @@ const Dashboard = () => {
                       <Button
                         variant="outline"
                         className="glass-effect neon-border"
-                        onClick={() => setActiveTab("wallet")}
+                        onClick={handleWithdraw}
                       >
                         <ArrowUpRight className="mr-1 h-4 w-4" />
                         Retirer
@@ -1323,13 +1317,14 @@ const Dashboard = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-8">
-                    <Button className="swapeo-button h-16 text-lg">
+                    <Button className="swapeo-button h-16 text-lg" onClick={handleDeposit}>
                       <ArrowDownRight className="mr-2 h-6 w-6" />
                       Déposer
                     </Button>
                     <Button
                       variant="outline"
                       className="glass-effect h-16 text-lg"
+                      onClick={handleWithdraw}
                     >
                       <ArrowUpRight className="mr-2 h-6 w-6" />
                       Retirer
@@ -1392,17 +1387,13 @@ const Dashboard = () => {
 
                     <div className="space-y-3">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Compte vérifié</span>
-                        <CheckCircle className="h-5 w-5 text-green-400" />
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">IBAN associé</span>
-                        <CheckCircle className="h-5 w-5 text-green-400" />
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Virement SEPA</span>
-                        <CheckCircle className="h-5 w-5 text-green-400" />
-                      </div>
+                      <Button
+                        className="swapeo-button text-sm px-3 py-1"
+                        onClick={handleDeposit}
+                      >
+                        <ArrowDownRight className="mr-1 h-4 w-4" />
+                        Déposer
+                      </Button>
                     </div>
                   </div>
                 </Card>
