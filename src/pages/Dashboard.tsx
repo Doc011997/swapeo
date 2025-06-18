@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, users, wallet, swaps } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -366,7 +369,7 @@ const Dashboard = () => {
               {item.badge && (
                 <Badge
                   className={`
-                  ${item.badge === "!" ? "bg-red-500" : "bg-swapeo-primary"} 
+                  ${item.badge === "!" ? "bg-red-500" : "bg-swapeo-primary"}
                   text-white text-xs animate-pulse
                 `}
                 >
