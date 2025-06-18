@@ -1690,16 +1690,25 @@ const Dashboard = () => {
                   <Bell className="mr-3 h-8 w-8 text-swapeo-primary animate-pulse" />
                   Notifications
                 </h2>
-                <div className="flex items-center space-x-4">
-                  <Button variant="outline" className="glass-effect">
-                    Marquer toutes comme lues
-                  </Button>
-                  <Button className="swapeo-button">Paramètres</Button>
-                </div>
+              <div className="flex items-center space-x-4">
+                {message && (
+                  <div className={`px-3 py-1 rounded text-sm ${
+                    message.includes("✅")
+                      ? "bg-green-500/20 text-green-400"
+                      : "bg-red-500/20 text-red-400"
+                  }`}>
+                    {message}
+                  </div>
+                )}
+                <Button
+                  variant="outline"
+                  className="glass-effect neon-border"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Déconnexion
+                </Button>
               </div>
-
-              <Tabs defaultValue="toutes" className="space-y-6">
-                <TabsList className="bg-swapeo-navy border border-swapeo-slate/30">
                   <TabsTrigger value="toutes">Toutes (6)</TabsTrigger>
                   <TabsTrigger value="non-lues">Non lues (2)</TabsTrigger>
                   <TabsTrigger value="swaps">Swaps</TabsTrigger>
