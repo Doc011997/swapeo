@@ -165,40 +165,65 @@ const DashboardSimplePublic = () => {
       if (response.ok) {
         const data = await response.json();
         setSwaps(data.swaps || []);
+      } else {
+        // Fallback vers données demo
+        loadDemoSwaps();
       }
     } catch (error) {
-      // Données exemple pour débutants
-      setSwaps([
-        {
-          id: "SW-001",
-          type: "demande",
-          amount: 5000,
-          duration: 3,
-          interestRate: 2.5,
-          counterparty: "Marie L. - Restaurant",
-          status: "Actif",
-          progress: 60,
-          createdAt: "2024-01-20",
-          description: "Achat équipement cuisine",
-          daysRemaining: 8,
-          simplified: true,
-        },
-        {
-          id: "SW-002",
-          type: "offre",
-          amount: 2000,
-          duration: 6,
-          interestRate: 3.0,
-          counterparty: "Thomas K. - E-commerce",
-          status: "Terminé",
-          progress: 100,
-          createdAt: "2024-01-10",
-          description: "Stock produits",
-          daysRemaining: 0,
-          simplified: true,
-        },
-      ]);
+      // API indisponible - utiliser données demo
+      console.log("API indisponible, chargement des données demo");
+      loadDemoSwaps();
     }
+  };
+
+  const loadDemoSwaps = () => {
+    // Données exemple adaptées au rôle de l'utilisateur
+    const baseSwaps = [
+      {
+        id: "SW-001",
+        type: "demande" as const,
+        amount: 5000,
+        duration: 3,
+        interestRate: 2.5,
+        counterparty: "Marie L. - Restaurant",
+        status: "Actif",
+        progress: 60,
+        createdAt: "2024-01-20",
+        description: "Achat équipement cuisine",
+        daysRemaining: 8,
+        simplified: true,
+      },
+      {
+        id: "SW-002",
+        type: "offre" as const,
+        amount: 2000,
+        duration: 6,
+        interestRate: 3.0,
+        counterparty: "Thomas K. - E-commerce",
+        status: "Terminé",
+        progress: 100,
+        createdAt: "2024-01-10",
+        description: "Stock produits",
+        daysRemaining: 0,
+        simplified: true,
+      },
+      {
+        id: "SW-003",
+        type: "demande" as const,
+        amount: 8000,
+        duration: 4,
+        interestRate: 3.2,
+        counterparty: "Paul D. - Boulangerie",
+        status: "En recherche",
+        progress: 15,
+        createdAt: "2024-01-22",
+        description: "Rénovation magasin",
+        daysRemaining: 25,
+        simplified: true,
+      },
+    ];
+
+    setSwaps(baseSwaps);
   };
 
   const handleCreateSwap = async () => {
@@ -359,7 +384,7 @@ const DashboardSimplePublic = () => {
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-gray-500">Durée</p>
+                          <p className="text-sm text-gray-500">Dur��e</p>
                           <p className="text-lg font-bold text-gray-900">
                             {swap.duration} mois
                           </p>
