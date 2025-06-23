@@ -97,18 +97,38 @@ const DashboardSimplePublic = () => {
 
   useEffect(() => {
     const savedUser = localStorage.getItem("swapeo_user");
-    if (savedUser) {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
+    const savedToken = localStorage.getItem("swapeo_token");
 
-      // Check if it's first time
-      const hasSeenOnboarding = localStorage.getItem("swapeo_onboarding");
-      if (!hasSeenOnboarding) {
-        setShowOnboarding(true);
-        localStorage.setItem("swapeo_onboarding", "true");
+    if (savedUser && savedToken) {
+      try {
+        const userData = JSON.parse(savedUser);
+
+        // Vérifier que les données essentielles sont présentes
+        if (!userData.firstName || !userData.email) {
+          console.error("Données utilisateur incomplètes", userData);
+          localStorage.removeItem("swapeo_user");
+          localStorage.removeItem("swapeo_token");
+          window.location.href = "/login";
+          return;
+        }
+
+        setUser(userData);
+
+        // Check if it's first time
+        const hasSeenOnboarding = localStorage.getItem("swapeo_onboarding");
+        if (!hasSeenOnboarding) {
+          setShowOnboarding(true);
+          localStorage.setItem("swapeo_onboarding", "true");
+        }
+
+        loadSwaps();
+      } catch (error) {
+        console.error("Erreur lors du parsing des données utilisateur:", error);
+        localStorage.removeItem("swapeo_user");
+        localStorage.removeItem("swapeo_token");
+        window.location.href = "/login";
+        return;
       }
-
-      loadSwaps();
     } else {
       window.location.href = "/login";
     }
