@@ -18,7 +18,7 @@ const LoginSimple = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setMessage("🔄 Connexion en cours...");
 
     try {
       const response = await fetch(
@@ -32,24 +32,42 @@ const LoginSimple = () => {
         },
       );
 
+      if (!response.ok) {
+        // Gestion des erreurs HTTP
+        if (response.status === 401) {
+          setMessage("❌ Email ou mot de passe incorrect");
+        } else if (response.status >= 500) {
+          setMessage("❌ Erreur serveur. Veuillez réessayer plus tard.");
+        } else {
+          const data = await response.json().catch(() => ({}));
+          setMessage(`❌ ${data.error || "Erreur lors de la connexion"}`);
+        }
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        // Sauvegarder le token
-        localStorage.setItem("swapeo_token", data.token);
-        localStorage.setItem("swapeo_user", JSON.stringify(data.user));
-
-        setMessage(`✅ Connexion réussie ! Bienvenue ${data.user.firstName} !`);
-
-        // Redirection après 2 secondes
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 2000);
-      } else {
-        setMessage(`❌ ${data.error}`);
+      // Vérifier que les données nécessaires sont présentes
+      if (!data.token || !data.user) {
+        setMessage("❌ Réponse serveur incomplète");
+        return;
       }
+
+      // Sauvegarder le token et l'utilisateur
+      localStorage.setItem("swapeo_token", data.token);
+      localStorage.setItem("swapeo_user", JSON.stringify(data.user));
+
+      setMessage(`✅ Connexion réussie ! Bienvenue ${data.user.firstName} !`);
+
+      // Redirection après 1.5 secondes
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1500);
     } catch (error) {
-      setMessage("❌ Erreur de connexion au serveur");
+      console.error("Erreur de connexion:", error);
+      setMessage(
+        "❌ Impossible de contacter le serveur. Vérifiez votre connexion Internet.",
+      );
     } finally {
       setLoading(false);
     }
