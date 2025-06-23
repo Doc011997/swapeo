@@ -80,6 +80,7 @@ const LoginSimple = () => {
   ) => {
     setFormData({ email, password });
     setLoading(true);
+    setMessage(`🔄 Connexion compte ${role}...`);
 
     try {
       const response = await fetch(
@@ -93,21 +94,29 @@ const LoginSimple = () => {
         },
       );
 
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setMessage(`❌ ${data.error || "Erreur lors de la connexion"}`);
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem("swapeo_token", data.token);
-        localStorage.setItem("swapeo_user", JSON.stringify(data.user));
-        setMessage(`✅ Connecté en tant que ${role} !`);
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1000);
-      } else {
-        setMessage(`❌ ${data.error}`);
+      if (!data.token || !data.user) {
+        setMessage("❌ Réponse serveur incomplète");
+        return;
       }
+
+      localStorage.setItem("swapeo_token", data.token);
+      localStorage.setItem("swapeo_user", JSON.stringify(data.user));
+      setMessage(`✅ Connecté en tant que ${role} !`);
+
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 800);
     } catch (error) {
-      setMessage("❌ Erreur de connexion");
+      console.error("Erreur de connexion rapide:", error);
+      setMessage("❌ Impossible de contacter le serveur");
     } finally {
       setLoading(false);
     }
