@@ -93,6 +93,8 @@ import {
   Share2,
   Bookmark,
   Flag,
+  Minus,
+  Handshake,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
