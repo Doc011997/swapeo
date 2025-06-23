@@ -237,7 +237,10 @@ app.post("/api/auth/login", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        company: user.company,
         kycStatus: user.kycStatus,
+        trustScore: user.trustScore,
+        wallet: user.wallet,
       },
     });
   } catch (error) {
