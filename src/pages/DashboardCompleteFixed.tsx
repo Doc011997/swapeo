@@ -1645,11 +1645,6 @@ const DashboardCompleteFixed = () => {
               </motion.div>
             )}
 
-            <div className="text-xs text-gray-500 mb-2">
-              Debug: Type={newSwap.type}, Montant={newSwap.amount}, Durée=
-              {newSwap.duration}, Description={newSwap.description}
-            </div>
-
             <Button
               onClick={() => {
                 console.log("🖱️ Bouton cliqué !");
