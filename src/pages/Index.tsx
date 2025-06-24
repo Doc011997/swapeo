@@ -242,32 +242,40 @@ const Index = () => {
       </section>
 
       {/* Revolutionary Pricing Section */}
-      <section id="pricing" className="py-20 relative overflow-hidden">
+      <section id="pricing" className="py-24 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-swapeo-primary/5 rounded-full blur-3xl animate-pulse-glow" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-violet-500/5 via-cyan-500/5 to-rose-500/5 rounded-full blur-3xl animate-pulse-glow" />
+          <div className="absolute top-20 left-20 w-48 h-48 bg-violet-500/10 rounded-full blur-2xl animate-float" />
+          <div className="absolute bottom-20 right-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse-glow" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div
-            className={`
-            text-center mb-16 transition-all duration-1000
-            ${isVisible.pricing ? "animate-slide-in-from-top" : "opacity-0 translate-y-10"}
-          `}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Tarification{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-swapeo-primary to-blue-500 animate-text-glow">
-                Transparente
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-full px-6 py-3 mb-6">
+              <TrendingUp className="h-5 w-5 text-green-400" />
+              <span className="text-green-300 font-medium">
+                Tarification simple
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Un seul tarif,{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 animate-text-glow">
+                transparent
               </span>
             </h2>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Des frais{" "}
-              <span className="text-swapeo-primary font-semibold animate-pulse">
-                simples et équitables
-              </span>{" "}
-              pour tous
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              Pas de frais cachés, pas d'abonnement.{" "}
+              <span className="text-green-400 font-bold">
+                Payez uniquement au succès
+              </span>
             </p>
-          </div>
+          </motion.div>
 
           <div
             className={`
