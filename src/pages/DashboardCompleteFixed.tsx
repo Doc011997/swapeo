@@ -3272,6 +3272,177 @@ const DashboardCompleteFixed = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Modal d'analyse algorithmique */}
+      <Dialog open={showAlgorithmAnalysis} onOpenChange={() => {}}>
+        <DialogContent className="max-w-md bg-black/90 backdrop-blur-xl border-white/10 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent flex items-center justify-center">
+              <Zap className="h-6 w-6 mr-3 text-violet-400 animate-pulse" />
+              Analyse Algorithmique
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-6 py-4">
+            {/* Animation centrale */}
+            <div className="flex justify-center">
+              <div className="relative w-32 h-32">
+                {/* Cercle de progression externe */}
+                <svg
+                  className="w-32 h-32 transform -rotate-90"
+                  viewBox="0 0 100 100"
+                >
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="transparent"
+                    className="text-gray-600"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="transparent"
+                    strokeDasharray={`${2 * Math.PI * 45}`}
+                    strokeDashoffset={`${2 * Math.PI * 45 * (1 - analysisProgress / 100)}`}
+                    className="text-violet-500 transition-all duration-300 ease-out"
+                  />
+                </svg>
+
+                {/* Cercle central avec icône/résultat */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {analysisResult === null ? (
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      className="w-12 h-12 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 flex items-center justify-center"
+                    >
+                      <Calculator className="h-6 w-6 text-white" />
+                    </motion.div>
+                  ) : analysisResult === "approved" ? (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", duration: 0.8 }}
+                      className="w-12 h-12 rounded-full bg-gradient-to-r from-lime-500 to-green-500 flex items-center justify-center"
+                    >
+                      <CheckCircle className="h-6 w-6 text-white" />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", duration: 0.8 }}
+                      className="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-pink-500 flex items-center justify-center"
+                    >
+                      <X className="h-6 w-6 text-white" />
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Pourcentage */}
+                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
+                  <span className="text-2xl font-bold text-white">
+                    {Math.round(analysisProgress)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Étape actuelle */}
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-white mb-2">
+                {analysisResult === null
+                  ? "Analyse en cours..."
+                  : analysisResult === "approved"
+                    ? "🎉 Swap Approuvé !"
+                    : "❌ Swap Rejeté"}
+              </h3>
+              <p className="text-gray-400">
+                {analysisResult === null
+                  ? analysisStep || "Préparation de l'analyse..."
+                  : analysisResult === "approved"
+                    ? "Votre swap est maintenant visible dans le marketplace"
+                    : "Votre swap ne respecte pas nos critères de qualité"}
+              </p>
+            </div>
+
+            {/* ID du swap */}
+            <div className="bg-black/20 backdrop-blur-sm rounded-lg p-3 text-center">
+              <p className="text-xs text-gray-400">Swap ID</p>
+              <p className="text-violet-400 font-mono font-semibold">
+                {createdSwapId}
+              </p>
+            </div>
+
+            {/* Résultat détaillé */}
+            {analysisResult && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`p-4 rounded-lg ${
+                  analysisResult === "approved"
+                    ? "bg-lime-500/10 border border-lime-500/20"
+                    : "bg-red-500/10 border border-red-500/20"
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  {analysisResult === "approved" ? (
+                    <CheckCircle className="h-5 w-5 text-lime-400" />
+                  ) : (
+                    <AlertCircle className="h-5 w-5 text-red-400" />
+                  )}
+                  <div>
+                    <p
+                      className={`font-semibold ${
+                        analysisResult === "approved"
+                          ? "text-lime-400"
+                          : "text-red-400"
+                      }`}
+                    >
+                      {analysisResult === "approved"
+                        ? "Validation réussie"
+                        : "Validation échouée"}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      {analysisResult === "approved"
+                        ? "Score algorithmique: 87/100"
+                        : "Score algorithmique: 42/100"}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Actions finales */}
+            {analysisResult === "approved" && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="space-y-3"
+              >
+                <Button
+                  onClick={() => (window.location.href = "/swap")}
+                  className="w-full bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  Voir dans le Marketplace
+                </Button>
+              </motion.div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
