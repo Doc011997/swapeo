@@ -141,13 +141,13 @@ const LoginSimple = () => {
       icon: Handshake,
       value: "1,253",
       label: "Swaps réalisés",
-      color: "text-green-400",
+      color: "text-emerald-400",
     },
     {
       icon: TrendingUp,
       value: "94%",
       label: "Taux de succès",
-      color: "text-purple-400",
+      color: "text-indigo-400",
     },
   ];
 
