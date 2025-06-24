@@ -1581,7 +1581,8 @@ const DashboardCompleteFixed = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-green-200 hover:bg-green-50 p-3 sm:p-4 h-auto flex-col"
+                  onClick={() => (window.location.href = "/swap")}
+                  className="border-green-200 hover:bg-green-50 p-3 sm:p-4 h-auto flex-col transition-all duration-300 hover:scale-105"
                 >
                   <Search className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-green-600" />
                   <span className="text-xs sm:text-sm">Chercher</span>
