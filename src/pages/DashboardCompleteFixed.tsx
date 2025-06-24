@@ -1352,13 +1352,13 @@ const DashboardCompleteFixed = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
               >
-                <Card className="p-6 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-lg">
-                  <div className="flex items-center justify-between mb-6">
+                <Card className="p-6 sm:p-8 bg-white/90 backdrop-blur-md border-gray-200/50 shadow-xl rounded-3xl">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 sm:mb-8 space-y-4 sm:space-y-0">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
-                        <Handshake className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-lg">
+                        <Handshake className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900">
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
                         Swaps Récents
                       </h3>
                     </div>
@@ -1366,9 +1366,10 @@ const DashboardCompleteFixed = () => {
                       variant="outline"
                       size="sm"
                       onClick={() => setActiveSection("swaps")}
-                      className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300"
+                      className="border-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 hover:border-indigo-400 focus:ring-4 focus:ring-indigo-200 rounded-xl px-4 py-2 font-semibold touch-manipulation"
+                      aria-label="Voir tous les swaps"
                     >
-                      <Eye className="h-4 w-4 mr-1" />
+                      <Eye className="h-4 w-4 mr-2" />
                       Voir tout
                     </Button>
                   </div>
