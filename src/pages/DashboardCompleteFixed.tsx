@@ -380,9 +380,6 @@ const DashboardCompleteFixed = () => {
   };
 
   const handleCreateSwap = () => {
-    console.log("🚀 handleCreateSwap appelée !");
-    console.log("📋 newSwap:", newSwap);
-
     try {
       // Validation simple et rapide
       if (
@@ -391,7 +388,6 @@ const DashboardCompleteFixed = () => {
         !newSwap.duration ||
         !newSwap.description
       ) {
-        console.log("❌ Validation échouée - champs manquants");
         setMessage("❌ Veuillez remplir tous les champs");
         setTimeout(() => setMessage(""), 3000);
         return;
@@ -400,23 +396,17 @@ const DashboardCompleteFixed = () => {
       const amount = parseInt(newSwap.amount);
       const duration = parseInt(newSwap.duration);
 
-      console.log("💰 Montant:", amount, "Durée:", duration);
-
       if (isNaN(amount) || amount < 1000) {
-        console.log("❌ Montant invalide");
         setMessage("❌ Montant minimum: 1 000€");
         setTimeout(() => setMessage(""), 3000);
         return;
       }
 
       if (isNaN(duration) || duration < 1) {
-        console.log("❌ Durée invalide");
         setMessage("❌ Durée minimum: 1 mois");
         setTimeout(() => setMessage(""), 3000);
         return;
       }
-
-      console.log("✅ Validation réussie, création du swap...");
 
       const currentDate = new Date();
       const interestRate = newSwap.type === "demande" ? 3.5 : 3.0;
