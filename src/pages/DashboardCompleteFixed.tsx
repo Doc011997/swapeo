@@ -1008,12 +1008,33 @@ const DashboardCompleteFixed = () => {
           <TabsContent value="swaps" className="space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Mes Swaps</h2>
+                <div className="flex items-center space-x-3">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Mes Swaps
+                  </h2>
+                  <Badge className="bg-blue-100 text-blue-800 font-semibold">
+                    {swaps.length} swap{swaps.length > 1 ? "s" : ""}
+                  </Badge>
+                  {newSwapId && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center space-x-1"
+                    >
+                      <Badge className="bg-green-100 text-green-800 animate-pulse">
+                        ✨ Nouveau !
+                      </Badge>
+                    </motion.div>
+                  )}
+                </div>
                 <p className="text-gray-600">
                   Gérez tous vos échanges financiers
                 </p>
               </div>
-              <Button onClick={() => setShowCreateSwap(true)}>
+              <Button
+                onClick={() => setShowCreateSwap(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Nouveau swap
               </Button>
