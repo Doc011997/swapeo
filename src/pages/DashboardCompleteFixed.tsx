@@ -2602,6 +2602,113 @@ const DashboardCompleteFixed = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Chat Component */}
+      {showChat && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          className="fixed bottom-4 right-4 z-50 w-80 sm:w-96 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 flex flex-col"
+        >
+          {/* Chat Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-t-lg">
+            <div className="flex items-center space-x-3">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-white/20 text-white text-sm font-bold">
+                  {chatContact?.name
+                    ?.split(" ")
+                    .map((n: string) => n[0])
+                    .join("") || "?"}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <h4 className="font-semibold text-sm">{chatContact?.name}</h4>
+                <p className="text-xs opacity-80">{chatContact?.company}</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-xs">En ligne</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-white hover:bg-white/20"
+                onClick={() => setShowChat(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+            {chatMessages.map((msg) => (
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-xs lg:max-w-md px-3 py-2 rounded-lg ${
+                    msg.isMe
+                      ? "bg-blue-500 text-white"
+                      : "bg-white border border-gray-200 text-gray-900"
+                  }`}
+                >
+                  <p className="text-sm">{msg.message}</p>
+                  <p
+                    className={`text-xs mt-1 ${
+                      msg.isMe ? "text-blue-100" : "text-gray-500"
+                    }`}
+                  >
+                    {new Date(msg.timestamp).toLocaleTimeString("fr-FR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Chat Input */}
+          <div className="p-3 border-t border-gray-200 bg-white rounded-b-lg">
+            <div className="flex items-center space-x-2">
+              <Input
+                placeholder="Tapez votre message..."
+                value={chatMessage}
+                onChange={(e) => setChatMessage(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && sendChatMessage()}
+                className="flex-1 text-sm"
+              />
+              <Button
+                onClick={sendChatMessage}
+                disabled={!chatMessage.trim()}
+                size="sm"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-3"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
+              <div className="flex items-center space-x-2">
+                <Shield className="h-3 w-3 text-green-500" />
+                <span>Conversation sécurisée</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <span>Trust Score:</span>
+                <span className="font-medium text-blue-600">
+                  {chatContact?.trustScore}%
+                </span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };
