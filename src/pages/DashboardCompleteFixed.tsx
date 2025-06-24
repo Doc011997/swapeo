@@ -675,7 +675,7 @@ const DashboardCompleteFixed = () => {
     if (
       contacts.some((c) => c.name === fullName || c.email === contactForm.email)
     ) {
-      setMessage("❌ Ce contact existe d��jà dans votre réseau");
+      setMessage("❌ Ce contact existe déjà dans votre réseau");
       setTimeout(() => setMessage(""), 4000);
       return;
     }
@@ -1869,7 +1869,7 @@ const DashboardCompleteFixed = () => {
 
             <Button
               onClick={handleCreateSwap}
-              className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium transition-all duration-200"
+              className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white h-12 text-base font-medium transition-all duration-200 shadow-lg"
             >
               <Plus className="mr-2 h-5 w-5" />
               Créer le swap
@@ -2303,7 +2303,7 @@ const DashboardCompleteFixed = () => {
                             ? "🟢 Faible"
                             : selectedSwap.riskLevel === "medium"
                               ? "🟡 Modéré"
-                              : "��� Élevé"}
+                              : "🔴 Élevé"}
                         </Badge>
                       </div>
 
