@@ -1152,31 +1152,31 @@ const DashboardCompleteFixed = () => {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
-                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4">
-                            <p className="text-violet-100 text-xs sm:text-sm font-medium mb-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10">
+                            <p className="text-white/90 text-sm sm:text-base font-semibold mb-2">
                               Solde total
                             </p>
-                            <p className="text-lg sm:text-3xl font-bold">
+                            <p className="text-xl sm:text-3xl font-bold mb-2 leading-tight">
                               {formatCurrency(animatedBalance)}
                             </p>
-                            <div className="flex items-center mt-1 sm:mt-2 text-green-300 text-xs sm:text-sm">
-                              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                            <div className="flex items-center text-green-200 text-sm sm:text-base font-medium">
+                              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                               +12.5% ce mois
                             </div>
                           </div>
-                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4">
-                            <p className="text-violet-100 text-xs sm:text-sm font-medium mb-1">
+                          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10">
+                            <p className="text-white/90 text-sm sm:text-base font-semibold mb-2">
                               Swaps actifs
                             </p>
-                            <p className="text-lg sm:text-3xl font-bold">
+                            <p className="text-xl sm:text-3xl font-bold mb-2 leading-tight">
                               {
                                 swaps.filter((s) => s.status === "active")
                                   .length
                               }
                             </p>
-                            <div className="flex items-center mt-1 sm:mt-2 text-cyan-300 text-xs sm:text-sm">
-                              <Activity className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                            <div className="flex items-center text-cyan-200 text-sm sm:text-base font-medium">
+                              <Activity className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                               {
                                 swaps.filter((s) => s.status === "pending")
                                   .length
