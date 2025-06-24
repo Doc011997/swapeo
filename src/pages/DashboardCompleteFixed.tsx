@@ -1966,54 +1966,62 @@ const DashboardCompleteFixed = () => {
             </div>
           </DialogHeader>
 
-          <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4 sm:space-y-6 pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="type">Type de swap</Label>
+                <Label htmlFor="type" className="text-sm font-medium">
+                  Type de swap
+                </Label>
                 <Select
                   value={swapForm.type}
                   onValueChange={(value) =>
                     setSwapForm({ ...swapForm, type: value })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 mt-1">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="demande">
-                      Demande de financement
+                      💰 Demande de financement
                     </SelectItem>
-                    <SelectItem value="offre">Offre de financement</SelectItem>
+                    <SelectItem value="offre">
+                      💼 Offre de financement
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label htmlFor="category">Catégorie</Label>
+                <Label htmlFor="category" className="text-sm font-medium">
+                  Catégorie
+                </Label>
                 <Select
                   value={swapForm.category}
                   onValueChange={(value) =>
                     setSwapForm({ ...swapForm, category: value })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 mt-1">
                     <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="technology">Technologie</SelectItem>
-                    <SelectItem value="energy">Énergie</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="retail">Commerce</SelectItem>
-                    <SelectItem value="manufacturing">Industrie</SelectItem>
-                    <SelectItem value="services">Services</SelectItem>
+                    <SelectItem value="technology">🖥️ Technologie</SelectItem>
+                    <SelectItem value="energy">⚡ Énergie</SelectItem>
+                    <SelectItem value="finance">🏦 Finance</SelectItem>
+                    <SelectItem value="retail">🛍️ Commerce</SelectItem>
+                    <SelectItem value="manufacturing">🏭 Industrie</SelectItem>
+                    <SelectItem value="services">🔧 Services</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="amount">Montant (€)</Label>
+                <Label htmlFor="amount" className="text-sm font-medium">
+                  Montant (€)
+                </Label>
                 <Input
                   id="amount"
                   type="number"
@@ -2022,11 +2030,14 @@ const DashboardCompleteFixed = () => {
                   onChange={(e) =>
                     setSwapForm({ ...swapForm, amount: e.target.value })
                   }
+                  className="h-12 mt-1 text-base"
                 />
               </div>
 
               <div>
-                <Label htmlFor="duration">Durée (mois)</Label>
+                <Label htmlFor="duration" className="text-sm font-medium">
+                  Durée (mois)
+                </Label>
                 <Input
                   id="duration"
                   type="number"
@@ -2035,11 +2046,14 @@ const DashboardCompleteFixed = () => {
                   onChange={(e) =>
                     setSwapForm({ ...swapForm, duration: e.target.value })
                   }
+                  className="h-12 mt-1 text-base"
                 />
               </div>
 
               <div>
-                <Label htmlFor="interestRate">Taux d'intérêt (%)</Label>
+                <Label htmlFor="interestRate" className="text-sm font-medium">
+                  Taux (%)
+                </Label>
                 <Input
                   id="interestRate"
                   type="number"
@@ -2049,6 +2063,7 @@ const DashboardCompleteFixed = () => {
                   onChange={(e) =>
                     setSwapForm({ ...swapForm, interestRate: e.target.value })
                   }
+                  className="h-12 mt-1 text-base"
                 />
               </div>
             </div>
