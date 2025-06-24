@@ -97,6 +97,8 @@ import {
   Handshake,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 interface Swap {
   id: string;
