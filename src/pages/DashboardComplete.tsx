@@ -463,35 +463,74 @@ const DashboardComplete = () => {
     setNotifications(demoNotifications);
   };
 
-  const handleCreateSwap = () => {
-    const demoSwap: Swap = {
-      id: `SW-${Date.now()}`,
-      type: newSwap.type as "demande" | "offre",
-      amount: parseInt(newSwap.amount),
-      duration: parseInt(newSwap.duration),
-      interestRate: newSwap.type === "demande" ? 3.5 : 3.0,
-      counterparty: "Recherche en cours...",
-      status: "En recherche",
-      progress: 0,
-      createdAt: new Date().toISOString(),
-      description: newSwap.description,
-      daysRemaining: parseInt(newSwap.duration) * 30,
-      matchingScore: Math.floor(Math.random() * 15) + 85,
-      category: newSwap.category,
-      riskLevel: "low",
-      verified: false,
-    };
+  const handleCreateSwap = async () => {
+    try {
+      const response = await fetch("https://swapeo.netlify.app/api/swaps", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+        },
+        body: JSON.stringify({
+          type: newSwap.type,
+          amount: parseInt(newSwap.amount),
+          duration: parseInt(newSwap.duration),
+          description: newSwap.description,
+          category: newSwap.category,
+        }),
+      });
 
-    setSwaps([demoSwap, ...swaps]);
-    setShowCreateSwap(false);
-    setNewSwap({
-      type: "",
-      amount: "",
-      duration: "",
-      description: "",
-      category: "",
-    });
-    setMessage("🎉 Votre swap a été créé avec succès !");
+      if (response.ok) {
+        const data = await response.json();
+        setMessage("🎉 Votre swap a été créé avec succès !");
+
+        // Refresh all data immediately
+        await refreshAllData();
+
+        setShowCreateSwap(false);
+        setNewSwap({
+          type: "",
+          amount: "",
+          duration: "",
+          description: "",
+          category: "",
+        });
+      } else {
+        throw new Error("Erreur API");
+      }
+    } catch (error) {
+      // Fallback to demo mode
+      const demoSwap: Swap = {
+        id: `swap-${Date.now()}`,
+        type: newSwap.type as "demande" | "offre",
+        amount: parseInt(newSwap.amount),
+        duration: parseInt(newSwap.duration),
+        interestRate: newSwap.type === "demande" ? 3.5 : 3.0,
+        counterparty: "Recherche en cours...",
+        status: "En recherche",
+        progress: 0,
+        createdAt: new Date().toISOString(),
+        description: newSwap.description,
+        daysRemaining: parseInt(newSwap.duration) * 30,
+        matchingScore: Math.floor(Math.random() * 15) + 85,
+        category: newSwap.category,
+        riskLevel: "low",
+        verified: false,
+      };
+
+      setSwaps([demoSwap, ...swaps]);
+      updateUserStats([demoSwap, ...swaps]);
+      setShowCreateSwap(false);
+      setNewSwap({
+        type: "",
+        amount: "",
+        duration: "",
+        description: "",
+        category: "",
+      });
+      setMessage("🎉 Swap créé en mode DEMO !");
+    }
+
     setTimeout(() => setMessage(""), 4000);
   };
 
