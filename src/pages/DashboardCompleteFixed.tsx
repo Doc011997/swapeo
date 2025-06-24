@@ -1852,43 +1852,43 @@ const DashboardCompleteFixed = () => {
               </Card>
             </TabsContent>
 
-            <TabsContent value="contacts" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-900">
+            <TabsContent value="contacts" className="space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                   Mes Contacts
                 </h2>
                 <Button
                   onClick={() => setShowAddContactDialog(true)}
-                  className="bg-gradient-to-r from-violet-600 to-cyan-600"
+                  className="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-cyan-600 h-12 sm:h-10 rounded-xl"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter Contact
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {contacts.map((contact) => (
                   <Card
                     key={contact.id}
-                    className="p-6 hover:shadow-lg transition-shadow"
+                    className="p-4 sm:p-6 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-white/80 backdrop-blur-sm"
                   >
                     <div className="flex items-center space-x-3 mb-4">
-                      <Avatar className="h-12 w-12">
+                      <Avatar className="h-12 w-12 sm:h-14 sm:w-14 ring-2 ring-violet-100">
                         <AvatarImage
                           src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.name}`}
                         />
-                        <AvatarFallback>
+                        <AvatarFallback className="bg-gradient-to-br from-violet-500 to-cyan-500 text-white font-bold text-sm">
                           {contact.name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 truncate">
                           {contact.name}
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 truncate">
                           {contact.company}
                         </p>
                       </div>
@@ -1896,10 +1896,8 @@ const DashboardCompleteFixed = () => {
 
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">
-                          Score de confiance
-                        </span>
-                        <span className="font-medium">
+                        <span className="text-gray-600">Score confiance</span>
+                        <span className="font-medium text-green-600">
                           {contact.trustScore || 85}%
                         </span>
                       </div>
@@ -1912,32 +1910,38 @@ const DashboardCompleteFixed = () => {
                       {contact.lastContact && (
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-600">Dernier contact</span>
-                          <span className="font-medium">
+                          <span className="font-medium text-xs sm:text-sm">
                             {formatDate(contact.lastContact)}
                           </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="flex space-x-2">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1"
+                        className="flex-1 h-10 rounded-xl border-violet-200 hover:bg-violet-50 touch-manipulation"
                         onClick={() => openChat(contact)}
                       >
-                        <MessageCircle className="h-4 w-4 mr-1" />
-                        Message
+                        <MessageCircle className="h-4 w-4 mr-2 text-violet-600" />
+                        <span className="text-violet-700 font-medium">
+                          Message
+                        </span>
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        <Mail className="h-4 w-4 mr-1" />
-                        Email
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 h-10 rounded-xl border-blue-200 hover:bg-blue-50 touch-manipulation"
+                      >
+                        <Mail className="h-4 w-4 mr-2 text-blue-600" />
+                        <span className="text-blue-700 font-medium">Email</span>
                       </Button>
                     </div>
 
                     {contact.category && (
                       <div className="mt-3">
-                        <Badge className="bg-blue-100 text-blue-700">
+                        <Badge className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs">
                           {contact.category}
                         </Badge>
                       </div>
@@ -1945,6 +1949,28 @@ const DashboardCompleteFixed = () => {
                   </Card>
                 ))}
               </div>
+
+              {/* Empty state pour mobile */}
+              {contacts.length === 0 && (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-8 w-8 text-gray-400" />
+                  </div>
+                  <p className="text-gray-500 font-medium">
+                    Aucun contact pour le moment
+                  </p>
+                  <p className="text-gray-400 text-sm mt-1">
+                    Ajoutez votre premier contact pour commencer
+                  </p>
+                  <Button
+                    onClick={() => setShowAddContactDialog(true)}
+                    className="mt-4 bg-gradient-to-r from-violet-600 to-cyan-600"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Ajouter un contact
+                  </Button>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </motion.div>
