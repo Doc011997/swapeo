@@ -170,6 +170,14 @@ const DashboardComplete = () => {
     description: "",
     category: "",
   });
+  const [showInviteDialog, setShowInviteDialog] = useState(false);
+  const [inviteForm, setInviteForm] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    message: "",
+  });
+  const [generatingPDF, setGeneratingPDF] = useState(false);
 
   // Stats calculées
   const [stats, setStats] = useState({
@@ -1578,7 +1586,7 @@ const DashboardComplete = () => {
                                 {swap.riskLevel === "low"
                                   ? "faible"
                                   : swap.riskLevel === "medium"
-                                    ? "modéré"
+                                    ? "modér��"
                                     : "élevé"}
                               </span>
                             </div>
