@@ -100,6 +100,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
+import { SwapService } from "@/lib/swapService";
 
 interface Swap {
   id: string;
