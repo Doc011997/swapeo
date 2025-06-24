@@ -345,7 +345,7 @@ const DashboardCompleteFixed = () => {
         id: "N-001",
         type: "swap",
         title: "Nouveau remboursement reçu",
-        description: "Thomas Kraft a remboursé 2 240��� pour SW-002",
+        description: "Thomas Kraft a remboursé 2 240€ pour SW-002",
         time: "Il y a 2h",
         read: false,
       },
@@ -382,7 +382,12 @@ const DashboardCompleteFixed = () => {
   const handleCreateSwap = () => {
     try {
       // Validation simple et rapide
-      if (!newSwap.type || !newSwap.amount || !newSwap.duration || !newSwap.description) {
+      if (
+        !newSwap.type ||
+        !newSwap.amount ||
+        !newSwap.duration ||
+        !newSwap.description
+      ) {
         setMessage("❌ Veuillez remplir tous les champs");
         setTimeout(() => setMessage(""), 3000);
         return;
@@ -407,9 +412,26 @@ const DashboardCompleteFixed = () => {
       const interestRate = newSwap.type === "demande" ? 3.5 : 3.0;
 
       // Générer des données automatiques intelligentes
-      const categories = ["Tech & Digital", "Commerce", "Services", "Restauration", "Industrie"];
-      const purposes = ["Développement", "Équipement", "Stock", "Expansion", "Innovation"];
-      const guarantees = ["Caution personnelle", "Garantie bancaire", "Nantissement", "Hypothèque"];
+      const categories = [
+        "Tech & Digital",
+        "Commerce",
+        "Services",
+        "Restauration",
+        "Industrie",
+      ];
+      const purposes = [
+        "Développement",
+        "Équipement",
+        "Stock",
+        "Expansion",
+        "Innovation",
+      ];
+      const guarantees = [
+        "Caution personnelle",
+        "Garantie bancaire",
+        "Nantissement",
+        "Hypothèque",
+      ];
 
       const demoSwap: Swap = {
         id: `SW-${Date.now()}`,
@@ -437,8 +459,12 @@ const DashboardCompleteFixed = () => {
         createdByCompany: user.company || "Particulier",
         createdByTrustScore: user.trustScore || 85,
         estimatedReturn: Math.round((amount * interestRate) / 100),
-        totalInterest: Math.round((amount * interestRate * duration) / (100 * 12)),
-        monthlyPayment: Math.round((amount * (1 + interestRate/100)) / duration),
+        totalInterest: Math.round(
+          (amount * interestRate * duration) / (100 * 12),
+        ),
+        monthlyPayment: Math.round(
+          (amount * (1 + interestRate / 100)) / duration,
+        ),
         nextPaymentDate: null,
         lastUpdated: currentDate.toISOString(),
       };
@@ -458,7 +484,9 @@ const DashboardCompleteFixed = () => {
       });
 
       // Confirmation immédiate détaillée
-      setMessage(`✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`);
+      setMessage(
+        `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`,
+      );
       setTimeout(() => setMessage(""), 8000);
 
       // Redirection immédiate vers l'onglet swaps pour voir le nouveau swap
@@ -469,7 +497,6 @@ const DashboardCompleteFixed = () => {
       setTimeout(() => {
         setNewSwapId(null);
       }, 8000);
-
     } catch (error) {
       console.error("Erreur création swap:", error);
       setMessage("❌ Erreur. Veuillez réessayer.");
@@ -979,8 +1006,12 @@ const DashboardCompleteFixed = () => {
               {swaps.map((swap, index) => (
                 <motion.div
                   key={swap.id}
-                  initial={swap.id === newSwapId ? { scale: 0.95, opacity: 0 } : false}
-                  animate={swap.id === newSwapId ? { scale: 1, opacity: 1 } : {}}
+                  initial={
+                    swap.id === newSwapId ? { scale: 0.95, opacity: 0 } : false
+                  }
+                  animate={
+                    swap.id === newSwapId ? { scale: 1, opacity: 1 } : {}
+                  }
                   transition={{ duration: 0.5 }}
                 >
                   <Card
@@ -1000,71 +1031,74 @@ const DashboardCompleteFixed = () => {
                         </div>
                       </div>
                     )}
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold text-gray-900">
-                        {swap.counterparty}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {swap.description}
-                      </p>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">
+                          {swap.counterparty}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {swap.description}
+                        </p>
+                      </div>
+                      <Badge
+                        className={`${
+                          swap.status === "Actif"
+                            ? "bg-green-100 text-green-700"
+                            : swap.status === "Terminé"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {swap.status}
+                      </Badge>
                     </div>
-                    <Badge
-                      className={`${
-                        swap.status === "Actif"
-                          ? "bg-green-100 text-green-700"
-                          : swap.status === "Terminé"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {swap.status}
-                    </Badge>
-                  </div>
 
-                  <div className="text-2xl font-bold text-gray-900 mb-4">
-                    {formatCurrency(swap.amount)}
-                  </div>
+                    <div className="text-2xl font-bold text-gray-900 mb-4">
+                      {formatCurrency(swap.amount)}
+                    </div>
 
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-500">Durée</p>
-                      <p className="font-medium">{swap.duration} mois</p>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-500">Durée</p>
+                        <p className="font-medium">{swap.duration} mois</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Taux</p>
+                        <p className="font-medium text-green-600">
+                          {swap.interestRate}%
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Échéance</p>
+                        <p className="font-medium">
+                          {swap.daysRemaining || 0}j
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Taux</p>
-                      <p className="font-medium text-green-600">
-                        {swap.interestRate}%
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-500">Échéance</p>
-                      <p className="font-medium">{swap.daysRemaining || 0}j</p>
-                    </div>
-                  </div>
 
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
-                      <span>Progression</span>
-                      <span>{swap.progress}%</span>
+                    <div className="mb-4">
+                      <div className="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>Progression</span>
+                        <span>{swap.progress}%</span>
+                      </div>
+                      <Progress value={swap.progress} className="h-2" />
                     </div>
-                    <Progress value={swap.progress} className="h-2" />
-                  </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => viewSwapDetails(swap)}
-                    >
-                      <Info className="h-4 w-4 mr-1" />
-                      Voir détails
-                    </Button>
-                    <Button variant="outline">
-                      <MessageCircle className="h-4 w-4 mr-1" />
-                      Contacter
-                    </Button>
-                  </div>
-                </Card>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => viewSwapDetails(swap)}
+                      >
+                        <Info className="h-4 w-4 mr-1" />
+                        Voir détails
+                      </Button>
+                      <Button variant="outline">
+                        <MessageCircle className="h-4 w-4 mr-1" />
+                        Contacter
+                      </Button>
+                    </div>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </TabsContent>
@@ -1518,7 +1552,14 @@ const DashboardCompleteFixed = () => {
                 <div className="flex items-center justify-between text-sm mt-1">
                   <span className="text-gray-600">Intérêts totaux:</span>
                   <span className="font-semibold text-green-600">
-                    ~{Math.round((parseInt(newSwap.amount) * 3.2 * parseInt(newSwap.duration)) / (100 * 12))}€
+                    ~
+                    {Math.round(
+                      (parseInt(newSwap.amount) *
+                        3.2 *
+                        parseInt(newSwap.duration)) /
+                        (100 * 12),
+                    )}
+                    €
                   </span>
                 </div>
               </motion.div>
@@ -1696,36 +1737,58 @@ const DashboardCompleteFixed = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Type:</span>
-                      <Badge className={selectedSwap.type === "demande" ? "bg-orange-100 text-orange-700" : "bg-green-100 text-green-700"}>
-                        {selectedSwap.type === "demande" ? "💰 Demande de financement" : "🏦 Offre de financement"}
+                      <Badge
+                        className={
+                          selectedSwap.type === "demande"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-green-100 text-green-700"
+                        }
+                      >
+                        {selectedSwap.type === "demande"
+                          ? "💰 Demande de financement"
+                          : "🏦 Offre de financement"}
                       </Badge>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Statut:</span>
                       <div className="flex items-center space-x-2">
                         {getStatusIcon(selectedSwap.status)}
-                        <span className="font-medium">{selectedSwap.status}</span>
+                        <span className="font-medium">
+                          {selectedSwap.status}
+                        </span>
                       </div>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Catégorie:</span>
-                      <span className="font-medium">{selectedSwap.category || "Non spécifiée"}</span>
+                      <span className="font-medium">
+                        {selectedSwap.category || "Non spécifiée"}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Niveau de risque:</span>
-                      <span className={`font-medium ${
-                        selectedSwap.riskLevel === "low" ? "text-green-600" :
-                        selectedSwap.riskLevel === "medium" ? "text-yellow-600" : "text-red-600"
-                      }`}>
-                        {selectedSwap.riskLevel === "low" ? "Faible" :
-                         selectedSwap.riskLevel === "medium" ? "Modéré" : "Élevé"}
+                      <span
+                        className={`font-medium ${
+                          selectedSwap.riskLevel === "low"
+                            ? "text-green-600"
+                            : selectedSwap.riskLevel === "medium"
+                              ? "text-yellow-600"
+                              : "text-red-600"
+                        }`}
+                      >
+                        {selectedSwap.riskLevel === "low"
+                          ? "Faible"
+                          : selectedSwap.riskLevel === "medium"
+                            ? "Modéré"
+                            : "Élevé"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Score de matching:</span>
                       <div className="flex items-center space-x-1">
                         <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="font-medium">{selectedSwap.matchingScore}%</span>
+                        <span className="font-medium">
+                          {selectedSwap.matchingScore}%
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1740,24 +1803,35 @@ const DashboardCompleteFixed = () => {
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-12 w-12">
                         <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                          {selectedSwap.createdBy?.split(" ").map(n => n[0]).join("") || "??"}
+                          {selectedSwap.createdBy
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("") || "??"}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-semibold">{selectedSwap.createdBy || "Utilisateur"}</p>
-                        <p className="text-sm text-gray-600">{selectedSwap.createdByCompany || "Entreprise"}</p>
+                        <p className="font-semibold">
+                          {selectedSwap.createdBy || "Utilisateur"}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {selectedSwap.createdByCompany || "Entreprise"}
+                        </p>
                       </div>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Trust Score:</span>
                       <div className="flex items-center space-x-1">
                         <Shield className="h-4 w-4 text-green-500" />
-                        <span className="font-medium text-green-600">{selectedSwap.createdByTrustScore || 85}%</span>
+                        <span className="font-medium text-green-600">
+                          {selectedSwap.createdByTrustScore || 85}%
+                        </span>
                       </div>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Contrepartie:</span>
-                      <span className="font-medium">{selectedSwap.counterparty}</span>
+                      <span className="font-medium">
+                        {selectedSwap.counterparty}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Vérifié:</span>
@@ -1779,21 +1853,31 @@ const DashboardCompleteFixed = () => {
                 </h4>
                 <div className="space-y-4">
                   <div>
-                    <p className="text-sm text-gray-600 mb-2">Description du projet:</p>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Description du projet:
+                    </p>
                     <p className="text-gray-900 bg-gray-50 p-3 rounded">
                       {selectedSwap.description || "Aucune description fournie"}
                     </p>
                   </div>
                   {selectedSwap.purpose && (
                     <div>
-                      <p className="text-sm text-gray-600 mb-2">Objectif des fonds:</p>
-                      <p className="text-gray-900 bg-gray-50 p-3 rounded">{selectedSwap.purpose}</p>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Objectif des fonds:
+                      </p>
+                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                        {selectedSwap.purpose}
+                      </p>
                     </div>
                   )}
                   {selectedSwap.guarantees && (
                     <div>
-                      <p className="text-sm text-gray-600 mb-2">Garanties proposées:</p>
-                      <p className="text-gray-900 bg-gray-50 p-3 rounded">{selectedSwap.guarantees}</p>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Garanties proposées:
+                      </p>
+                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                        {selectedSwap.guarantees}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -1809,22 +1893,36 @@ const DashboardCompleteFixed = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Remboursement:</span>
-                      <span className="font-medium">{getRepaymentScheduleText(selectedSwap.repaymentSchedule || "monthly")}</span>
+                      <span className="font-medium">
+                        {getRepaymentScheduleText(
+                          selectedSwap.repaymentSchedule || "monthly",
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Remboursement anticipé:</span>
-                      <span className={`font-medium ${selectedSwap.earlyRepayment ? "text-green-600" : "text-red-600"}`}>
-                        {selectedSwap.earlyRepayment ? "Autorisé" : "Non autorisé"}
+                      <span className="text-gray-600">
+                        Remboursement anticipé:
+                      </span>
+                      <span
+                        className={`font-medium ${selectedSwap.earlyRepayment ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {selectedSwap.earlyRepayment
+                          ? "Autorisé"
+                          : "Non autorisé"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Assurance:</span>
-                      <span className={`font-medium ${selectedSwap.insurance ? "text-green-600" : "text-gray-600"}`}>
+                      <span
+                        className={`font-medium ${selectedSwap.insurance ? "text-green-600" : "text-gray-600"}`}
+                      >
                         {selectedSwap.insurance ? "Incluse" : "Non incluse"}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Intérêts totaux estimés:</span>
+                      <span className="text-gray-600">
+                        Intérêts totaux estimés:
+                      </span>
                       <span className="font-medium text-blue-600">
                         {formatCurrency(selectedSwap.totalInterest || 0)}
                       </span>
@@ -1848,19 +1946,31 @@ const DashboardCompleteFixed = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Créé le:</span>
-                      <span className="font-medium">{formatDate(selectedSwap.createdAt)}</span>
+                      <span className="font-medium">
+                        {formatDate(selectedSwap.createdAt)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Dernière mise à jour:</span>
-                      <span className="font-medium">{formatDate(selectedSwap.lastUpdated || selectedSwap.createdAt)}</span>
+                      <span className="text-gray-600">
+                        Dernière mise à jour:
+                      </span>
+                      <span className="font-medium">
+                        {formatDate(
+                          selectedSwap.lastUpdated || selectedSwap.createdAt,
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Jours restants:</span>
-                      <span className="font-medium text-orange-600">{selectedSwap.daysRemaining || 0} jours</span>
+                      <span className="font-medium text-orange-600">
+                        {selectedSwap.daysRemaining || 0} jours
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Progression:</span>
-                      <span className="font-medium">{selectedSwap.progress}%</span>
+                      <span className="font-medium">
+                        {selectedSwap.progress}%
+                      </span>
                     </div>
                   </div>
 
@@ -1892,7 +2002,10 @@ const DashboardCompleteFixed = () => {
                   </Button>
                 </div>
                 <div className="flex space-x-3">
-                  <Button variant="outline" onClick={() => setShowSwapDetails(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowSwapDetails(false)}
+                  >
                     Fermer
                   </Button>
                   {selectedSwap.status === "En recherche" && (
