@@ -20,87 +20,37 @@ const LoginSimple = () => {
     setLoading(true);
     setMessage("🔄 Connexion en cours...");
 
-    try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+    // Connexion directe en mode DEMO (pas d'API)
+    setTimeout(() => {
+      const demoUser = {
+        id: "demo-123",
+        email: formData.email,
+        firstName: "Demo",
+        lastName: "User",
+        role: "emprunteur",
+        company: "Entreprise Demo",
+        kycStatus: "verified",
+        trustScore: 85,
+        wallet: {
+          balance: 12547,
+          totalDeposited: 15000,
+          totalWithdrawn: 2453,
         },
-      );
+      };
 
-      if (!response.ok) {
-        // Gestion des erreurs HTTP
-        if (response.status === 401) {
-          setMessage("❌ Email ou mot de passe incorrect");
-        } else if (response.status >= 500) {
-          setMessage("❌ Erreur serveur. Veuillez réessayer plus tard.");
-        } else {
-          const data = await response.json().catch(() => ({}));
-          setMessage(`❌ ${data.error || "Erreur lors de la connexion"}`);
-        }
-        return;
-      }
+      const demoToken = "demo-token-" + Date.now();
 
-      const data = await response.json();
+      localStorage.setItem("swapeo_token", demoToken);
+      localStorage.setItem("swapeo_user", JSON.stringify(demoUser));
 
-      // Vérifier que les données nécessaires sont présentes
-      if (!data.token || !data.user) {
-        setMessage("❌ Réponse serveur incomplète");
-        return;
-      }
+      setMessage("✅ Connexion réussie ! Bienvenue !");
 
-      // Sauvegarder le token et l'utilisateur
-      localStorage.setItem("swapeo_token", data.token);
-      localStorage.setItem("swapeo_user", JSON.stringify(data.user));
-
-      setMessage(`✅ Connexion réussie ! Bienvenue ${data.user.firstName} !`);
-
-      // Redirection après 1.5 secondes
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 1500);
-    } catch (error) {
-      console.error("Erreur de connexion:", error);
 
-      // Mode DEMO - Si l'API n'est pas disponible, utiliser des données de test
-      setMessage("🔄 API indisponible, connexion en mode DEMO...");
-
-      // Simuler une connexion avec des données de test
-      setTimeout(() => {
-        const demoUser = {
-          id: "demo-123",
-          email: formData.email,
-          firstName: "Demo",
-          lastName: "User",
-          role: "emprunteur",
-          company: "Entreprise Demo",
-          kycStatus: "verified",
-          trustScore: 85,
-          wallet: {
-            balance: 12547,
-            totalDeposited: 15000,
-            totalWithdrawn: 2453,
-          },
-        };
-
-        const demoToken = "demo-token-" + Date.now();
-
-        localStorage.setItem("swapeo_token", demoToken);
-        localStorage.setItem("swapeo_user", JSON.stringify(demoUser));
-
-        setMessage("✅ Connexion DEMO réussie ! Bienvenue Demo User !");
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1500);
-      }, 1000);
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   };
 
   const handleQuickLogin = async (
