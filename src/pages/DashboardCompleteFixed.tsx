@@ -322,7 +322,7 @@ const DashboardCompleteFixed = () => {
         id: "TX-001",
         type: "deposit",
         amount: 10000,
-        description: "Dépôt initial",
+        description: "D��pôt initial",
         date: "2024-01-20",
         status: "completed",
       },
@@ -892,9 +892,10 @@ const DashboardCompleteFixed = () => {
                 </Button>
               </div>
 
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base">
-                  {user?.firstName?.[0]}{user?.lastName?.[0]}
-                </div>
+                <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
+                  <AvatarFallback className="bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold text-sm sm:text-base">
+                    {user?.firstName?.[0]}{user?.lastName?.[0]}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="hidden sm:block">
                   <p className="text-sm font-medium text-gray-900">
