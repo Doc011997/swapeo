@@ -2069,7 +2069,9 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div>
-              <Label htmlFor="purpose">Objectif du financement</Label>
+              <Label htmlFor="purpose" className="text-sm font-medium">
+                Objectif du financement
+              </Label>
               <Input
                 id="purpose"
                 placeholder="Ex: Expansion commerciale, fonds de roulement..."
@@ -2077,11 +2079,14 @@ const DashboardCompleteFixed = () => {
                 onChange={(e) =>
                   setSwapForm({ ...swapForm, purpose: e.target.value })
                 }
+                className="h-12 mt-1 text-base"
               />
             </div>
 
             <div>
-              <Label htmlFor="description">Description détaillée</Label>
+              <Label htmlFor="description" className="text-sm font-medium">
+                Description détaillée
+              </Label>
               <Textarea
                 id="description"
                 placeholder="Décrivez votre projet, vos besoins ou votre offre..."
@@ -2090,11 +2095,14 @@ const DashboardCompleteFixed = () => {
                   setSwapForm({ ...swapForm, description: e.target.value })
                 }
                 rows={4}
+                className="mt-1 text-base resize-none"
               />
             </div>
 
             <div>
-              <Label htmlFor="guarantees">Garanties proposées</Label>
+              <Label htmlFor="guarantees" className="text-sm font-medium">
+                Garanties proposées
+              </Label>
               <Textarea
                 id="guarantees"
                 placeholder="Décrivez les garanties que vous proposez..."
@@ -2103,20 +2111,24 @@ const DashboardCompleteFixed = () => {
                   setSwapForm({ ...swapForm, guarantees: e.target.value })
                 }
                 rows={3}
+                className="mt-1 text-base resize-none"
               />
             </div>
 
-            <div className="flex justify-end space-x-3">
+            {/* Mobile: Stack vertical, Desktop: Horizontal */}
+            <div className="flex flex-col-reverse sm:flex-row justify-end space-y-reverse space-y-3 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-100">
               <Button
                 variant="outline"
                 onClick={() => setShowCreateSwap(false)}
+                className="w-full sm:w-auto h-12 sm:h-10"
               >
                 Annuler
               </Button>
               <Button
                 onClick={handleCreateSwap}
-                className="bg-gradient-to-r from-violet-600 to-cyan-600"
+                className="w-full sm:w-auto h-12 sm:h-10 bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700"
               >
+                <Plus className="h-4 w-4 mr-2" />
                 Créer le swap
               </Button>
             </div>
