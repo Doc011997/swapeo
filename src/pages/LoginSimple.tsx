@@ -222,7 +222,7 @@ const LoginSimple = () => {
 
               <h1 className="text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight">
                 Révolutionnez vos
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
                   {" "}
                   échanges financiers
                 </span>
@@ -506,7 +506,7 @@ const LoginSimple = () => {
                 <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Shield className="h-3 w-3" />
-                    <span>S��curisé SSL</span>
+                    <span>Sécurisé SSL</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <CheckCircle className="h-3 w-3" />
