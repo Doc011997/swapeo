@@ -1319,64 +1319,7 @@ const DashboardCompleteFixed = () => {
               </Card>
             </div>
 
-            {/* Achievements récents */}
-            <Card className="p-4 sm:p-6 bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                  <Award className="h-5 w-5 mr-2 text-yellow-600" />
-                  Achievements Récents
-                </h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowAchievementModal(true)}
-                  className="text-xs"
-                >
-                  Voir tout
-                </Button>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {achievements
-                  .filter((a) => a.unlockedAt)
-                  .slice(0, 3)
-                  .map((achievement) => (
-                    <div
-                      key={achievement.id}
-                      className="bg-white/70 rounded-lg p-3 text-center"
-                    >
-                      <div className="text-2xl mb-2">{achievement.icon}</div>
-                      <h4 className="font-medium text-sm text-gray-900">
-                        {achievement.name}
-                      </h4>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {achievement.description}
-                      </p>
-                      <Badge
-                        className={`mt-2 text-xs ${
-                          achievement.rarity === "legendary"
-                            ? "bg-purple-100 text-purple-700"
-                            : achievement.rarity === "epic"
-                              ? "bg-blue-100 text-blue-700"
-                              : achievement.rarity === "rare"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {achievement.rarity}
-                      </Badge>
-                    </div>
-                  ))}
-              </div>
-            </Card>
-
-            {/* Actions rapides */}
-            <Card className="p-4 sm:p-6">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
-                Actions Rapides
-              </h3>
-              <div className="grid grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4">
-                <Button
                   onClick={() => setShowCreateSwap(true)}
                   className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white p-3 sm:p-4 h-auto flex-col"
                 >
