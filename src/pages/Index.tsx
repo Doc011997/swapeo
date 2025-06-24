@@ -13,8 +13,14 @@ import {
   Phone,
   Sparkles,
   Zap,
+  Award,
+  TrendingUp,
+  Shield,
+  Users,
+  Clock,
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const Index = () => {
   const [isVisible, setIsVisible] = useState({});
