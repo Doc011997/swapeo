@@ -2468,22 +2468,25 @@ const DashboardCompleteFixed = () => {
         open={showAlgorithmAnalysis}
         onOpenChange={setShowAlgorithmAnalysis}
       >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">
-              Analyse Algorithmique
+        <DialogContent className="w-full max-w-sm sm:max-w-md m-2 sm:m-auto">
+          <DialogHeader className="text-center space-y-2">
+            <DialogTitle className="text-lg sm:text-xl font-bold flex items-center justify-center">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-2">
+                <Calculator className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
+              </div>
+              Analyse IA
             </DialogTitle>
-            <DialogDescription className="text-center">
-              Votre swap est en cours d'analyse par notre algorithme IA
+            <DialogDescription className="text-center text-sm">
+              Votre swap est analysé par notre algorithme IA
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6 py-4">
+          <div className="space-y-6 py-6">
             {/* Indicateur de progression circulaire */}
             <div className="flex justify-center">
-              <div className="relative w-24 h-24">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32">
                 <svg
-                  className="w-24 h-24 transform -rotate-90"
+                  className="w-28 h-28 sm:w-32 sm:h-32 transform -rotate-90"
                   viewBox="0 0 100 100"
                 >
                   <circle
@@ -2491,7 +2494,7 @@ const DashboardCompleteFixed = () => {
                     cy="50"
                     r="40"
                     stroke="currentColor"
-                    strokeWidth="8"
+                    strokeWidth="6"
                     fill="transparent"
                     className="text-gray-200"
                   />
@@ -2500,7 +2503,7 @@ const DashboardCompleteFixed = () => {
                     cy="50"
                     r="40"
                     stroke="currentColor"
-                    strokeWidth="8"
+                    strokeWidth="6"
                     fill="transparent"
                     strokeDasharray={`${2 * Math.PI * 40}`}
                     strokeDashoffset={`${2 * Math.PI * 40 * (1 - analysisProgress / 100)}`}
@@ -2510,9 +2513,21 @@ const DashboardCompleteFixed = () => {
                 <div className="absolute inset-0 flex items-center justify-center">
                   {analysisResult ? (
                     analysisResult === "approved" ? (
-                      <CheckCircle className="h-8 w-8 text-green-500" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-12 h-12 sm:w-14 sm:h-14 bg-green-100 rounded-full flex items-center justify-center"
+                      >
+                        <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />
+                      </motion.div>
                     ) : (
-                      <AlertCircle className="h-8 w-8 text-red-500" />
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="w-12 h-12 sm:w-14 sm:h-14 bg-red-100 rounded-full flex items-center justify-center"
+                      >
+                        <AlertCircle className="h-8 w-8 sm:h-10 sm:w-10 text-red-500" />
+                      </motion.div>
                     )
                   ) : (
                     <motion.div
@@ -2522,20 +2537,23 @@ const DashboardCompleteFixed = () => {
                         repeat: Infinity,
                         ease: "linear",
                       }}
+                      className="w-12 h-12 sm:w-14 sm:h-14 bg-violet-100 rounded-full flex items-center justify-center"
                     >
-                      <Calculator className="h-8 w-8 text-violet-600" />
+                      <Calculator className="h-8 w-8 sm:h-10 sm:w-10 text-violet-600" />
                     </motion.div>
                   )}
                 </div>
               </div>
             </div>
 
-            {/* Pourcentage */}
-            <div className="text-center">
-              <p className="text-2xl font-bold text-gray-900">
+            {/* Pourcentage et étape */}
+            <div className="text-center space-y-2">
+              <p className="text-3xl sm:text-4xl font-bold text-gray-900">
                 {Math.round(analysisProgress)}%
               </p>
-              <p className="text-sm text-gray-600 mt-1">{analysisStep}</p>
+              <p className="text-sm sm:text-base text-gray-600 px-4 leading-relaxed">
+                {analysisStep}
+              </p>
             </div>
 
             {/* Résultat final */}
