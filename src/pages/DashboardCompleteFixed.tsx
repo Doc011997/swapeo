@@ -102,6 +102,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
+import PWAFeatures from "@/components/PWAFeatures";
 
 interface Swap {
   id: string;
@@ -1604,6 +1605,16 @@ const DashboardCompleteFixed = () => {
               </div>
             </Card>
 
+            {/* Fonctionnalités PWA (Mobile uniquement) */}
+            <div className="lg:hidden">
+              <PWAFeatures
+                user={user}
+                userLevel={userLevel}
+                totalPoints={totalPoints}
+                streakDays={streakDays}
+              />
+            </div>
+
             {/* Liste des swaps récents */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
@@ -1688,7 +1699,7 @@ const DashboardCompleteFixed = () => {
                   Mes Swaps
                 </h2>
                 <p className="text-gray-600 text-xs sm:text-base">
-                  G��rez vos swaps financiers
+                  Gérez vos swaps financiers
                 </p>
               </div>
               <div className="flex space-x-2 flex-shrink-0">
