@@ -520,7 +520,7 @@ const DashboardCompleteFixed = () => {
         id: "network-builder",
         name: "Bâtisseur de Réseau",
         description: "Ajoutez 5 contacts à votre réseau",
-        icon: "🤝",
+        icon: "����",
         category: "network",
         rarity: "common",
         unlockedAt: "2024-01-20",
@@ -756,8 +756,43 @@ const DashboardCompleteFixed = () => {
       lastUpdated: new Date().toISOString().split("T")[0],
     };
 
-    // Ajouter au début de la liste
+    // Ajouter au début de la liste locale du dashboard
     setSwaps([newSwap, ...swaps]);
+
+    // Ajouter le swap au marketplace global pour que tous les utilisateurs le voient
+    try {
+      SwapService.addSwapToMarketplace({
+        type: newSwap.type,
+        amount: newSwap.amount,
+        duration: newSwap.duration,
+        interestRate: newSwap.interestRate,
+        counterparty:
+          newSwap.createdByCompany || newSwap.createdBy || "Entreprise",
+        status: "new", // Statut marketplace différent du dashboard
+        progress: 0,
+        description: newSwap.description,
+        category: newSwap.category,
+        riskLevel: newSwap.amount > 30000 ? "medium" : "low",
+        verified: true,
+        purpose: newSwap.purpose,
+        guarantees: newSwap.guarantees,
+        repaymentSchedule: newSwap.repaymentSchedule,
+        earlyRepayment: newSwap.earlyRepayment,
+        insurance: newSwap.insurance,
+        createdBy: newSwap.createdBy,
+        createdByCompany: newSwap.createdByCompany,
+        createdByTrustScore: newSwap.createdByTrustScore,
+        estimatedReturn: newSwap.estimatedReturn,
+        totalInterest: newSwap.totalInterest,
+        monthlyPayment: newSwap.monthlyPayment,
+        nextPaymentDate: newSwap.nextPaymentDate,
+        createdById: user.id, // ID de l'utilisateur créateur
+      });
+
+      console.log("✅ Swap ajouté au marketplace global");
+    } catch (error) {
+      console.error("❌ Erreur lors de l'ajout au marketplace:", error);
+    }
 
     // Fermer le modal et réinitialiser le formulaire
     setShowCreateSwap(false);
