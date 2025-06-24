@@ -1233,32 +1233,97 @@ const DashboardCompleteFixed = () => {
             </motion.div>
 
             {/* Notifications récentes */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Notifications Récentes
-              </h3>
-              <div className="space-y-3">
-                {notifications.slice(0, 3).map((notification) => (
-                  <div
-                    key={notification.id}
-                    className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg"
-                  >
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">
-                        {notification.title}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {notification.description}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-1">
-                        {notification.time}
-                      </p>
-                    </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 shadow-lg">
+                <div className="flex items-center mb-6">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                    <Bell className="h-5 w-5 text-white" />
                   </div>
-                ))}
-              </div>
-            </Card>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    Notifications Récentes
+                  </h3>
+                  {notifications.filter((n) => !n.read).length > 0 && (
+                    <div className="ml-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                      {notifications.filter((n) => !n.read).length}
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-3">
+                  {notifications.slice(0, 3).map((notification, index) => (
+                    <motion.div
+                      key={notification.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: 0.7 + index * 0.1 }}
+                      className={`group cursor-pointer transition-all duration-300 hover:scale-102 ${
+                        !notification.read ? "bg-blue-50/80" : "bg-gray-50/80"
+                      } rounded-xl p-4 border border-gray-100/50 hover:border-blue-200/50 hover:shadow-md`}
+                    >
+                      <div className="flex items-start space-x-4">
+                        <div
+                          className={`w-3 h-3 rounded-full mt-2 ${
+                            notification.type === "swap"
+                              ? "bg-violet-500 shadow-lg shadow-violet-500/30"
+                              : notification.type === "payment"
+                                ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                : "bg-blue-500 shadow-lg shadow-blue-500/30"
+                          } ${!notification.read ? "animate-pulse" : ""}`}
+                        ></div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
+                              {notification.title}
+                            </p>
+                            {!notification.read && (
+                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1 group-hover:text-gray-700">
+                            {notification.description}
+                          </p>
+                          <div className="flex items-center justify-between mt-2">
+                            <p className="text-xs text-gray-400 font-medium">
+                              {notification.time}
+                            </p>
+                            <div
+                              className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                notification.type === "swap"
+                                  ? "bg-violet-100 text-violet-600"
+                                  : notification.type === "payment"
+                                    ? "bg-green-100 text-green-600"
+                                    : "bg-blue-100 text-blue-600"
+                              }`}
+                            >
+                              {notification.type === "swap"
+                                ? "🤝 Swap"
+                                : notification.type === "payment"
+                                  ? "💰 Paiement"
+                                  : "📢 Système"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {notifications.length > 3 && (
+                  <div className="mt-4 text-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                    >
+                      Voir toutes les notifications ({notifications.length})
+                    </Button>
+                  </div>
+                )}
+              </Card>
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="swaps" className="space-y-6">
