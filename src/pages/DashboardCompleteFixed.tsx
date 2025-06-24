@@ -227,18 +227,6 @@ const DashboardCompleteFixed = () => {
     null,
   );
 
-  // États gamification
-  const [userLevel, setUserLevel] = useState<UserLevel | null>(null);
-  const [achievements, setAchievements] = useState<Achievement[]>([]);
-  const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([]);
-  const [showAchievementModal, setShowAchievementModal] = useState(false);
-  const [newAchievement, setNewAchievement] = useState<Achievement | null>(
-    null,
-  );
-  const [showLevelUp, setShowLevelUp] = useState(false);
-  const [streakDays, setStreakDays] = useState(0);
-  const [totalPoints, setTotalPoints] = useState(0);
-
   useEffect(() => {
     const storedUser = localStorage.getItem("swapeo_user");
     if (storedUser) {
@@ -748,7 +736,7 @@ const DashboardCompleteFixed = () => {
       return;
     }
 
-    // Cr��er le nouveau swap
+    // Créer le nouveau swap
     const newSwap: Swap = {
       id: `SW-${Date.now().toString().slice(-3)}`,
       type: newSwapForm.type as "demande" | "offre",
