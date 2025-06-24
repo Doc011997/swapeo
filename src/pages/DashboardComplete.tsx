@@ -540,6 +540,283 @@ const DashboardComplete = () => {
     window.location.href = "/";
   };
 
+  // Real-time data refresh functions
+  const refreshAllData = async () => {
+    await Promise.all([
+      loadSwaps(),
+      loadTransactions(),
+      loadContacts(),
+      loadNotifications(),
+      refreshUserProfile(),
+    ]);
+  };
+
+  const refreshUserProfile = async () => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/users/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        localStorage.setItem("swapeo_user", JSON.stringify(data.user));
+      }
+    } catch (error) {
+      console.log("Erreur lors du refresh du profil");
+    }
+  };
+
+  const updateUserStats = (updatedSwaps: Swap[]) => {
+    const totalSwaps = updatedSwaps.length;
+    const activeSwaps = updatedSwaps.filter((s) => s.status === "Actif").length;
+    const completedSwaps = updatedSwaps.filter((s) => s.status === "Terminé");
+    const totalEarnings = completedSwaps.reduce(
+      (sum, swap) => sum + (swap.amount * swap.interestRate) / 100,
+      0,
+    );
+    const averageReturn =
+      completedSwaps.length > 0
+        ? completedSwaps.reduce((sum, swap) => sum + swap.interestRate, 0) /
+          completedSwaps.length
+        : 0;
+    const successRate =
+      totalSwaps > 0 ? (completedSwaps.length / totalSwaps) * 100 : 0;
+
+    setStats({
+      totalSwaps,
+      activeSwaps,
+      totalEarnings,
+      averageReturn,
+      successRate,
+      trustScore: user?.trustScore || 85,
+    });
+  };
+
+  const handleWalletDeposit = async (
+    amount: number,
+    method: string = "bank_transfer",
+  ) => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/wallet/deposit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+          body: JSON.stringify({ amount, method }),
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage(`✅ Dépôt de ${amount}€ effectué avec succès !`);
+
+        // Update user wallet immediately
+        const updatedUser = {
+          ...user,
+          wallet: {
+            ...user.wallet,
+            balance: data.newBalance,
+            totalDeposited: user.wallet.totalDeposited + amount,
+          },
+        };
+        setUser(updatedUser);
+        localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+
+        // Refresh all data
+        await refreshAllData();
+      } else {
+        throw new Error("Erreur API");
+      }
+    } catch (error) {
+      // Demo mode fallback
+      const fees = method === "card" ? Math.max(amount * 0.025, 2) : 0;
+      const netAmount = amount - fees;
+
+      const updatedUser = {
+        ...user,
+        wallet: {
+          ...user.wallet,
+          balance: user.wallet.balance + netAmount,
+          totalDeposited: user.wallet.totalDeposited + amount,
+        },
+      };
+      setUser(updatedUser);
+      localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+
+      // Add demo transaction
+      const demoTransaction: Transaction = {
+        id: `tx-${Date.now()}`,
+        type: "deposit",
+        amount: netAmount,
+        description: `Dépôt par ${method === "card" ? "carte" : "virement"}`,
+        date: new Date().toISOString(),
+        status: "completed",
+      };
+      setTransactions([demoTransaction, ...transactions]);
+
+      setMessage(`✅ Dépôt DEMO de ${netAmount}€ effectué !`);
+    }
+
+    setTimeout(() => setMessage(""), 4000);
+  };
+
+  const handleWalletWithdraw = async (amount: number) => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/wallet/withdraw",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+          body: JSON.stringify({ amount }),
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessage(`✅ Retrait de ${amount}€ effectué avec succès !`);
+
+        // Update user wallet immediately
+        const updatedUser = {
+          ...user,
+          wallet: {
+            ...user.wallet,
+            balance: data.newBalance,
+            totalWithdrawn: user.wallet.totalWithdrawn + amount,
+          },
+        };
+        setUser(updatedUser);
+        localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+
+        // Refresh all data
+        await refreshAllData();
+      } else {
+        throw new Error("Erreur API");
+      }
+    } catch (error) {
+      // Demo mode fallback
+      const fees = Math.max(amount * 0.005, 1);
+
+      if (amount + fees > user.wallet.balance) {
+        setMessage("❌ Solde insuffisant pour ce retrait");
+        setTimeout(() => setMessage(""), 3000);
+        return;
+      }
+
+      const updatedUser = {
+        ...user,
+        wallet: {
+          ...user.wallet,
+          balance: user.wallet.balance - amount - fees,
+          totalWithdrawn: user.wallet.totalWithdrawn + amount,
+        },
+      };
+      setUser(updatedUser);
+      localStorage.setItem("swapeo_user", JSON.stringify(updatedUser));
+
+      // Add demo transactions
+      const withdrawTransaction: Transaction = {
+        id: `tx-${Date.now()}`,
+        type: "withdraw",
+        amount: -amount,
+        description: "Retrait vers compte bancaire",
+        date: new Date().toISOString(),
+        status: "completed",
+      };
+
+      const feeTransaction: Transaction = {
+        id: `tx-${Date.now()}-fee`,
+        type: "fee",
+        amount: -fees,
+        description: "Frais de retrait",
+        date: new Date().toISOString(),
+        status: "completed",
+      };
+
+      setTransactions([withdrawTransaction, feeTransaction, ...transactions]);
+      setMessage(`✅ Retrait DEMO de ${amount}€ effectué !`);
+    }
+
+    setTimeout(() => setMessage(""), 4000);
+  };
+
+  const addFictiveContact = () => {
+    const fictiveContacts = [
+      {
+        name: "Alexandre Dubois",
+        company: "TechVision Startup",
+        trustScore: 91,
+        category: "Tech",
+      },
+      {
+        name: "Camille Moreau",
+        company: "Green Food Co",
+        trustScore: 87,
+        category: "Restauration",
+      },
+      {
+        name: "Julien Bernard",
+        company: "Artisan Plus",
+        trustScore: 93,
+        category: "Artisanat",
+      },
+      {
+        name: "Emma Rousseau",
+        company: "Digital Market",
+        trustScore: 89,
+        category: "E-commerce",
+      },
+      {
+        name: "Lucas Martin",
+        company: "Innovation Lab",
+        trustScore: 95,
+        category: "Tech",
+      },
+    ];
+
+    const availableContacts = fictiveContacts.filter(
+      (fc) => !contacts.some((c) => c.name === fc.name),
+    );
+
+    if (availableContacts.length === 0) {
+      setMessage("❌ Tous les contacts fictifs ont déjà été ajoutés");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
+
+    const randomContact =
+      availableContacts[Math.floor(Math.random() * availableContacts.length)];
+
+    const newContact: Contact = {
+      id: `contact-${Date.now()}`,
+      name: randomContact.name,
+      company: randomContact.company,
+      avatar: "",
+      trustScore: randomContact.trustScore,
+      totalSwaps: Math.floor(Math.random() * 15) + 1,
+      averageAmount: Math.floor(Math.random() * 20000) + 5000,
+      lastActive: new Date(
+        Date.now() - Math.random() * 24 * 60 * 60 * 1000,
+      ).toISOString(),
+      verified: true,
+    };
+
+    setContacts([newContact, ...contacts]);
+    setMessage(`✅ ${randomContact.name} ajouté(e) à votre réseau !`);
+    setTimeout(() => setMessage(""), 4000);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Actif":
