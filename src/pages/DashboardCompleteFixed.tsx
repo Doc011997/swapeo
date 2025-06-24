@@ -2375,7 +2375,7 @@ const DashboardCompleteFixed = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-3">
+            <div className="flex-1 p-3 sm:p-4 overflow-y-auto space-y-3 bg-gray-50/30">
               {chatMessages.map((msg) => (
                 <div
                   key={msg.id}
@@ -2384,13 +2384,13 @@ const DashboardCompleteFixed = () => {
                   }`}
                 >
                   <div
-                    className={`max-w-xs px-3 py-2 rounded-lg text-sm ${
+                    className={`max-w-[75%] sm:max-w-xs px-3 py-2 rounded-2xl text-sm ${
                       msg.sender === "me"
-                        ? "bg-violet-600 text-white"
-                        : "bg-gray-100 text-gray-900"
+                        ? "bg-gradient-to-r from-violet-600 to-purple-600 text-white"
+                        : "bg-white text-gray-900 border border-gray-200"
                     }`}
                   >
-                    <p>{msg.message}</p>
+                    <p className="break-words">{msg.message}</p>
                     <p
                       className={`text-xs mt-1 ${
                         msg.sender === "me"
@@ -2406,21 +2406,22 @@ const DashboardCompleteFixed = () => {
             </div>
 
             {/* Input de message */}
-            <div className="p-4 border-t border-gray-200">
-              <div className="flex space-x-2">
+            <div className="p-3 sm:p-4 border-t border-gray-200 bg-white">
+              <div className="flex space-x-2 sm:space-x-3">
                 <Input
                   placeholder="Tapez votre message..."
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && sendChatMessage()}
-                  className="flex-1"
+                  className="flex-1 h-10 sm:h-12 text-base rounded-full border-gray-300 focus:border-violet-500"
                 />
                 <Button
                   size="icon"
                   onClick={sendChatMessage}
-                  className="bg-violet-600 hover:bg-violet-700"
+                  disabled={!chatMessage.trim()}
+                  className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
             </div>
