@@ -165,6 +165,40 @@ interface Notification {
   actionUrl?: string;
 }
 
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  category: "swap" | "network" | "finance" | "milestone";
+  rarity: "common" | "rare" | "epic" | "legendary";
+  unlockedAt?: string;
+  progress?: number;
+  maxProgress?: number;
+}
+
+interface UserLevel {
+  level: number;
+  title: string;
+  currentXP: number;
+  requiredXP: number;
+  totalXP: number;
+  benefits: string[];
+}
+
+interface DailyQuest {
+  id: string;
+  title: string;
+  description: string;
+  type: "swap" | "contact" | "login" | "finance";
+  target: number;
+  current: number;
+  reward: number;
+  xpReward: number;
+  completed: boolean;
+  icon: string;
+}
+
 const DashboardCompleteFixed = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -218,6 +252,18 @@ const DashboardCompleteFixed = () => {
   const [highlightedSwapId, setHighlightedSwapId] = useState<string | null>(
     null,
   );
+
+  // États gamification
+  const [userLevel, setUserLevel] = useState<UserLevel | null>(null);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([]);
+  const [showAchievementModal, setShowAchievementModal] = useState(false);
+  const [newAchievement, setNewAchievement] = useState<Achievement | null>(
+    null,
+  );
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const [streakDays, setStreakDays] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("swapeo_user");
@@ -429,6 +475,9 @@ const DashboardCompleteFixed = () => {
       setContacts(demoContacts);
       setNotifications(demoNotifications);
 
+      // Initialisation gamification
+      initializeGamification(userData);
+
       // Animation du solde
       setTimeout(() => {
         setAnimatedBalance(userData.wallet?.balance || 42847);
@@ -542,6 +591,18 @@ const DashboardCompleteFixed = () => {
     // Highlight du nouveau swap et redirection vers l'onglet Swaps
     setHighlightedSwapId(newSwap.id);
     setActiveSection("swaps");
+
+    // Gamification
+    addXP(100, "création de swap");
+    completeQuest("check-swaps");
+
+    // Vérifier achievements
+    const userSwaps = swaps.filter((s) =>
+      s.createdBy?.includes(user.firstName),
+    );
+    if (userSwaps.length === 0) {
+      unlockAchievement("first-swap");
+    }
 
     // Supprimer le highlight après 8 secondes
     setTimeout(() => {
@@ -746,6 +807,13 @@ const DashboardCompleteFixed = () => {
     setMessage(
       `✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`,
     );
+
+    // Gamification
+    addXP(50, "ajout de contact");
+    if (contacts.length >= 4) {
+      unlockAchievement("network-builder");
+    }
+
     setTimeout(() => setMessage(""), 4000);
   };
 
@@ -833,6 +901,197 @@ const DashboardCompleteFixed = () => {
     return new Date(date).toLocaleDateString("fr-FR");
   };
 
+  // Fonctions de gamification
+  const initializeGamification = (userData: any) => {
+    // Calcul du niveau utilisateur
+    const totalXP = 1250; // Basé sur l'activité
+    const currentLevel = Math.floor(totalXP / 500) + 1;
+    const currentXP = totalXP % 500;
+
+    setUserLevel({
+      level: currentLevel,
+      title: getLevelTitle(currentLevel),
+      currentXP,
+      requiredXP: 500,
+      totalXP,
+      benefits: getLevelBenefits(currentLevel),
+    });
+
+    // Achievements débloqués
+    const unlockedAchievements: Achievement[] = [
+      {
+        id: "first-swap",
+        name: "Premier Swap",
+        description: "Créez votre premier swap",
+        icon: "🎯",
+        category: "swap",
+        rarity: "common",
+        unlockedAt: "2024-01-15",
+      },
+      {
+        id: "network-builder",
+        name: "Bâtisseur de Réseau",
+        description: "Ajoutez 5 contacts à votre réseau",
+        icon: "🤝",
+        category: "network",
+        rarity: "common",
+        unlockedAt: "2024-01-20",
+      },
+      {
+        id: "first-deposit",
+        name: "Premier Dépôt",
+        description: "Effectuez votre premier dépôt",
+        icon: "💰",
+        category: "finance",
+        rarity: "common",
+        unlockedAt: "2024-01-10",
+      },
+    ];
+
+    // Achievements en cours
+    const inProgressAchievements: Achievement[] = [
+      {
+        id: "swap-master",
+        name: "Maître des Swaps",
+        description: "Complétez 10 swaps avec succès",
+        icon: "🏆",
+        category: "swap",
+        rarity: "rare",
+        progress: 3,
+        maxProgress: 10,
+      },
+      {
+        id: "big-trader",
+        name: "Gros Trader",
+        description: "Échangez plus de 100 000€",
+        icon: "💎",
+        category: "finance",
+        rarity: "epic",
+        progress: 45000,
+        maxProgress: 100000,
+      },
+    ];
+
+    setAchievements([...unlockedAchievements, ...inProgressAchievements]);
+
+    // Quêtes quotidiennes
+    setDailyQuests([
+      {
+        id: "daily-login",
+        title: "Connexion Quotidienne",
+        description: "Connectez-vous aujourd'hui",
+        type: "login",
+        target: 1,
+        current: 1,
+        reward: 50,
+        xpReward: 25,
+        completed: true,
+        icon: "🔥",
+      },
+      {
+        id: "check-swaps",
+        title: "Vérifiez vos Swaps",
+        description: "Consultez 3 swaps aujourd'hui",
+        type: "swap",
+        target: 3,
+        current: 1,
+        reward: 75,
+        xpReward: 35,
+        completed: false,
+        icon: "👀",
+      },
+      {
+        id: "contact-someone",
+        title: "Prenez Contact",
+        description: "Envoyez un message à un contact",
+        type: "contact",
+        target: 1,
+        current: 0,
+        reward: 100,
+        xpReward: 50,
+        completed: false,
+        icon: "💬",
+      },
+    ]);
+
+    setStreakDays(12);
+    setTotalPoints(2840);
+  };
+
+  const getLevelTitle = (level: number) => {
+    if (level >= 10) return "🏆 Expert Swapeo";
+    if (level >= 7) return "💎 Trader Avancé";
+    if (level >= 5) return "⭐ Swapper Confirmé";
+    if (level >= 3) return "🚀 Entrepreneur";
+    return "🌱 Débutant";
+  };
+
+  const getLevelBenefits = (level: number) => {
+    const benefits = ["Accès au chat prioritaire"];
+    if (level >= 3) benefits.push("Frais réduits de 5%");
+    if (level >= 5) benefits.push("Accès aux swaps premium");
+    if (level >= 7) benefits.push("Conseiller personnel dédié");
+    if (level >= 10) benefits.push("Accès aux événements VIP");
+    return benefits;
+  };
+
+  const addXP = (amount: number, action: string) => {
+    if (!userLevel) return;
+
+    const newTotalXP = userLevel.totalXP + amount;
+    const newCurrentXP = userLevel.currentXP + amount;
+    const newLevel = Math.floor(newTotalXP / 500) + 1;
+
+    if (newLevel > userLevel.level) {
+      setShowLevelUp(true);
+      setTimeout(() => setShowLevelUp(false), 4000);
+    }
+
+    setUserLevel({
+      ...userLevel,
+      currentXP: newCurrentXP % 500,
+      totalXP: newTotalXP,
+      level: newLevel,
+      title: getLevelTitle(newLevel),
+      benefits: getLevelBenefits(newLevel),
+    });
+
+    setMessage(`✨ +${amount} XP pour ${action} !`);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  const unlockAchievement = (achievementId: string) => {
+    const achievement = achievements.find((a) => a.id === achievementId);
+    if (achievement && !achievement.unlockedAt) {
+      const updatedAchievement = {
+        ...achievement,
+        unlockedAt: new Date().toISOString(),
+      };
+      setAchievements((prev) =>
+        prev.map((a) => (a.id === achievementId ? updatedAchievement : a)),
+      );
+      setNewAchievement(updatedAchievement);
+      setShowAchievementModal(true);
+      setTimeout(() => setShowAchievementModal(false), 5000);
+    }
+  };
+
+  const completeQuest = (questId: string) => {
+    setDailyQuests((prev) =>
+      prev.map((quest) =>
+        quest.id === questId
+          ? { ...quest, completed: true, current: quest.target }
+          : quest,
+      ),
+    );
+
+    const quest = dailyQuests.find((q) => q.id === questId);
+    if (quest && !quest.completed) {
+      addXP(quest.xpReward, quest.title);
+      setTotalPoints((prev) => prev + quest.reward);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -873,6 +1132,39 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div className="flex items-center space-x-1 sm:space-x-4">
+              {/* Widget Level Mobile */}
+              <div className="hidden sm:flex items-center space-x-2 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-full px-3 py-1 border border-purple-200">
+                <div className="text-xs font-bold text-purple-600">
+                  {userLevel?.title}
+                </div>
+                <div className="w-16 bg-gray-200 rounded-full h-1.5">
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-blue-500 h-1.5 rounded-full transition-all duration-500"
+                    style={{
+                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                    }}
+                  ></div>
+                </div>
+                <div className="text-xs font-bold text-blue-600">
+                  Lv.{userLevel?.level}
+                </div>
+              </div>
+
+              {/* Version Mobile Compacte */}
+              <div className="sm:hidden flex items-center space-x-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full px-2 py-1">
+                <span className="text-xs font-bold text-purple-600">
+                  Lv.{userLevel?.level}
+                </span>
+                <div className="w-8 bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 rounded-full"
+                    style={{
+                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                    }}
+                  ></div>
+                </div>
+              </div>
+
               <div className="relative">
                 <Button
                   variant="ghost"
