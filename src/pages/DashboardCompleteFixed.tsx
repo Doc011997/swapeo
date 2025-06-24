@@ -1624,27 +1624,21 @@ const DashboardCompleteFixed = () => {
               </motion.div>
             )}
 
+            <div className="text-xs text-gray-500 mb-2">
+              Debug: Type={newSwap.type}, Montant={newSwap.amount}, Durée=
+              {newSwap.duration}, Description={newSwap.description}
+            </div>
+
             <Button
               onClick={() => {
                 console.log("🖱️ Bouton cliqué !");
                 console.log("📝 newSwap au clic:", newSwap);
                 handleCreateSwap();
               }}
-              disabled={
-                !newSwap.type ||
-                !newSwap.amount ||
-                !newSwap.duration ||
-                !newSwap.description
-              }
-              className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium transition-all duration-200"
             >
               <Plus className="mr-2 h-5 w-5" />
-              {!newSwap.type ||
-              !newSwap.amount ||
-              !newSwap.duration ||
-              !newSwap.description
-                ? "Remplissez tous les champs"
-                : "Créer le swap"}
+              Créer le swap
             </Button>
           </div>
         </DialogContent>
