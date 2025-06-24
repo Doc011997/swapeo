@@ -97,18 +97,9 @@ import {
   Handshake,
   Calculator,
   Trophy,
-  Target,
-  Award,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
-import PWAFeatures from "@/components/PWAFeatures";
-import {
-  SwipeableCard,
-  PullToRefresh,
-  HapticFeedback,
-  useSwipeNavigation
-} from "@/components/MobileGestures";
 
 interface Swap {
   id: string;
@@ -126,7 +117,6 @@ interface Swap {
   category?: string;
   riskLevel?: "low" | "medium" | "high";
   verified?: boolean;
-  // Détails complets
   purpose?: string;
   guarantees?: string;
   repaymentSchedule?: string;
@@ -268,27 +258,12 @@ const DashboardCompleteFixed = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([]);
   const [showAchievementModal, setShowAchievementModal] = useState(false);
-  const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
+  const [newAchievement, setNewAchievement] = useState<Achievement | null>(
+    null,
+  );
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [streakDays, setStreakDays] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
-
-  // Navigation par gestes
-  const sections = ["overview", "swaps", "wallet", "network"];
-  const currentIndex = sections.indexOf(activeSection);
-
-  useSwipeNavigation(
-    () => {
-      // Swipe gauche = section suivante
-      const nextIndex = (currentIndex + 1) % sections.length;
-      setActiveSection(sections[nextIndex]);
-    },
-    () => {
-      // Swipe droite = section précédente
-      const prevIndex = (currentIndex - 1 + sections.length) % sections.length;
-      setActiveSection(sections[prevIndex]);
-    }
-  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem("swapeo_user");
@@ -513,6 +488,197 @@ const DashboardCompleteFixed = () => {
     }
   }, []);
 
+  // Fonctions de gamification
+  const initializeGamification = (userData: any) => {
+    // Calcul du niveau utilisateur
+    const totalXP = 1250; // Basé sur l'activité
+    const currentLevel = Math.floor(totalXP / 500) + 1;
+    const currentXP = totalXP % 500;
+
+    setUserLevel({
+      level: currentLevel,
+      title: getLevelTitle(currentLevel),
+      currentXP,
+      requiredXP: 500,
+      totalXP,
+      benefits: getLevelBenefits(currentLevel),
+    });
+
+    // Achievements débloqués
+    const unlockedAchievements: Achievement[] = [
+      {
+        id: "first-swap",
+        name: "Premier Swap",
+        description: "Créez votre premier swap",
+        icon: "🎯",
+        category: "swap",
+        rarity: "common",
+        unlockedAt: "2024-01-15",
+      },
+      {
+        id: "network-builder",
+        name: "Bâtisseur de Réseau",
+        description: "Ajoutez 5 contacts à votre réseau",
+        icon: "🤝",
+        category: "network",
+        rarity: "common",
+        unlockedAt: "2024-01-20",
+      },
+      {
+        id: "first-deposit",
+        name: "Premier Dépôt",
+        description: "Effectuez votre premier dépôt",
+        icon: "💰",
+        category: "finance",
+        rarity: "common",
+        unlockedAt: "2024-01-10",
+      },
+    ];
+
+    // Achievements en cours
+    const inProgressAchievements: Achievement[] = [
+      {
+        id: "swap-master",
+        name: "Maître des Swaps",
+        description: "Complétez 10 swaps avec succès",
+        icon: "🏆",
+        category: "swap",
+        rarity: "rare",
+        progress: 3,
+        maxProgress: 10,
+      },
+      {
+        id: "big-trader",
+        name: "Gros Trader",
+        description: "Échangez plus de 100 000€",
+        icon: "💎",
+        category: "finance",
+        rarity: "epic",
+        progress: 45000,
+        maxProgress: 100000,
+      },
+    ];
+
+    setAchievements([...unlockedAchievements, ...inProgressAchievements]);
+
+    // Quêtes quotidiennes
+    setDailyQuests([
+      {
+        id: "daily-login",
+        title: "Connexion Quotidienne",
+        description: "Connectez-vous aujourd'hui",
+        type: "login",
+        target: 1,
+        current: 1,
+        reward: 50,
+        xpReward: 25,
+        completed: true,
+        icon: "🔥",
+      },
+      {
+        id: "check-swaps",
+        title: "Vérifiez vos Swaps",
+        description: "Consultez 3 swaps aujourd'hui",
+        type: "swap",
+        target: 3,
+        current: 1,
+        reward: 75,
+        xpReward: 35,
+        completed: false,
+        icon: "👀",
+      },
+      {
+        id: "contact-someone",
+        title: "Prenez Contact",
+        description: "Envoyez un message à un contact",
+        type: "contact",
+        target: 1,
+        current: 0,
+        reward: 100,
+        xpReward: 50,
+        completed: false,
+        icon: "💬",
+      },
+    ]);
+
+    setStreakDays(12);
+    setTotalPoints(2840);
+  };
+
+  const getLevelTitle = (level: number) => {
+    if (level >= 10) return "🏆 Expert Swapeo";
+    if (level >= 7) return "💎 Trader Avancé";
+    if (level >= 5) return "⭐ Swapper Confirmé";
+    if (level >= 3) return "🚀 Entrepreneur";
+    return "🌱 Débutant";
+  };
+
+  const getLevelBenefits = (level: number) => {
+    const benefits = ["Accès au chat prioritaire"];
+    if (level >= 3) benefits.push("Frais réduits de 5%");
+    if (level >= 5) benefits.push("Accès aux swaps premium");
+    if (level >= 7) benefits.push("Conseiller personnel dédié");
+    if (level >= 10) benefits.push("Accès aux événements VIP");
+    return benefits;
+  };
+
+  const addXP = (amount: number, action: string) => {
+    if (!userLevel) return;
+
+    const newTotalXP = userLevel.totalXP + amount;
+    const newCurrentXP = userLevel.currentXP + amount;
+    const newLevel = Math.floor(newTotalXP / 500) + 1;
+
+    if (newLevel > userLevel.level) {
+      setShowLevelUp(true);
+      setTimeout(() => setShowLevelUp(false), 4000);
+    }
+
+    setUserLevel({
+      ...userLevel,
+      currentXP: newCurrentXP % 500,
+      totalXP: newTotalXP,
+      level: newLevel,
+      title: getLevelTitle(newLevel),
+      benefits: getLevelBenefits(newLevel),
+    });
+
+    setMessage(`✨ +${amount} XP pour ${action} !`);
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+  const unlockAchievement = (achievementId: string) => {
+    const achievement = achievements.find((a) => a.id === achievementId);
+    if (achievement && !achievement.unlockedAt) {
+      const updatedAchievement = {
+        ...achievement,
+        unlockedAt: new Date().toISOString(),
+      };
+      setAchievements((prev) =>
+        prev.map((a) => (a.id === achievementId ? updatedAchievement : a)),
+      );
+      setNewAchievement(updatedAchievement);
+      setShowAchievementModal(true);
+      setTimeout(() => setShowAchievementModal(false), 5000);
+    }
+  };
+
+  const completeQuest = (questId: string) => {
+    setDailyQuests((prev) =>
+      prev.map((quest) =>
+        quest.id === questId
+          ? { ...quest, completed: true, current: quest.target }
+          : quest,
+      ),
+    );
+
+    const quest = dailyQuests.find((q) => q.id === questId);
+    if (quest && !quest.completed) {
+      addXP(quest.xpReward, quest.title);
+      setTotalPoints((prev) => prev + quest.reward);
+    }
+  };
+
   const handleCreateSwap = () => {
     // Validation des champs requis
     const requiredFields = [
@@ -622,7 +788,9 @@ const DashboardCompleteFixed = () => {
     completeQuest("check-swaps");
 
     // Vérifier achievements
-    const userSwaps = swaps.filter(s => s.createdBy?.includes(user.firstName));
+    const userSwaps = swaps.filter((s) =>
+      s.createdBy?.includes(user.firstName),
+    );
     if (userSwaps.length === 0) {
       unlockAchievement("first-swap");
     }
@@ -827,7 +995,9 @@ const DashboardCompleteFixed = () => {
       role: "",
     });
 
-    setMessage(`✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`);
+    setMessage(
+      `✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`,
+    );
 
     // Gamification
     addXP(50, "ajout de contact");
@@ -922,232 +1092,6 @@ const DashboardCompleteFixed = () => {
     return new Date(date).toLocaleDateString("fr-FR");
   };
 
-  // Fonctions de gamification
-  const initializeGamification = (userData: any) => {
-    // Calcul du niveau utilisateur
-    const totalXP = 1250; // Basé sur l'activité
-    const currentLevel = Math.floor(totalXP / 500) + 1;
-    const currentXP = totalXP % 500;
-
-    setUserLevel({
-      level: currentLevel,
-      title: getLevelTitle(currentLevel),
-      currentXP,
-      requiredXP: 500,
-      totalXP,
-      benefits: getLevelBenefits(currentLevel),
-    });
-
-    // Achievements débloqués
-    const unlockedAchievements: Achievement[] = [
-      {
-        id: "first-swap",
-        name: "Premier Swap",
-        description: "Créez votre premier swap",
-        icon: "🎯",
-        category: "swap",
-        rarity: "common",
-        unlockedAt: "2024-01-15",
-      },
-      {
-        id: "network-builder",
-        name: "Bâtisseur de Réseau",
-        description: "Ajoutez 5 contacts à votre réseau",
-        icon: "🤝",
-        category: "network",
-        rarity: "common",
-        unlockedAt: "2024-01-20",
-      },
-      {
-        id: "first-deposit",
-        name: "Premier Dépôt",
-        description: "Effectuez votre premier dépôt",
-        icon: "💰",
-        category: "finance",
-        rarity: "common",
-        unlockedAt: "2024-01-10",
-      },
-    ];
-
-    // Achievements en cours
-    const inProgressAchievements: Achievement[] = [
-      {
-        id: "swap-master",
-        name: "Maître des Swaps",
-        description: "Complétez 10 swaps avec succès",
-        icon: "🏆",
-        category: "swap",
-        rarity: "rare",
-        progress: 3,
-        maxProgress: 10,
-      },
-      {
-        id: "big-trader",
-        name: "Gros Trader",
-        description: "Échangez plus de 100 000€",
-        icon: "💎",
-        category: "finance",
-        rarity: "epic",
-        progress: 45000,
-        maxProgress: 100000,
-      },
-    ];
-
-    setAchievements([...unlockedAchievements, ...inProgressAchievements]);
-
-    // Quêtes quotidiennes
-    setDailyQuests([
-      {
-        id: "daily-login",
-        title: "Connexion Quotidienne",
-        description: "Connectez-vous aujourd'hui",
-        type: "login",
-        target: 1,
-        current: 1,
-        reward: 50,
-        xpReward: 25,
-        completed: true,
-        icon: "🔥",
-      },
-      {
-        id: "check-swaps",
-        title: "Vérifiez vos Swaps",
-        description: "Consultez 3 swaps aujourd'hui",
-        type: "swap",
-        target: 3,
-        current: 1,
-        reward: 75,
-        xpReward: 35,
-        completed: false,
-        icon: "👀",
-      },
-      {
-        id: "contact-someone",
-        title: "Prenez Contact",
-        description: "Envoyez un message à un contact",
-        type: "contact",
-        target: 1,
-        current: 0,
-        reward: 100,
-        xpReward: 50,
-        completed: false,
-        icon: "💬",
-      },
-    ]);
-
-    setStreakDays(12);
-    setTotalPoints(2840);
-  };
-
-  const getLevelTitle = (level: number) => {
-    if (level >= 10) return "🏆 Expert Swapeo";
-    if (level >= 7) return "💎 Trader Avancé";
-    if (level >= 5) return "⭐ Swapper Confirmé";
-    if (level >= 3) return "🚀 Entrepreneur";
-    return "🌱 Débutant";
-  };
-
-  const getLevelBenefits = (level: number) => {
-    const benefits = ["Accès au chat prioritaire"];
-    if (level >= 3) benefits.push("Frais réduits de 5%");
-    if (level >= 5) benefits.push("Accès aux swaps premium");
-    if (level >= 7) benefits.push("Conseiller personnel dédié");
-    if (level >= 10) benefits.push("Accès aux événements VIP");
-    return benefits;
-  };
-
-  const addXP = (amount: number, action: string) => {
-    if (!userLevel) return;
-
-    const newTotalXP = userLevel.totalXP + amount;
-    const newCurrentXP = userLevel.currentXP + amount;
-    const newLevel = Math.floor(newTotalXP / 500) + 1;
-
-    if (newLevel > userLevel.level) {
-      setShowLevelUp(true);
-      setTimeout(() => setShowLevelUp(false), 4000);
-    }
-
-    setUserLevel({
-      ...userLevel,
-      currentXP: newCurrentXP % 500,
-      totalXP: newTotalXP,
-      level: newLevel,
-      title: getLevelTitle(newLevel),
-      benefits: getLevelBenefits(newLevel),
-    });
-
-    setMessage(`✨ +${amount} XP pour ${action} !`);
-    setTimeout(() => setMessage(""), 3000);
-  };
-
-  const unlockAchievement = (achievementId: string) => {
-    const achievement = achievements.find(a => a.id === achievementId);
-    if (achievement && !achievement.unlockedAt) {
-      const updatedAchievement = {
-        ...achievement,
-        unlockedAt: new Date().toISOString(),
-      };
-      setAchievements(prev =>
-        prev.map(a => a.id === achievementId ? updatedAchievement : a)
-      );
-      setNewAchievement(updatedAchievement);
-      setShowAchievementModal(true);
-      setTimeout(() => setShowAchievementModal(false), 5000);
-    }
-  };
-
-  const completeQuest = (questId: string) => {
-    setDailyQuests(prev =>
-      prev.map(quest =>
-        quest.id === questId
-          ? { ...quest, completed: true, current: quest.target }
-          : quest
-      )
-    );
-
-    const quest = dailyQuests.find(q => q.id === questId);
-    if (quest && !quest.completed) {
-      addXP(quest.xpReward, quest.title);
-      setTotalPoints(prev => prev + quest.reward);
-    }
-  };
-
-  const handleRefresh = async () => {
-    // Simulation d'un refresh
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Actualiser les données
-    const userData = JSON.parse(localStorage.getItem("swapeo_user") || "{}");
-    if (userData) {
-      initializeGamification(userData);
-    }
-
-    setMessage("✅ Données actualisées !");
-    setTimeout(() => setMessage(""), 2000);
-  };
-
-  const handleSwipeAction = (swapId: string, action: "archive" | "favorite" | "quick" | "delete") => {
-    switch (action) {
-      case "archive":
-        setMessage("📦 Swap archivé");
-        addXP(25, "archivage de swap");
-        break;
-      case "favorite":
-        setMessage("❤️ Ajouté aux favoris");
-        addXP(15, "ajout aux favoris");
-        break;
-      case "quick":
-        setMessage("⚡ Action rapide effectuée");
-        addXP(10, "action rapide");
-        break;
-      case "delete":
-        setMessage("🗑️ Swap supprimé");
-        break;
-    }
-    setTimeout(() => setMessage(""), 2000);
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -1157,7 +1101,7 @@ const DashboardCompleteFixed = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600 text-lg">Chargement de votre espace...</p>
         </motion.div>
       </div>
@@ -1179,7 +1123,7 @@ const DashboardCompleteFixed = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-lg flex items-center justify-center">
                 <Handshake className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -1196,7 +1140,9 @@ const DashboardCompleteFixed = () => {
                 <div className="w-16 bg-gray-200 rounded-full h-1.5">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-blue-500 h-1.5 rounded-full transition-all duration-500"
-                    style={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
+                    style={{
+                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                    }}
                   ></div>
                 </div>
                 <div className="text-xs font-bold text-blue-600">
@@ -1206,11 +1152,15 @@ const DashboardCompleteFixed = () => {
 
               {/* Version Mobile Compacte */}
               <div className="sm:hidden flex items-center space-x-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full px-2 py-1">
-                <span className="text-xs font-bold text-purple-600">Lv.{userLevel?.level}</span>
+                <span className="text-xs font-bold text-purple-600">
+                  Lv.{userLevel?.level}
+                </span>
                 <div className="w-8 bg-gray-200 rounded-full h-1">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 rounded-full"
-                    style={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
+                    style={{
+                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                    }}
                   ></div>
                 </div>
               </div>
@@ -1224,7 +1174,7 @@ const DashboardCompleteFixed = () => {
                 >
                   <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                   {notifications.filter((n) => !n.read).length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-pink-500 text-white text-xs rounded-full flex items-center justify-center">
                       {notifications.filter((n) => !n.read).length}
                     </span>
                   )}
@@ -1312,7 +1262,7 @@ const DashboardCompleteFixed = () => {
 
               <div className="flex items-center space-x-1 sm:space-x-3">
                 <Avatar className="w-7 h-7 sm:w-10 sm:h-10">
-                  <AvatarFallback className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-xs sm:text-base">
+                  <AvatarFallback className="bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold text-xs sm:text-base">
                     {user?.firstName?.[0]}
                     {user?.lastName?.[0]}
                   </AvatarFallback>
@@ -1330,7 +1280,12 @@ const DashboardCompleteFixed = () => {
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon" onClick={handleLogout} className="h-8 w-8 sm:h-10 sm:w-10">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLogout}
+                  className="h-8 w-8 sm:h-10 sm:w-10"
+                >
                   <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
@@ -1355,25 +1310,36 @@ const DashboardCompleteFixed = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <PullToRefresh onRefresh={handleRefresh}>
-          <Tabs value={activeSection} onValueChange={setActiveSection}>
+        <Tabs value={activeSection} onValueChange={setActiveSection}>
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview" className="flex items-center space-x-1 sm:space-x-2">
+            <TabsTrigger
+              value="overview"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
               <span className="sm:hidden text-xs">Accueil</span>
             </TabsTrigger>
-            <TabsTrigger value="swaps" className="flex items-center space-x-1 sm:space-x-2">
+            <TabsTrigger
+              value="swaps"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
               <Handshake className="h-4 w-4" />
               <span className="hidden sm:inline">Mes Swaps</span>
               <span className="sm:hidden text-xs">Swaps</span>
             </TabsTrigger>
-            <TabsTrigger value="wallet" className="flex items-center space-x-1 sm:space-x-2">
+            <TabsTrigger
+              value="wallet"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
               <Wallet className="h-4 w-4" />
               <span className="hidden sm:inline">Portefeuille</span>
               <span className="sm:hidden text-xs">Wallet</span>
             </TabsTrigger>
-            <TabsTrigger value="network" className="flex items-center space-x-1 sm:space-x-2">
+            <TabsTrigger
+              value="network"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Réseau</span>
               <span className="sm:hidden text-xs">Réseau</span>
@@ -1385,8 +1351,8 @@ const DashboardCompleteFixed = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="p-6">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Wallet className="h-6 w-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center">
+                    <Wallet className="h-6 w-6 text-violet-600" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">
@@ -1401,8 +1367,8 @@ const DashboardCompleteFixed = () => {
 
               <Card className="p-6">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Handshake className="h-6 w-6 text-green-600" />
+                  <div className="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                    <Handshake className="h-6 w-6 text-cyan-600" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">
@@ -1417,8 +1383,8 @@ const DashboardCompleteFixed = () => {
 
               <Card className="p-6">
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="h-6 w-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-lime-100 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-lime-600" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-600">
@@ -1474,19 +1440,27 @@ const DashboardCompleteFixed = () => {
                       <motion.div
                         className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-1000"
                         initial={{ width: 0 }}
-                        animate={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
+                        animate={{
+                          width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                        }}
                       ></motion.div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-orange-600">{totalPoints}</div>
+                      <div className="text-lg font-bold text-orange-600">
+                        {totalPoints}
+                      </div>
                       <div className="text-xs text-gray-600">Points Total</div>
                     </div>
                     <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-green-600">{streakDays}</div>
-                      <div className="text-xs text-gray-600">Jours d'affilée</div>
+                      <div className="text-lg font-bold text-green-600">
+                        {streakDays}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Jours d'affilée
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1506,13 +1480,19 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <span className="text-lg">{quest.icon}</span>
                           <div>
-                            <p className="text-sm font-medium text-gray-900">{quest.title}</p>
-                            <p className="text-xs text-gray-600">{quest.description}</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {quest.title}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              {quest.description}
+                            </p>
                           </div>
                         </div>
                         <div className="text-right">
                           {quest.completed ? (
-                            <Badge className="bg-green-100 text-green-700">✓ Terminé</Badge>
+                            <Badge className="bg-green-100 text-green-700">
+                              ✓ Terminé
+                            </Badge>
                           ) : (
                             <div className="text-xs text-gray-500">
                               {quest.current}/{quest.target}
@@ -1523,7 +1503,9 @@ const DashboardCompleteFixed = () => {
                       <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
                         <div
                           className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
-                          style={{ width: `${(quest.current / quest.target) * 100}%` }}
+                          style={{
+                            width: `${(quest.current / quest.target) * 100}%`,
+                          }}
                         ></div>
                       </div>
                     </div>
@@ -1550,21 +1532,36 @@ const DashboardCompleteFixed = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {achievements.filter(a => a.unlockedAt).slice(0, 3).map((achievement) => (
-                  <div key={achievement.id} className="bg-white/70 rounded-lg p-3 text-center">
-                    <div className="text-2xl mb-2">{achievement.icon}</div>
-                    <h4 className="font-medium text-sm text-gray-900">{achievement.name}</h4>
-                    <p className="text-xs text-gray-600 mt-1">{achievement.description}</p>
-                    <Badge className={`mt-2 text-xs ${
-                      achievement.rarity === 'legendary' ? 'bg-purple-100 text-purple-700' :
-                      achievement.rarity === 'epic' ? 'bg-blue-100 text-blue-700' :
-                      achievement.rarity === 'rare' ? 'bg-green-100 text-green-700' :
-                      'bg-gray-100 text-gray-700'
-                    }`}>
-                      {achievement.rarity}
-                    </Badge>
-                  </div>
-                ))}
+                {achievements
+                  .filter((a) => a.unlockedAt)
+                  .slice(0, 3)
+                  .map((achievement) => (
+                    <div
+                      key={achievement.id}
+                      className="bg-white/70 rounded-lg p-3 text-center"
+                    >
+                      <div className="text-2xl mb-2">{achievement.icon}</div>
+                      <h4 className="font-medium text-sm text-gray-900">
+                        {achievement.name}
+                      </h4>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {achievement.description}
+                      </p>
+                      <Badge
+                        className={`mt-2 text-xs ${
+                          achievement.rarity === "legendary"
+                            ? "bg-purple-100 text-purple-700"
+                            : achievement.rarity === "epic"
+                              ? "bg-blue-100 text-blue-700"
+                              : achievement.rarity === "rare"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {achievement.rarity}
+                      </Badge>
+                    </div>
+                  ))}
               </div>
             </Card>
 
@@ -1576,7 +1573,7 @@ const DashboardCompleteFixed = () => {
               <div className="grid grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4">
                 <Button
                   onClick={() => setShowCreateSwap(true)}
-                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white p-3 sm:p-4 h-auto flex-col"
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-white p-3 sm:p-4 h-auto flex-col"
                 >
                   <Plus className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
                   <span className="text-xs sm:text-sm">Créer</span>
@@ -1588,7 +1585,9 @@ const DashboardCompleteFixed = () => {
                 >
                   <Search className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-green-600" />
                   <span className="text-xs sm:text-sm">Chercher</span>
-                  <span className="hidden lg:inline sm:text-sm">Opportunités</span>
+                  <span className="hidden lg:inline sm:text-sm">
+                    Opportunités
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
@@ -1601,16 +1600,6 @@ const DashboardCompleteFixed = () => {
                 </Button>
               </div>
             </Card>
-
-            {/* Fonctionnalités PWA (Mobile uniquement) */}
-            <div className="lg:hidden">
-              <PWAFeatures
-                user={user}
-                userLevel={userLevel}
-                totalPoints={totalPoints}
-                streakDays={streakDays}
-              />
-            </div>
 
             {/* Liste des swaps récents */}
             <Card className="p-6">
@@ -1641,7 +1630,7 @@ const DashboardCompleteFixed = () => {
                         className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                           swap.type === "demande"
                             ? "bg-orange-100"
-                            : "bg-green-100"
+                            : "bg-lime-100"
                         }`}
                       >
                         {swap.type === "demande" ? (
@@ -1649,11 +1638,11 @@ const DashboardCompleteFixed = () => {
                             className={`h-5 w-5 ${
                               swap.type === "demande"
                                 ? "text-orange-600"
-                                : "text-green-600"
+                                : "text-lime-600"
                             }`}
                           />
                         ) : (
-                          <ArrowUpRight className="h-5 w-5 text-green-600" />
+                          <ArrowUpRight className="h-5 w-5 text-lime-600" />
                         )}
                       </div>
                       <div>
@@ -1702,10 +1691,12 @@ const DashboardCompleteFixed = () => {
               <div className="flex space-x-2 flex-shrink-0">
                 <Button
                   onClick={() => setShowCreateSwap(true)}
-                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-sm px-3 sm:px-4"
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 text-sm px-3 sm:px-4"
                 >
                   <Plus className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Créer un nouveau swap</span>
+                  <span className="hidden sm:inline">
+                    Créer un nouveau swap
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
@@ -1720,156 +1711,14 @@ const DashboardCompleteFixed = () => {
 
             <div className="space-y-4 overflow-hidden">
               {swaps.map((swap) => (
-                <div key={swap.id}>
-                  {/* Version Desktop */}
-                  <div className="hidden lg:block">
-                    <Card
-                      className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
-                        highlightedSwapId === swap.id
-                          ? "ring-2 ring-green-500 bg-green-50"
-                          : ""
-                      }`}
-                    >
-                      {highlightedSwapId === swap.id && (
-                        <div className="mb-4 p-2 bg-green-100 border border-green-300 rounded-lg text-center">
-                          <span className="text-green-700 font-semibold text-sm">
-                            ✨ Nouveau swap créé ✨
-                          </span>
-                        </div>
-                      )}
-
-                      <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0 min-w-0">
-                        <div className="flex items-start space-x-2 sm:space-x-4 flex-1 min-w-0">
-                          <div
-                            className={`w-8 h-8 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                              swap.type === "demande"
-                                ? "bg-orange-100"
-                                : "bg-green-100"
-                            }`}
-                          >
-                            {swap.type === "demande" ? (
-                              <ArrowDownRight className="h-4 w-4 sm:h-6 sm:w-6 text-orange-600" />
-                            ) : (
-                              <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0 overflow-hidden">
-                            <div className="flex flex-col space-y-1 sm:space-y-2 mb-2">
-                              <div className="flex items-center space-x-2">
-                                <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate flex-1 min-w-0">
-                                  {swap.description}
-                                </h3>
-                                <Badge
-                                  className={`flex-shrink-0 ${
-                                    swap.type === "demande"
-                                      ? "bg-orange-100 text-orange-700 text-xs"
-                                      : "bg-green-100 text-green-700 text-xs"
-                                  }`}
-                                >
-                                  {swap.type === "demande" ? "Demande" : "Offre"}
-                                </Badge>
-                              </div>
-                            </div>
-                            <div className="space-y-1 sm:space-y-2">
-                              <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
-                                <div className="truncate">
-                                  <span className="font-medium">Montant:</span>{" "}
-                                  <span className="text-green-600 font-semibold">
-                                    {formatCurrency(swap.amount)}
-                                  </span>
-                                </div>
-                                <div>
-                                  <span className="font-medium">Taux:</span>{" "}
-                                  {swap.interestRate}%
-                                </div>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <div className="text-xs text-gray-500 flex items-center">
-                                  <Calendar className="h-3 w-3 mr-1" />
-                                  {formatDate(swap.createdAt)}
-                                </div>
-                                <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 flex-shrink-0">
-                                  Vous
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end space-y-2 flex-shrink-0 w-auto">
-                          <Badge
-                            className={`text-xs flex items-center ${
-                              swap.status === "Actif"
-                                ? "bg-green-100 text-green-700"
-                                : swap.status === "En recherche"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : "bg-blue-100 text-blue-700"
-                            }`}
-                          >
-                            {getStatusIcon(swap.status)}
-                            <span className="ml-1 hidden sm:inline">{swap.status}</span>
-                          </Badge>
-                          <div className="flex space-x-1">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedSwap(swap);
-                                setShowSwapDetails(true);
-                              }}
-                              className="text-xs px-2 h-7"
-                            >
-                              <Eye className="h-3 w-3" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              onClick={() => {
-                                const contact = contacts.find(
-                                  (c) => c.company === swap.counterparty,
-                                );
-                                if (contact) {
-                                  openChatWithContact(contact, "swap");
-                                } else {
-                                  setMessage(
-                                    "Aucun contact trouvé pour ce partenaire",
-                                  );
-                                  setTimeout(() => setMessage(""), 3000);
-                                }
-                              }}
-                              className="bg-blue-600 hover:bg-blue-700 text-xs px-2 h-7"
-                            >
-                              <MessageCircle className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                      {swap.status === "Actif" && (
-                        <div className="mt-4">
-                          <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 mb-1">
-                            <span>Progression</span>
-                            <span>{swap.progress}%</span>
-                          </div>
-                          <Progress value={swap.progress} className="h-2" />
-                        </div>
-                      )}
-                    </Card>
-                  </div>
-
-                  {/* Version Mobile avec Swipe */}
-                  <div className="lg:hidden">
-                    <SwipeableCard
-                      onSwipeLeft={() => handleSwipeAction(swap.id, "archive")}
-                      onSwipeRight={() => handleSwipeAction(swap.id, "favorite")}
-                      onSwipeUp={() => handleSwipeAction(swap.id, "quick")}
-                      onSwipeDown={() => handleSwipeAction(swap.id, "delete")}
-                    >
-                      <Card
-                        className={`p-3 hover:shadow-lg transition-all duration-300 overflow-hidden ${
-                          highlightedSwapId === swap.id
-                            ? "ring-2 ring-green-500 bg-green-50"
-                            : ""
-                        }`}
-                      >
-                  </div>
+                <Card
+                  key={swap.id}
+                  className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
+                    highlightedSwapId === swap.id
+                      ? "ring-2 ring-green-500 bg-green-50"
+                      : ""
+                  }`}
+                >
                   {highlightedSwapId === swap.id && (
                     <div className="mb-4 p-2 bg-green-100 border border-green-300 rounded-lg text-center">
                       <span className="text-green-700 font-semibold text-sm">
@@ -1946,7 +1795,9 @@ const DashboardCompleteFixed = () => {
                         }`}
                       >
                         {getStatusIcon(swap.status)}
-                        <span className="ml-1 hidden sm:inline">{swap.status}</span>
+                        <span className="ml-1 hidden sm:inline">
+                          {swap.status}
+                        </span>
                       </Badge>
                       <div className="flex space-x-1">
                         <Button
@@ -1991,13 +1842,7 @@ const DashboardCompleteFixed = () => {
                       <Progress value={swap.progress} className="h-2" />
                     </div>
                   )}
-                      </Card>
-                    </SwipeableCard>
-                  </div>
-                  <div className="hidden lg:block">
-                    </Card>
-                  </div>
-                </div>
+                </Card>
               ))}
             </div>
           </TabsContent>
@@ -2017,10 +1862,10 @@ const DashboardCompleteFixed = () => {
 
             {/* Carte principale du portefeuille */}
             <Card className="overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-4 sm:p-6 text-white">
+              <div className="bg-gradient-to-r from-violet-600 to-cyan-600 rounded-xl p-4 sm:p-6 text-white">
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div className="flex items-center space-x-2 sm:space-x-3">
-                    <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-blue-200" />
+                    <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-200" />
                     <h3 className="text-sm sm:text-lg font-semibold">
                       Portefeuille Principal
                     </h3>
@@ -2028,7 +1873,7 @@ const DashboardCompleteFixed = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="text-blue-200 hover:text-white hover:bg-white/20 h-6 w-6 sm:h-8 sm:w-8"
+                    className="text-cyan-200 hover:text-white hover:bg-white/20 h-6 w-6 sm:h-8 sm:w-8"
                     onClick={() => setHideBalance(!hideBalance)}
                   >
                     {hideBalance ? (
@@ -2039,7 +1884,7 @@ const DashboardCompleteFixed = () => {
                   </Button>
                 </div>
                 <div className="mb-4 sm:mb-6">
-                  <p className="text-blue-200 text-xs sm:text-sm mb-1">
+                  <p className="text-cyan-200 text-xs sm:text-sm mb-1">
                     Solde disponible
                   </p>
                   <p className="text-2xl sm:text-4xl font-bold">
@@ -2049,7 +1894,7 @@ const DashboardCompleteFixed = () => {
                 <div className="flex space-x-2 sm:space-x-3">
                   <Button
                     size="sm"
-                    className="bg-white/20 hover:bg-white/30 text-white border-0 text-xs sm:text-sm px-2 sm:px-4"
+                    className="bg-lime-500/30 hover:bg-lime-500/40 text-white border-0 text-xs sm:text-sm px-2 sm:px-4"
                     onClick={() => handleWalletDeposit(500)}
                   >
                     <Plus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
@@ -2058,7 +1903,7 @@ const DashboardCompleteFixed = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-xs sm:text-sm px-2 sm:px-4"
+                    className="bg-pink-500/20 hover:bg-pink-500/30 text-white border-pink-300/40 text-xs sm:text-sm px-2 sm:px-4"
                     onClick={() => handleWalletWithdraw(100)}
                   >
                     <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
@@ -2071,8 +1916,8 @@ const DashboardCompleteFixed = () => {
             {/* Statistiques */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               <Card className="p-4 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <ArrowDownRight className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <ArrowDownRight className="h-4 w-4 sm:h-6 sm:w-6 text-cyan-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   {formatCurrency(walletData.totalDeposited)}
@@ -2080,8 +1925,8 @@ const DashboardCompleteFixed = () => {
                 <p className="text-xs sm:text-sm text-gray-600">Total déposé</p>
               </Card>
               <Card className="p-4 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 text-red-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-lime-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 text-lime-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   {formatCurrency(walletData.totalWithdrawn)}
@@ -2089,8 +1934,8 @@ const DashboardCompleteFixed = () => {
                 <p className="text-xs sm:text-sm text-gray-600">Total retiré</p>
               </Card>
               <Card className="p-4 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-blue-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-violet-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   {formatCurrency(
@@ -2128,20 +1973,20 @@ const DashboardCompleteFixed = () => {
                       <div
                         className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                           transaction.type === "deposit"
-                            ? "bg-green-100"
+                            ? "bg-cyan-100"
                             : transaction.type === "withdraw"
-                              ? "bg-red-100"
+                              ? "bg-pink-100"
                               : transaction.type === "interest"
-                                ? "bg-blue-100"
+                                ? "bg-lime-100"
                                 : "bg-orange-100"
                         }`}
                       >
                         {transaction.type === "deposit" ? (
-                          <ArrowDownRight className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+                          <ArrowDownRight className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600" />
                         ) : transaction.type === "withdraw" ? (
-                          <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
+                          <ArrowUpRight className="h-4 w-4 sm:h-5 sm:w-5 text-pink-600" />
                         ) : transaction.type === "interest" ? (
-                          <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                          <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-lime-600" />
                         ) : (
                           <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600" />
                         )}
@@ -2201,7 +2046,7 @@ const DashboardCompleteFixed = () => {
               <div className="flex space-x-2 sm:space-x-3">
                 <Button
                   onClick={() => setShowAddContactDialog(true)}
-                  className="text-sm px-2 sm:px-4"
+                  className="bg-gradient-to-r from-violet-600 to-pink-600 hover:from-violet-700 hover:to-pink-700 text-sm px-2 sm:px-4"
                 >
                   <Plus className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Ajouter un contact</span>
@@ -2227,8 +2072,8 @@ const DashboardCompleteFixed = () => {
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6">
               <Card className="p-3 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <Users className="h-4 w-4 sm:h-6 sm:w-6 text-blue-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-cyan-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Users className="h-4 w-4 sm:h-6 sm:w-6 text-cyan-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   {contacts.length}
@@ -2238,8 +2083,8 @@ const DashboardCompleteFixed = () => {
                 </p>
               </Card>
               <Card className="p-3 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <Handshake className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-lime-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Handshake className="h-4 w-4 sm:h-6 sm:w-6 text-lime-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   12
@@ -2247,8 +2092,8 @@ const DashboardCompleteFixed = () => {
                 <p className="text-xs sm:text-sm text-gray-600">Partenariats</p>
               </Card>
               <Card className="p-3 sm:p-6 text-center">
-                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                  <Star className="h-4 w-4 sm:h-6 sm:w-6 text-purple-600" />
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-violet-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Star className="h-4 w-4 sm:h-6 sm:w-6 text-violet-600" />
                 </div>
                 <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   94%
@@ -2278,7 +2123,7 @@ const DashboardCompleteFixed = () => {
                   >
                     <div className="flex items-center space-x-3 min-w-0 flex-1">
                       <Avatar className="w-10 h-10 flex-shrink-0">
-                        <AvatarFallback className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold">
+                        <AvatarFallback className="bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold">
                           {contact.name
                             .split(" ")
                             .map((n) => n[0])
@@ -2339,9 +2184,9 @@ const DashboardCompleteFixed = () => {
             </Card>
           </TabsContent>
         </Tabs>
-        </PullToRefresh>
       </main>
 
+      {/* Tous les modals et dialogues restent identiques... */}
       {/* Modal Création de Swap */}
       <Dialog open={showCreateSwap} onOpenChange={setShowCreateSwap}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -2544,7 +2389,7 @@ const DashboardCompleteFixed = () => {
               </Button>
               <Button
                 onClick={handleCreateSwap}
-                className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700"
+                className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700"
               >
                 <Calculator className="h-4 w-4 mr-2" />
                 Créer le swap
@@ -2554,7 +2399,7 @@ const DashboardCompleteFixed = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Modal Détails du Swap - Version Mobile Optimisée */}
+      {/* Modal Détails du Swap */}
       <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
         <DialogContent className="max-w-[95vw] sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader className="pb-3 sm:pb-4 border-b border-gray-100">
@@ -2566,7 +2411,7 @@ const DashboardCompleteFixed = () => {
                 className={`${
                   selectedSwap?.type === "demande"
                     ? "bg-orange-100 text-orange-700 border-orange-200"
-                    : "bg-green-100 text-green-700 border-green-200"
+                    : "bg-lime-100 text-lime-700 border-lime-200"
                 } text-xs sm:text-sm font-medium flex-shrink-0 self-start sm:self-center`}
               >
                 <span className="sm:hidden">
@@ -2586,211 +2431,6 @@ const DashboardCompleteFixed = () => {
               transition={{ duration: 0.3 }}
               className="space-y-4 sm:space-y-6"
             >
-              {/* Section Header avec Statut */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4"
-              >
-                <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-                  <div>
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900">
-                      {selectedSwap.description}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      Créé par: {selectedSwap.createdBy} •{" "}
-                      {selectedSwap.createdByCompany}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    {getStatusIcon(selectedSwap.status)}
-                    <span className="font-medium text-gray-900">
-                      {selectedSwap.status}
-                    </span>
-                  </div>
-                </div>
-                {selectedSwap.status === "Actif" && (
-                  <div className="mt-3">
-                    <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-                      <span>Progression</span>
-                      <span>{selectedSwap.progress}%</span>
-                    </div>
-                    <Progress value={selectedSwap.progress} className="h-2" />
-                  </div>
-                )}
-              </motion.div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                {/* Informations financières */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Card className="h-full bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-                    <div className="p-4 sm:p-6">
-                      <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center text-green-700">
-                        <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                        Informations financières
-                      </h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-gray-600">
-                            Montant:
-                          </span>
-                          <span className="font-bold text-base sm:text-lg text-green-600">
-                            {formatCurrency(selectedSwap.amount)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">Durée:</span>
-                          <span className="font-semibold">
-                            {selectedSwap.duration} mois
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Taux d'intérêt:
-                          </span>
-                          <span className="font-semibold text-green-600">
-                            {selectedSwap.interestRate}%
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Intérêts totaux:
-                          </span>
-                          <span className="font-semibold text-green-600">
-                            {formatCurrency(selectedSwap.totalInterest || 0)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Paiement mensuel:
-                          </span>
-                          <span className="font-semibold">
-                            {selectedSwap.monthlyPayment
-                              ? formatCurrency(selectedSwap.monthlyPayment)
-                              : "N/A"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-
-                {/* Planning et échéances */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                >
-                  <Card className="h-full bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200">
-                    <div className="p-4 sm:p-6">
-                      <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center text-purple-700">
-                        <Calendar className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                        Planning et échéances
-                      </h4>
-                      <div className="space-y-3">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Créé le:
-                          </span>
-                          <span className="font-semibold">
-                            {formatDate(selectedSwap.createdAt)}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Prochain paiement:
-                          </span>
-                          <span className="font-semibold">
-                            {selectedSwap.nextPaymentDate
-                              ? formatDate(selectedSwap.nextPaymentDate)
-                              : "N/A"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Calendrier:
-                          </span>
-                          <span className="font-semibold">
-                            {getRepaymentScheduleText(
-                              selectedSwap.repaymentSchedule || "monthly",
-                            )}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Remboursement anticipé:
-                          </span>
-                          <span
-                            className={`font-semibold ${selectedSwap.earlyRepayment ? "text-green-600" : "text-gray-500"}`}
-                          >
-                            {selectedSwap.earlyRepayment
-                              ? "Autorisé"
-                              : "Non autorisé"}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-600">
-                            Assurance:
-                          </span>
-                          <span
-                            className={`font-semibold ${selectedSwap.insurance ? "text-green-600" : "text-gray-500"}`}
-                          >
-                            {selectedSwap.insurance ? "Incluse" : "Non incluse"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              </div>
-
-              {/* Description et objectifs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Card className="bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-200">
-                  <div className="p-4 sm:p-6">
-                    <h4 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center text-blue-700">
-                      <FileText className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                      Description et objectifs
-                    </h4>
-                    <div className="space-y-4">
-                      <div>
-                        <h5 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">
-                          Description:
-                        </h5>
-                        <p className="text-gray-700 text-sm sm:text-base">
-                          {selectedSwap.description}
-                        </p>
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">
-                          Objectif détaillé:
-                        </h5>
-                        <p className="text-gray-700 text-sm sm:text-base">
-                          {selectedSwap.purpose}
-                        </p>
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-gray-900 mb-2 text-sm sm:text-base">
-                          Garanties:
-                        </h5>
-                        <p className="text-gray-700 text-sm sm:text-base">
-                          {selectedSwap.guarantees}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-
               {/* Actions */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -2807,7 +2447,7 @@ const DashboardCompleteFixed = () => {
                   <span className="hidden sm:inline">Fermer</span>
                 </Button>
                 <Button
-                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 w-full sm:w-auto"
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 w-full sm:w-auto"
                   onClick={() => {
                     const contact = contacts.find(
                       (c) => c.company === selectedSwap.counterparty,
@@ -2822,7 +2462,9 @@ const DashboardCompleteFixed = () => {
                   }}
                 >
                   <MessageCircle className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Contacter le partenaire</span>
+                  <span className="hidden sm:inline">
+                    Contacter le partenaire
+                  </span>
                   <span className="sm:hidden">Contacter</span>
                 </Button>
               </motion.div>
@@ -3023,11 +2665,11 @@ const DashboardCompleteFixed = () => {
             className="fixed bottom-4 right-4 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-50"
           >
             {/* Header du chat */}
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-t-lg">
+            <div className="bg-gradient-to-r from-violet-600 to-cyan-600 text-white p-4 rounded-t-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-white text-blue-600 text-sm">
+                    <AvatarFallback className="bg-white text-violet-600 text-sm">
                       {chatContact.name
                         .split(" ")
                         .map((n: string) => n[0])
@@ -3036,7 +2678,7 @@ const DashboardCompleteFixed = () => {
                   </Avatar>
                   <div>
                     <p className="font-medium text-sm">{chatContact.name}</p>
-                    <p className="text-xs text-blue-200">
+                    <p className="text-xs text-cyan-200">
                       {chatContact.company}
                     </p>
                   </div>
@@ -3072,7 +2714,7 @@ const DashboardCompleteFixed = () => {
                   <div
                     className={`max-w-xs p-2 rounded-lg text-sm ${
                       msg.sender === "me"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-violet-600 text-white"
                         : msg.sender === "system"
                           ? "bg-gray-100 text-gray-600 text-center w-full"
                           : "bg-gray-100 text-gray-900"
@@ -3081,7 +2723,9 @@ const DashboardCompleteFixed = () => {
                     <p>{msg.message}</p>
                     <p
                       className={`text-xs mt-1 ${
-                        msg.sender === "me" ? "text-blue-200" : "text-gray-500"
+                        msg.sender === "me"
+                          ? "text-violet-200"
+                          : "text-gray-500"
                       }`}
                     >
                       {msg.timestamp}
@@ -3104,77 +2748,12 @@ const DashboardCompleteFixed = () => {
                 <Button
                   onClick={sendChatMessage}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-violet-600 hover:bg-violet-700"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Modal Achievement Unlock */}
-      <AnimatePresence>
-        {showAchievementModal && newAchievement && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 50 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-          >
-            <motion.div
-              initial={{ rotate: -5 }}
-              animate={{ rotate: 0 }}
-              className="bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl p-6 text-center text-white shadow-2xl max-w-sm mx-4"
-            >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="text-6xl mb-4"
-              >
-                {newAchievement.icon}
-              </motion.div>
-
-              <motion.h3
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="text-2xl font-bold mb-2"
-              >
-                Achievement Débloqué !
-              </motion.h3>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="text-lg font-semibold mb-1"
-              >
-                {newAchievement.name}
-              </motion.p>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8 }}
-                className="text-sm opacity-90"
-              >
-                {newAchievement.description}
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 }}
-                className="mt-4"
-              >
-                <Badge className="bg-white/20 text-white border-white/30">
-                  +100 XP • +50 Points
-                </Badge>
-              </motion.div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -3197,12 +2776,12 @@ const DashboardCompleteFixed = () => {
               <motion.div
                 animate={{
                   scale: [1, 1.2, 1],
-                  rotate: [0, 360, 720]
+                  rotate: [0, 360, 720],
                 }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
                 }}
                 className="text-6xl mb-6"
               >
@@ -3226,7 +2805,9 @@ const DashboardCompleteFixed = () => {
               >
                 <p className="text-xl">Niveau {userLevel.level}</p>
                 <p className="text-lg font-semibold">{userLevel.title}</p>
-                <p className="text-sm opacity-90">Nouveaux avantages débloqués !</p>
+                <p className="text-sm opacity-90">
+                  Nouveaux avantages débloqués !
+                </p>
               </motion.div>
 
               <motion.div
@@ -3236,7 +2817,10 @@ const DashboardCompleteFixed = () => {
                 className="space-y-2"
               >
                 {userLevel.benefits.slice(-1).map((benefit, index) => (
-                  <Badge key={index} className="bg-white/20 text-white border-white/30 mr-2">
+                  <Badge
+                    key={index}
+                    className="bg-white/20 text-white border-white/30 mr-2"
+                  >
                     ✨ {benefit}
                   </Badge>
                 ))}
@@ -3245,95 +2829,6 @@ const DashboardCompleteFixed = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Modal Tous les Achievements */}
-      <Dialog open={showAchievementModal} onOpenChange={setShowAchievementModal}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
-              <Award className="h-6 w-6 mr-2 text-yellow-600" />
-              Tous mes Achievements
-            </DialogTitle>
-            <DialogDescription>
-              Votre collection de réussites sur Swapeo
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6">
-            {/* Achievements débloqués */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <span className="text-green-600 mr-2">✓</span>
-                Débloqués ({achievements.filter(a => a.unlockedAt).length})
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {achievements.filter(a => a.unlockedAt).map((achievement) => (
-                  <Card key={achievement.id} className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-3xl">{achievement.icon}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{achievement.name}</h4>
-                        <p className="text-sm text-gray-600">{achievement.description}</p>
-                        <div className="flex items-center space-x-2 mt-2">
-                          <Badge className={`text-xs ${
-                            achievement.rarity === 'legendary' ? 'bg-purple-100 text-purple-700' :
-                            achievement.rarity === 'epic' ? 'bg-blue-100 text-blue-700' :
-                            achievement.rarity === 'rare' ? 'bg-green-100 text-green-700' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {achievement.rarity}
-                          </Badge>
-                          <span className="text-xs text-gray-500">
-                            {formatDate(achievement.unlockedAt!)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
-            {/* Achievements en cours */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4 flex items-center">
-                <span className="text-orange-600 mr-2">⏳</span>
-                En cours ({achievements.filter(a => !a.unlockedAt).length})
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {achievements.filter(a => !a.unlockedAt).map((achievement) => (
-                  <Card key={achievement.id} className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-3xl opacity-60">{achievement.icon}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{achievement.name}</h4>
-                        <p className="text-sm text-gray-600">{achievement.description}</p>
-                        {achievement.progress !== undefined && (
-                          <div className="mt-2">
-                            <div className="flex justify-between text-xs text-gray-500 mb-1">
-                              <span>{achievement.progress}/{achievement.maxProgress}</span>
-                              <span>{Math.round((achievement.progress / (achievement.maxProgress || 1)) * 100)}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                                style={{ width: `${(achievement.progress / (achievement.maxProgress || 1)) * 100}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                        )}
-                        <Badge className="mt-2 text-xs bg-gray-100 text-gray-700">
-                          {achievement.rarity}
-                        </Badge>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
