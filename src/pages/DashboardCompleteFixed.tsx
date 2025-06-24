@@ -1263,21 +1263,7 @@ const DashboardCompleteFixed = () => {
               </Card>
             </div>
 
-            {/* Section Gamification */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Progression et Niveau */}
-              <Card className="p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
-                    <Trophy className="h-5 w-5 mr-2 text-purple-600" />
-                    Votre Progression
-                  </h3>
-                  <Badge className="bg-purple-100 text-purple-700 font-bold">
-                    {userLevel?.title}
-                  </Badge>
-                </div>
 
-            <div className="flex items-center space-x-1 sm:space-x-4">
                         Jours d'affilée
                       </div>
                     </div>
