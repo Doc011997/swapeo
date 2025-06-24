@@ -214,7 +214,7 @@ const LoginSimple = () => {
             {/* Logo and brand */}
             <div className="mb-12">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg ring-2 ring-emerald-400/30">
                   <Handshake className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-bold text-3xl">SWAPEO</span>
