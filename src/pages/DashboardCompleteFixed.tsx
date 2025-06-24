@@ -494,7 +494,7 @@ const DashboardCompleteFixed = () => {
         description: "",
       });
 
-      // Confirmation immédiate détaillée
+      // Confirmation immédiate détaill��e
       const successMessage = `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`;
       setMessage(successMessage);
       setTimeout(() => setMessage(""), 8000);
@@ -651,6 +651,57 @@ const DashboardCompleteFixed = () => {
 
     setContacts([newContact, ...contacts]);
     setMessage(`✅ ${randomContact.name} ajouté(e) à votre réseau !`);
+    setTimeout(() => setMessage(""), 4000);
+  };
+
+  const handleAddContact = () => {
+    if (
+      !contactForm.firstName ||
+      !contactForm.lastName ||
+      !contactForm.email ||
+      !contactForm.company
+    ) {
+      setMessage("❌ Veuillez remplir tous les champs obligatoires");
+      setTimeout(() => setMessage(""), 4000);
+      return;
+    }
+
+    // Vérifier si le contact existe déjà
+    const fullName = `${contactForm.firstName} ${contactForm.lastName}`;
+    if (
+      contacts.some((c) => c.name === fullName || c.email === contactForm.email)
+    ) {
+      setMessage("❌ Ce contact existe déjà dans votre réseau");
+      setTimeout(() => setMessage(""), 4000);
+      return;
+    }
+
+    const newContact: Contact = {
+      id: `contact-${Date.now()}`,
+      name: fullName,
+      company: contactForm.company,
+      email: contactForm.email,
+      phone: contactForm.phone || undefined,
+      avatar: "",
+      trustScore: Math.floor(Math.random() * 20) + 80, // Score entre 80-99
+      totalSwaps: 0, // Nouveau contact
+      averageAmount: 0,
+      lastActive: new Date().toISOString(),
+      verified: false, // Nouveau contact non vérifié
+    };
+
+    setContacts([newContact, ...contacts]);
+    setShowAddContactDialog(false);
+    setContactForm({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      company: "",
+      role: "",
+    });
+
+    setMessage(`✅ ${fullName} ajouté(e) à votre réseau !`);
     setTimeout(() => setMessage(""), 4000);
   };
 
