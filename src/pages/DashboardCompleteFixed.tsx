@@ -1110,9 +1110,9 @@ const DashboardCompleteFixed = () => {
             </TabsList>
 
             {/* Contenu des onglets */}
-            <TabsContent value="overview" className="space-y-8">
+            <TabsContent value="overview" className="space-y-6 sm:space-y-8">
               {/* Section Hero avec stats */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Card principale de bienvenue */}
                 <div className="lg:col-span-2">
                   <motion.div
@@ -1120,52 +1120,52 @@ const DashboardCompleteFixed = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <Card className="p-8 bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 text-white relative overflow-hidden shadow-2xl border-0">
+                    <Card className="p-4 sm:p-8 bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 text-white relative overflow-hidden shadow-2xl border-0">
                       {/* Background effects */}
                       <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-cyan-500/20" />
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-cyan-300/20 rounded-full blur-xl" />
+                      <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-2xl" />
+                      <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-cyan-300/20 rounded-full blur-xl" />
 
                       <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-6">
-                          <div>
-                            <h2 className="text-3xl font-bold mb-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
+                          <div className="mb-4 sm:mb-0">
+                            <h2 className="text-xl sm:text-3xl font-bold mb-1 sm:mb-2">
                               Bienvenue, {user.firstName} ! 👋
                             </h2>
-                            <p className="text-violet-100 text-lg">
+                            <p className="text-violet-100 text-sm sm:text-lg">
                               Votre espace de gestion Swapeo
                             </p>
                           </div>
-                          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                            <Handshake className="h-10 w-10" />
+                          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center self-start sm:self-auto">
+                            <Handshake className="h-8 w-8 sm:h-10 sm:w-10" />
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6">
-                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                            <p className="text-violet-100 text-sm font-medium mb-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+                            <p className="text-violet-100 text-xs sm:text-sm font-medium mb-1">
                               Solde total
                             </p>
-                            <p className="text-3xl font-bold">
+                            <p className="text-lg sm:text-3xl font-bold">
                               {formatCurrency(animatedBalance)}
                             </p>
-                            <div className="flex items-center mt-2 text-green-300 text-sm">
-                              <TrendingUp className="h-4 w-4 mr-1" />
+                            <div className="flex items-center mt-1 sm:mt-2 text-green-300 text-xs sm:text-sm">
+                              <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                               +12.5% ce mois
                             </div>
                           </div>
-                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                            <p className="text-violet-100 text-sm font-medium mb-1">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 sm:p-4">
+                            <p className="text-violet-100 text-xs sm:text-sm font-medium mb-1">
                               Swaps actifs
                             </p>
-                            <p className="text-3xl font-bold">
+                            <p className="text-lg sm:text-3xl font-bold">
                               {
                                 swaps.filter((s) => s.status === "active")
                                   .length
                               }
                             </p>
-                            <div className="flex items-center mt-2 text-cyan-300 text-sm">
-                              <Activity className="h-4 w-4 mr-1" />
+                            <div className="flex items-center mt-1 sm:mt-2 text-cyan-300 text-xs sm:text-sm">
+                              <Activity className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                               {
                                 swaps.filter((s) => s.status === "pending")
                                   .length
