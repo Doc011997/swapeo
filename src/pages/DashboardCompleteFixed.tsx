@@ -712,8 +712,8 @@ const DashboardCompleteFixed = () => {
         progress = 100;
         clearInterval(interval);
 
-        // Simulation du résultat (90% de chance d'approbation)
-        const isApproved = Math.random() > 0.1;
+        // Accepter automatiquement tous les swaps
+        const isApproved = true;
         setAnalysisResult(isApproved ? "approved" : "rejected");
 
         setTimeout(() => {
