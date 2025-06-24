@@ -338,7 +338,7 @@ const LoginSimple = () => {
               </p>
             </div>
 
-            <Card className="bg-white/10 backdrop-blur-xl border-white/20 shadow-2xl p-8">
+            <Card className="bg-white/10 backdrop-blur-xl border-emerald-400/20 shadow-2xl p-8 ring-1 ring-emerald-400/10">
               <div className="hidden lg:block text-center mb-6">
                 <h2 className="text-2xl font-bold text-white mb-2">
                   Connexion
@@ -506,7 +506,7 @@ const LoginSimple = () => {
                 <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Shield className="h-3 w-3" />
-                    <span>Sécurisé SSL</span>
+                    <span>S��curisé SSL</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <CheckCircle className="h-3 w-3" />
