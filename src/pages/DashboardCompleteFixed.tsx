@@ -2495,35 +2495,44 @@ const DashboardCompleteFixed = () => {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-4">
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <Calendar className="h-4 w-4 mr-2 text-pink-600" />
-                      Informations temporelles
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-pink-600 flex-shrink-0" />
+                      <span className="hidden sm:inline">
+                        Informations temporelles
+                      </span>
+                      <span className="sm:hidden">Temporel</span>
                     </h3>
-                    <div className="bg-gray-50 p-3 rounded-lg space-y-2">
-                      <div className="flex justify-between text-sm">
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg space-y-1 sm:space-y-2">
+                      <div className="flex justify-between text-xs sm:text-sm">
                         <span className="text-gray-600">Créé le :</span>
-                        <span className="text-gray-900">
+                        <span className="text-gray-900 text-right">
                           {selectedSwap.createdAt}
                         </span>
                       </div>
                       {selectedSwap.daysRemaining && (
-                        <div className="flex justify-between text-sm">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Jours restants :
+                            <span className="hidden sm:inline">
+                              Jours restants :
+                            </span>
+                            <span className="sm:hidden">Restant :</span>
                           </span>
                           <span className="text-gray-900">
-                            {selectedSwap.daysRemaining}
+                            {selectedSwap.daysRemaining}j
                           </span>
                         </div>
                       )}
                       {selectedSwap.nextPaymentDate && (
-                        <div className="flex justify-between text-sm">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Prochain paiement :
+                            <span className="hidden sm:inline">
+                              Prochain paiement :
+                            </span>
+                            <span className="sm:hidden">Prochain :</span>
                           </span>
-                          <span className="text-gray-900">
+                          <span className="text-gray-900 text-right">
                             {selectedSwap.nextPaymentDate}
                           </span>
                         </div>
@@ -2532,12 +2541,12 @@ const DashboardCompleteFixed = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <TrendingUp className="h-4 w-4 mr-2 text-lime-600" />
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                      <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-lime-600 flex-shrink-0" />
                       Performance
                     </h3>
-                    <div className="bg-gray-50 p-3 rounded-lg space-y-2">
-                      <div className="flex justify-between text-sm">
+                    <div className="bg-gray-50 p-2 sm:p-3 rounded-lg space-y-1 sm:space-y-2">
+                      <div className="flex justify-between items-center text-xs sm:text-sm">
                         <span className="text-gray-600">Statut :</span>
                         <Badge
                           className={`text-xs ${
@@ -2553,7 +2562,7 @@ const DashboardCompleteFixed = () => {
                       </div>
                       {selectedSwap.progress !== undefined && (
                         <div>
-                          <div className="flex justify-between text-sm mb-1">
+                          <div className="flex justify-between text-xs sm:text-sm mb-1">
                             <span className="text-gray-600">Progression :</span>
                             <span className="text-gray-900">
                               {selectedSwap.progress}%
@@ -2561,14 +2570,17 @@ const DashboardCompleteFixed = () => {
                           </div>
                           <Progress
                             value={selectedSwap.progress}
-                            className="h-2"
+                            className="h-1.5 sm:h-2"
                           />
                         </div>
                       )}
                       {selectedSwap.matchingScore && (
-                        <div className="flex justify-between text-sm">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Score de matching :
+                            <span className="hidden sm:inline">
+                              Score de matching :
+                            </span>
+                            <span className="sm:hidden">Matching :</span>
                           </span>
                           <span className="text-cyan-600 font-semibold">
                             {selectedSwap.matchingScore}%
