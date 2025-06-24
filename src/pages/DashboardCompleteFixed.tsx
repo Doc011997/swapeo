@@ -385,62 +385,108 @@ const DashboardCompleteFixed = () => {
   };
 
   const handleCreateSwap = () => {
-    const currentDate = new Date();
-    const demoSwap: Swap = {
-      id: `SW-${Date.now()}`,
-      type: newSwap.type as "demande" | "offre",
-      amount: parseInt(newSwap.amount),
-      duration: parseInt(newSwap.duration),
-      interestRate: newSwap.type === "demande" ? 3.5 : 3.0,
-      counterparty: "Recherche en cours...",
-      status: "En recherche",
-      progress: 0,
-      createdAt: currentDate.toISOString(),
-      description: newSwap.description,
-      daysRemaining: parseInt(newSwap.duration) * 30,
-      matchingScore: Math.floor(Math.random() * 15) + 85,
-      category: newSwap.category,
-      riskLevel: "low",
-      verified: false,
-      // Détails complets de création
-      purpose: newSwap.purpose,
-      guarantees: newSwap.guarantees,
-      repaymentSchedule: newSwap.repaymentSchedule,
-      earlyRepayment: newSwap.earlyRepayment,
-      insurance: newSwap.insurance,
-      createdBy: `${user.firstName} ${user.lastName}`,
-      createdByCompany: user.company || "Particulier",
-      createdByTrustScore: user.trustScore || 85,
-      estimatedReturn: Math.round((parseInt(newSwap.amount) * 3.2) / 100),
-      totalInterest: Math.round(
-        (parseInt(newSwap.amount) * 3.2 * parseInt(newSwap.duration)) /
-          (100 * 12),
-      ),
-      monthlyPayment: Math.round(
-        (parseInt(newSwap.amount) * (1 + 3.2 / 100)) /
-          parseInt(newSwap.duration),
-      ),
-      nextPaymentDate: null,
-      lastUpdated: currentDate.toISOString(),
-    };
+    try {
+      // Validation supplémentaire côté client
+      if (
+        !newSwap.type ||
+        !newSwap.amount ||
+        !newSwap.duration ||
+        !newSwap.description ||
+        !newSwap.category ||
+        !newSwap.purpose ||
+        !newSwap.guarantees
+      ) {
+        setMessage("❌ Veuillez remplir tous les champs obligatoires");
+        setTimeout(() => setMessage(""), 4000);
+        return;
+      }
 
-    setSwaps([demoSwap, ...swaps]);
-    updateUserStats([demoSwap, ...swaps]);
-    setShowCreateSwap(false);
-    setNewSwap({
-      type: "",
-      amount: "",
-      duration: "",
-      description: "",
-      category: "",
-      purpose: "",
-      guarantees: "",
-      repaymentSchedule: "monthly",
-      earlyRepayment: true,
-      insurance: false,
-    });
-    setMessage("🎉 Votre swap a été créé avec succès !");
-    setTimeout(() => setMessage(""), 4000);
+      if (parseInt(newSwap.amount) < 1000) {
+        setMessage("❌ Le montant minimum est de 1 000€");
+        setTimeout(() => setMessage(""), 4000);
+        return;
+      }
+
+      if (parseInt(newSwap.duration) < 1) {
+        setMessage("❌ La durée minimum est de 1 mois");
+        setTimeout(() => setMessage(""), 4000);
+        return;
+      }
+
+      const currentDate = new Date();
+      const amount = parseInt(newSwap.amount);
+      const duration = parseInt(newSwap.duration);
+      const interestRate = newSwap.type === "demande" ? 3.5 : 3.0;
+
+      const demoSwap: Swap = {
+        id: `SW-${Date.now()}`,
+        type: newSwap.type as "demande" | "offre",
+        amount: amount,
+        duration: duration,
+        interestRate: interestRate,
+        counterparty: "Recherche en cours...",
+        status: "En recherche",
+        progress: 0,
+        createdAt: currentDate.toISOString(),
+        description: newSwap.description,
+        daysRemaining: duration * 30,
+        matchingScore: Math.floor(Math.random() * 15) + 85,
+        category: newSwap.category,
+        riskLevel: amount > 20000 ? "medium" : "low",
+        verified: false,
+        // Détails complets de création
+        purpose: newSwap.purpose,
+        guarantees: newSwap.guarantees,
+        repaymentSchedule: newSwap.repaymentSchedule,
+        earlyRepayment: newSwap.earlyRepayment,
+        insurance: newSwap.insurance,
+        createdBy: `${user.firstName} ${user.lastName}`,
+        createdByCompany: user.company || "Particulier",
+        createdByTrustScore: user.trustScore || 85,
+        estimatedReturn: Math.round((amount * interestRate) / 100),
+        totalInterest: Math.round(
+          (amount * interestRate * duration) / (100 * 12),
+        ),
+        monthlyPayment: Math.round(
+          (amount * (1 + interestRate / 100)) / duration,
+        ),
+        nextPaymentDate: null,
+        lastUpdated: currentDate.toISOString(),
+      };
+
+      // Mise à jour immédiate de la liste des swaps
+      const updatedSwaps = [demoSwap, ...swaps];
+      setSwaps(updatedSwaps);
+      updateUserStats(updatedSwaps);
+
+      // Fermer le modal et réinitialiser le formulaire
+      setShowCreateSwap(false);
+      setNewSwap({
+        type: "",
+        amount: "",
+        duration: "",
+        description: "",
+        category: "",
+        purpose: "",
+        guarantees: "",
+        repaymentSchedule: "monthly",
+        earlyRepayment: true,
+        insurance: false,
+      });
+
+      // Message de succès détaillé
+      setMessage(
+        `🎉 Swap créé avec succès ! ID: ${demoSwap.id} - ${formatCurrency(amount)} sur ${duration} mois`,
+      );
+      setTimeout(() => setMessage(""), 6000);
+
+      // Passer automatiquement à l'onglet swaps pour voir le nouveau swap
+      setActiveSection("swaps");
+    } catch (error) {
+      console.error("Erreur lors de la création du swap:", error);
+      setMessage("❌ Erreur lors de la création du swap. Veuillez réessayer.");
+      setTimeout(() => setMessage(""), 4000);
+    }
   };
 
   const viewSwapDetails = (swap: Swap) => {
@@ -1606,7 +1652,7 @@ const DashboardCompleteFixed = () => {
           <DialogHeader>
             <DialogTitle>Inviter une personne</DialogTitle>
             <DialogDescription>
-              Invitez quelqu'un à rejoindre votre réseau Swapeo
+              Invitez quelqu'un �� rejoindre votre réseau Swapeo
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
