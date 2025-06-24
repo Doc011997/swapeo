@@ -1264,61 +1264,69 @@ const DashboardCompleteFixed = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Card className="p-6 bg-white/80 backdrop-blur-sm border-violet-200/50 shadow-lg">
-                  <div className="flex items-center mb-6">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
-                      <Zap className="h-5 w-5 text-white" />
+                <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border-violet-200/50 shadow-lg">
+                  <div className="flex items-center mb-4 sm:mb-6">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
+                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
                       Actions Rapides
                     </h3>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                  {/* Mobile: Stack vertical, Desktop: Grid horizontal */}
+                  <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
                     <Button
                       onClick={() => setShowCreateSwap(true)}
-                      className="bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white p-6 h-auto flex-col rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                      className="w-full bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 sm:hover:scale-105 group"
                     >
-                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                        <Plus className="h-6 w-6" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
+                        <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
-                      <span className="text-sm font-semibold">
-                        Créer un Swap
-                      </span>
-                      <span className="text-xs opacity-80 mt-1">
-                        Nouvelle proposition
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span className="text-sm font-semibold block">
+                          Créer un Swap
+                        </span>
+                        <span className="text-xs opacity-80 sm:mt-1 block">
+                          Nouvelle proposition
+                        </span>
+                      </div>
                     </Button>
 
                     <Button
                       variant="outline"
                       onClick={() => (window.location.href = "/swap")}
-                      className="border-2 border-green-200 hover:bg-green-50 hover:border-green-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                      className="w-full border-2 border-green-200 hover:bg-green-50 hover:border-green-300 p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl transition-all duration-300 sm:hover:scale-105 group bg-white/50 backdrop-blur-sm"
                     >
-                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
-                        <Search className="h-6 w-6 text-green-600" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
+                        <Search className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">
-                        Marketplace
-                      </span>
-                      <span className="text-xs text-gray-600 mt-1">
-                        Chercher opportunités
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span className="text-sm font-semibold text-gray-900 block">
+                          Marketplace
+                        </span>
+                        <span className="text-xs text-gray-600 sm:mt-1 block">
+                          Chercher opportunités
+                        </span>
+                      </div>
                     </Button>
 
                     <Button
                       variant="outline"
-                      className="border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                      className="w-full border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl transition-all duration-300 sm:hover:scale-105 group bg-white/50 backdrop-blur-sm"
                       onClick={() => setShowInviteDialog(true)}
                     >
-                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
-                        <Mail className="h-6 w-6 text-blue-600" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
+                        <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                       </div>
-                      <span className="text-sm font-semibold text-gray-900">
-                        Inviter
-                      </span>
-                      <span className="text-xs text-gray-600 mt-1">
-                        Nouveaux contacts
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span className="text-sm font-semibold text-gray-900 block">
+                          Inviter
+                        </span>
+                        <span className="text-xs text-gray-600 sm:mt-1 block">
+                          Nouveaux contacts
+                        </span>
+                      </div>
                     </Button>
                   </div>
                 </Card>
