@@ -278,9 +278,14 @@ const SwapPublic = () => {
     }
   };
 
-  // Supprimer les anciens swaps mockés
-  /*
-    const mockSwaps: Swap[] = [
+  // Chargement initial des swaps
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadUserData();
+    } else {
+      loadPublicSwaps();
+    }
+  }, [isAuthenticated]);
       {
         id: "swap-1",
         type: "offre",
