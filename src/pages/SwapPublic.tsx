@@ -916,6 +916,7 @@ const SwapPublic = () => {
                               <Button
                                 size="sm"
                                 variant="outline"
+                                onClick={() => openSwapDetails(swap)}
                                 className="border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
                               >
                                 <Info className="h-4 w-4 mr-1" />
