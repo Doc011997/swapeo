@@ -1423,238 +1423,106 @@ const DashboardCompleteFixed = () => {
         </Tabs>
       </div>
 
-      {/* Modal Création de Swap */}
+      {/* Modal Création Swap - Version Simplifiée */}
       <Dialog open={showCreateSwap} onOpenChange={setShowCreateSwap}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Créer un nouveau swap</DialogTitle>
+            <DialogTitle className="text-xl">🚀 Nouveau Swap</DialogTitle>
             <DialogDescription>
-              Créez votre demande ou offre de financement
+              Créez votre swap en quelques secondes
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
-              <Label className="flex items-center">
-                Type de swap <span className="text-red-500 ml-1">*</span>
-              </Label>
+              <Label>Type de swap</Label>
               <Select
                 value={newSwap.type}
                 onValueChange={(value) =>
                   setNewSwap({ ...newSwap, type: value })
                 }
               >
-                <SelectTrigger
-                  className={`mt-1 ${!newSwap.type ? "border-red-200" : ""}`}
-                >
-                  <SelectValue placeholder="Choisissez le type" />
+                <SelectTrigger className="mt-2">
+                  <SelectValue placeholder="Choisissez..." />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="demande">
-                    💰 Demande de financement
+                    💰 Je recherche des fonds
                   </SelectItem>
-                  <SelectItem value="offre">🏦 Offre de financement</SelectItem>
+                  <SelectItem value="offre">💳 J'offre des fonds</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="flex items-center">
-                  Montant (€) <span className="text-red-500 ml-1">*</span>
-                </Label>
+                <Label>Montant</Label>
                 <Input
                   type="number"
-                  placeholder="10 000 (min. 1 000€)"
+                  placeholder="10 000"
                   value={newSwap.amount}
                   onChange={(e) =>
                     setNewSwap({ ...newSwap, amount: e.target.value })
                   }
-                  className={`mt-1 ${!newSwap.amount || parseInt(newSwap.amount) < 1000 ? "border-red-200" : ""}`}
+                  className="mt-2"
                   min="1000"
                 />
+                <p className="text-xs text-gray-500 mt-1">Min. 1 000€</p>
               </div>
               <div>
-                <Label className="flex items-center">
-                  Durée (mois) <span className="text-red-500 ml-1">*</span>
-                </Label>
+                <Label>Durée</Label>
                 <Input
                   type="number"
-                  placeholder="6 (min. 1 mois)"
+                  placeholder="6"
                   value={newSwap.duration}
                   onChange={(e) =>
                     setNewSwap({ ...newSwap, duration: e.target.value })
                   }
-                  className={`mt-1 ${!newSwap.duration || parseInt(newSwap.duration) < 1 ? "border-red-200" : ""}`}
+                  className="mt-2"
                   min="1"
                 />
+                <p className="text-xs text-gray-500 mt-1">En mois</p>
               </div>
             </div>
 
             <div>
-              <Label className="flex items-center">
-                Catégorie <span className="text-red-500 ml-1">*</span>
-              </Label>
-              <Select
-                value={newSwap.category}
-                onValueChange={(value) =>
-                  setNewSwap({ ...newSwap, category: value })
-                }
-              >
-                <SelectTrigger
-                  className={`mt-1 ${!newSwap.category ? "border-red-200" : ""}`}
-                >
-                  <SelectValue placeholder="Choisissez une catégorie" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="tech">Tech & Digital</SelectItem>
-                  <SelectItem value="restauration">Restauration</SelectItem>
-                  <SelectItem value="commerce">Commerce</SelectItem>
-                  <SelectItem value="services">Services</SelectItem>
-                  <SelectItem value="industrie">Industrie</SelectItem>
-                  <SelectItem value="immobilier">Immobilier</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label className="flex items-center">
-                Description du projet{" "}
-                <span className="text-red-500 ml-1">*</span>
-              </Label>
+              <Label>Description rapide</Label>
               <Textarea
-                placeholder="Décrivez votre projet en détail..."
+                placeholder="Ex: Développement e-commerce, achat équipement..."
                 value={newSwap.description}
                 onChange={(e) =>
                   setNewSwap({ ...newSwap, description: e.target.value })
                 }
-                className={`mt-1 h-20 resize-none ${!newSwap.description ? "border-red-200" : ""}`}
+                className="mt-2 h-16 resize-none"
               />
             </div>
 
-            <div>
-              <Label className="flex items-center">
-                Objectif des fonds <span className="text-red-500 ml-1">*</span>
-              </Label>
-              <Input
-                type="text"
-                placeholder="Ex: Achat d'équipement, Stock, Développement..."
-                value={newSwap.purpose}
-                onChange={(e) =>
-                  setNewSwap({ ...newSwap, purpose: e.target.value })
-                }
-                className={`mt-1 ${!newSwap.purpose ? "border-red-200" : ""}`}
-              />
-            </div>
-
-            <div>
-              <Label className="flex items-center">
-                Garanties proposées <span className="text-red-500 ml-1">*</span>
-              </Label>
-              <Input
-                type="text"
-                placeholder="Ex: Caution personnelle, Stock en garantie..."
-                value={newSwap.guarantees}
-                onChange={(e) =>
-                  setNewSwap({ ...newSwap, guarantees: e.target.value })
-                }
-                className={`mt-1 ${!newSwap.guarantees ? "border-red-200" : ""}`}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Remboursement</Label>
-                <Select
-                  value={newSwap.repaymentSchedule}
-                  onValueChange={(value) =>
-                    setNewSwap({ ...newSwap, repaymentSchedule: value })
-                  }
-                >
-                  <SelectTrigger className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="monthly">Mensuel</SelectItem>
-                    <SelectItem value="quarterly">Trimestriel</SelectItem>
-                    <SelectItem value="end">En fin de période</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-3 pt-6">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="earlyRepayment"
-                    checked={newSwap.earlyRepayment}
-                    onChange={(e) =>
-                      setNewSwap({
-                        ...newSwap,
-                        earlyRepayment: e.target.checked,
-                      })
-                    }
-                    className="rounded"
-                  />
-                  <Label htmlFor="earlyRepayment" className="text-sm">
-                    Remboursement anticipé autorisé
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="insurance"
-                    checked={newSwap.insurance}
-                    onChange={(e) =>
-                      setNewSwap({ ...newSwap, insurance: e.target.checked })
-                    }
-                    className="rounded"
-                  />
-                  <Label htmlFor="insurance" className="text-sm">
-                    Assurance emprunt incluse
-                  </Label>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">
-                📊 Estimation automatique
-              </h4>
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-blue-700">Taux estimé:</span>
-                  <span className="font-medium text-blue-900 ml-2">
+            {newSwap.amount && newSwap.duration && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border border-blue-100"
+              >
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Taux estimé:</span>
+                  <span className="font-semibold text-blue-600">
                     {newSwap.type === "demande" ? "3.5%" : "3.0%"}
                   </span>
                 </div>
-                <div>
-                  <span className="text-blue-700">Intérêts totaux:</span>
-                  <span className="font-medium text-blue-900 ml-2">
-                    {newSwap.amount && newSwap.duration
-                      ? `~${Math.round((parseInt(newSwap.amount) * 3.2 * parseInt(newSwap.duration)) / (100 * 12))}€`
-                      : "0€"}
+                <div className="flex items-center justify-between text-sm mt-1">
+                  <span className="text-gray-600">Intérêts totaux:</span>
+                  <span className="font-semibold text-green-600">
+                    ~
+                    {Math.round(
+                      (parseInt(newSwap.amount) *
+                        3.2 *
+                        parseInt(newSwap.duration)) /
+                        (100 * 12),
+                    )}
+                    €
                   </span>
                 </div>
-                <div>
-                  <span className="text-blue-700">Matching estimé:</span>
-                  <span className="font-medium text-blue-900 ml-2">85-95%</span>
-                </div>
-                <div>
-                  <span className="text-blue-700">Délai moyen:</span>
-                  <span className="font-medium text-blue-900 ml-2">
-                    2-4 jours
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-gray-50 p-3 rounded-lg text-sm text-gray-600">
-              <p className="flex items-center">
-                <Info className="h-4 w-4 mr-2 text-blue-500" />
-                <span className="text-red-500">*</span> Champs obligatoires -
-                Votre swap apparaîtra immédiatement dans votre liste après
-                création
-              </p>
-            </div>
+              </motion.div>
+            )}
 
             <Button
               onClick={handleCreateSwap}
@@ -1663,26 +1531,13 @@ const DashboardCompleteFixed = () => {
                 !newSwap.amount ||
                 !newSwap.duration ||
                 !newSwap.description ||
-                !newSwap.category ||
-                !newSwap.purpose ||
-                !newSwap.guarantees ||
                 parseInt(newSwap.amount) < 1000 ||
                 parseInt(newSwap.duration) < 1
               }
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
-              <Plus className="mr-2 h-4 w-4" />
-              {!newSwap.type ||
-              !newSwap.amount ||
-              !newSwap.duration ||
-              !newSwap.description ||
-              !newSwap.category ||
-              !newSwap.purpose ||
-              !newSwap.guarantees ||
-              parseInt(newSwap.amount) < 1000 ||
-              parseInt(newSwap.duration) < 1
-                ? "Veuillez remplir tous les champs obligatoires"
-                : "Créer le swap"}
+              <Plus className="mr-2 h-5 w-5" />
+              Créer le swap
             </Button>
           </div>
         </DialogContent>
