@@ -1491,14 +1491,18 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div>
-              <Label>Catégorie</Label>
+              <Label className="flex items-center">
+                Catégorie <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Select
                 value={newSwap.category}
                 onValueChange={(value) =>
                   setNewSwap({ ...newSwap, category: value })
                 }
               >
-                <SelectTrigger className="mt-1">
+                <SelectTrigger
+                  className={`mt-1 ${!newSwap.category ? "border-red-200" : ""}`}
+                >
                   <SelectValue placeholder="Choisissez une catégorie" />
                 </SelectTrigger>
                 <SelectContent>
@@ -1506,24 +1510,31 @@ const DashboardCompleteFixed = () => {
                   <SelectItem value="restauration">Restauration</SelectItem>
                   <SelectItem value="commerce">Commerce</SelectItem>
                   <SelectItem value="services">Services</SelectItem>
+                  <SelectItem value="industrie">Industrie</SelectItem>
+                  <SelectItem value="immobilier">Immobilier</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label>Description du projet</Label>
+              <Label className="flex items-center">
+                Description du projet{" "}
+                <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Textarea
                 placeholder="Décrivez votre projet en détail..."
                 value={newSwap.description}
                 onChange={(e) =>
                   setNewSwap({ ...newSwap, description: e.target.value })
                 }
-                className="mt-1 h-20 resize-none"
+                className={`mt-1 h-20 resize-none ${!newSwap.description ? "border-red-200" : ""}`}
               />
             </div>
 
             <div>
-              <Label>Objectif des fonds</Label>
+              <Label className="flex items-center">
+                Objectif des fonds <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Input
                 type="text"
                 placeholder="Ex: Achat d'équipement, Stock, Développement..."
@@ -1531,12 +1542,14 @@ const DashboardCompleteFixed = () => {
                 onChange={(e) =>
                   setNewSwap({ ...newSwap, purpose: e.target.value })
                 }
-                className="mt-1"
+                className={`mt-1 ${!newSwap.purpose ? "border-red-200" : ""}`}
               />
             </div>
 
             <div>
-              <Label>Garanties proposées</Label>
+              <Label className="flex items-center">
+                Garanties proposées <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Input
                 type="text"
                 placeholder="Ex: Caution personnelle, Stock en garantie..."
@@ -1544,7 +1557,7 @@ const DashboardCompleteFixed = () => {
                 onChange={(e) =>
                   setNewSwap({ ...newSwap, guarantees: e.target.value })
                 }
-                className="mt-1"
+                className={`mt-1 ${!newSwap.guarantees ? "border-red-200" : ""}`}
               />
             </div>
 
