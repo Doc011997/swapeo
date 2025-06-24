@@ -115,6 +115,20 @@ interface Swap {
   category?: string;
   riskLevel?: "low" | "medium" | "high";
   verified?: boolean;
+  // Détails complets
+  purpose?: string;
+  guarantees?: string;
+  repaymentSchedule?: string;
+  earlyRepayment?: boolean;
+  insurance?: boolean;
+  createdBy?: string;
+  createdByCompany?: string;
+  createdByTrustScore?: number;
+  estimatedReturn?: number;
+  totalInterest?: number;
+  monthlyPayment?: number;
+  nextPaymentDate?: string | null;
+  lastUpdated?: string;
 }
 
 interface Transaction {
