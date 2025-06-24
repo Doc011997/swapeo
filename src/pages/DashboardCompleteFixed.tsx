@@ -786,15 +786,16 @@ const DashboardCompleteFixed = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative h-10 w-10 hover:bg-violet-50"
+                  className="relative h-12 w-12 hover:bg-violet-50 rounded-xl touch-manipulation"
                   onClick={() => setShowNotifications(!showNotifications)}
+                  aria-label={`Notifications ${notifications.filter((n) => !n.read).length > 0 ? `(${notifications.filter((n) => !n.read).length} non lues)` : ""}`}
                 >
-                  <Bell className="h-5 w-5 text-gray-600" />
+                  <Bell className="h-6 w-6 text-gray-600" />
                   {notifications.filter((n) => !n.read).length > 0 && (
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg"
+                      className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg min-w-[24px]"
                     >
                       {notifications.filter((n) => !n.read).length}
                     </motion.span>
