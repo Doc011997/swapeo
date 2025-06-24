@@ -366,6 +366,11 @@ const SwapPublic = () => {
     navigate("/login");
   };
 
+  const openSwapDetails = (swap: Swap) => {
+    setSelectedSwap(swap);
+    setShowSwapDetails(true);
+  };
+
   const getRiskColor = (risk: string) => {
     switch (risk) {
       case "low":
