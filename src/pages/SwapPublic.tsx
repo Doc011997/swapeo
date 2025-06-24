@@ -444,19 +444,7 @@ const SwapPublic = () => {
     setNotifications(mockNotifications);
   };
 
-  const filteredSwaps = swaps.filter((swap) => {
-    const matchesSearch =
-      swap.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      swap.counterparty.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      swap.purpose?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesCategory =
-      filterCategory === "all" ||
-      swap.category?.toLowerCase() === filterCategory.toLowerCase();
-    const matchesRisk = filterRisk === "all" || swap.riskLevel === filterRisk;
-
-    return matchesSearch && matchesCategory && matchesRisk;
-  });
+  const filteredSwaps = SwapService.filterSwaps(swaps, searchTerm, filterCategory, filterRisk);
 
   const calculateReturn = (amount: number, rate: number, duration: number) => {
     const monthlyRate = rate / 100 / 12;
