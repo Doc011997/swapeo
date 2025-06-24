@@ -322,7 +322,7 @@ const DashboardCompleteFixed = () => {
         id: "TX-001",
         type: "deposit",
         amount: 10000,
-        description: "D��pôt initial",
+        description: "Dépôt initial",
         date: "2024-01-20",
         status: "completed",
       },
@@ -864,18 +864,15 @@ const DashboardCompleteFixed = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-md">
-                <span className="text-white font-bold text-sm">S</span>
+              <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                <Handshake className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Swapeo</h1>
-                <p className="text-xs text-gray-500 hidden sm:block">
-                  Dashboard
-                </p>
+                <h1 className="text-xl font-bold text-gray-800">SWAPEO</h1>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="relative">
                 <Button
                   variant="ghost"
@@ -885,18 +882,40 @@ const DashboardCompleteFixed = () => {
                 >
                   <Bell className="h-5 w-5" />
                   {notifications.filter((n) => !n.read).length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-pink-500 text-white text-xs rounded-full flex items-center justify-center">
                       {notifications.filter((n) => !n.read).length}
                     </span>
                   )}
                 </Button>
               </div>
 
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
                   <AvatarFallback className="bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold text-sm sm:text-base">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </AvatarFallback>
                 </Avatar>
+                <div className="hidden sm:block">
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <div className="flex items-center space-x-1">
+                    <div className="flex items-center text-green-600">
+                      <Star className="h-3 w-3 mr-1" />
+                      <span className="text-xs font-medium">
+                        {user.trustScore || 85}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <Button variant="ghost" size="icon" onClick={handleLogout}>
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
                 <div className="hidden sm:block">
                   <p className="text-sm font-medium text-gray-900">
                     {user.firstName} {user.lastName}
