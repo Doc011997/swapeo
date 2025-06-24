@@ -2213,33 +2213,53 @@ const DashboardCompleteFixed = () => {
                 </Card>
               </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                <div className="flex space-x-3">
-                  <Button variant="outline">
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Contacter
+              {/* Actions - Optimisé Mobile */}
+              <div className="pt-4 border-t border-gray-200 space-y-3">
+                {/* Actions principales */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs sm:text-sm"
+                  >
+                    <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Contacter</span>
+                    <span className="sm:hidden">Contact</span>
                   </Button>
-                  <Button variant="outline">
-                    <Share2 className="h-4 w-4 mr-2" />
-                    Partager
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs sm:text-sm"
+                  >
+                    <Share2 className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Partager</span>
+                    <span className="sm:hidden">Share</span>
                   </Button>
-                  <Button variant="outline">
-                    <Download className="h-4 w-4 mr-2" />
-                    Exporter PDF
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs sm:text-sm"
+                  >
+                    <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <span className="hidden sm:inline">Exporter PDF</span>
+                    <span className="sm:hidden">PDF</span>
                   </Button>
                 </div>
-                <div className="flex space-x-3">
+
+                {/* Actions de contrôle */}
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                   <Button
                     variant="outline"
                     onClick={() => setShowSwapDetails(false)}
+                    className="flex-1 sm:flex-none text-sm"
                   >
                     Fermer
                   </Button>
                   {selectedSwap.status === "En recherche" && (
-                    <Button className="bg-green-500 hover:bg-green-600 text-white">
+                    <Button className="bg-green-500 hover:bg-green-600 text-white flex-1 sm:flex-none text-sm">
                       <Handshake className="h-4 w-4 mr-2" />
-                      Accepter le swap
+                      <span className="hidden sm:inline">Accepter le swap</span>
+                      <span className="sm:hidden">Accepter</span>
                     </Button>
                   )}
                 </div>
