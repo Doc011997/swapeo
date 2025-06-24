@@ -1367,56 +1367,66 @@ const DashboardCompleteFixed = () => {
                         transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
                         className="group"
                       >
-                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
-                          <div className="flex items-center space-x-4">
-                            <div className="relative">
-                              <div
-                                className={`w-4 h-4 rounded-full ${
-                                  swap.status === "active"
-                                    ? "bg-green-500 shadow-lg shadow-green-500/30"
-                                    : swap.status === "pending"
-                                      ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
-                                      : "bg-gray-400"
-                                } ${swap.status === "active" ? "animate-pulse" : ""}`}
-                              ></div>
-                              {swap.status === "active" && (
-                                <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
-                              )}
+                        <div className="p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
+                          {/* Mobile: Stack vertical, Desktop: Side by side */}
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                            <div className="flex items-center space-x-3 sm:space-x-4">
+                              <div className="relative flex-shrink-0">
+                                <div
+                                  className={`w-4 h-4 rounded-full ${
+                                    swap.status === "active"
+                                      ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                      : swap.status === "pending"
+                                        ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
+                                        : "bg-gray-400"
+                                  } ${swap.status === "active" ? "animate-pulse" : ""}`}
+                                ></div>
+                                {swap.status === "active" && (
+                                  <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
+                                )}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300 text-sm sm:text-base truncate">
+                                  {swap.type === "offre"
+                                    ? "💼 Offre de"
+                                    : "🎯 Demande de"}{" "}
+                                  {formatCurrency(swap.amount)}
+                                </p>
+                                <p className="text-xs sm:text-sm text-gray-600 group-hover:text-gray-700 truncate">
+                                  {swap.counterparty} • {swap.interestRate}%
+                                </p>
+                                <p className="text-xs text-gray-500 sm:hidden">
+                                  {swap.duration} mois
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300">
-                                {swap.type === "offre"
-                                  ? "💼 Offre de"
-                                  : "🎯 Demande de"}{" "}
-                                {formatCurrency(swap.amount)}
-                              </p>
-                              <p className="text-sm text-gray-600 group-hover:text-gray-700">
-                                {swap.counterparty} • {swap.interestRate}% •{" "}
+
+                            {/* Mobile: Full width, Desktop: Right aligned */}
+                            <div className="flex items-center justify-between sm:block sm:text-right space-x-2 sm:space-x-0">
+                              <Badge
+                                className={`font-medium border-0 text-xs ${
+                                  swap.status === "active"
+                                    ? "bg-green-100 text-green-700 shadow-sm"
+                                    : swap.status === "pending"
+                                      ? "bg-yellow-100 text-yellow-700 shadow-sm"
+                                      : "bg-gray-100 text-gray-700"
+                                }`}
+                              >
+                                {swap.status === "active"
+                                  ? "✅ Actif"
+                                  : swap.status === "pending"
+                                    ? "⏳ En attente"
+                                    : "✓ Terminé"}
+                              </Badge>
+                              {swap.status === "active" && (
+                                <p className="text-xs text-green-600 font-medium sm:mt-1">
+                                  {swap.daysRemaining || 45}j restants
+                                </p>
+                              )}
+                              <p className="text-xs text-gray-500 hidden sm:block">
                                 {swap.duration} mois
                               </p>
                             </div>
-                          </div>
-                          <div className="text-right">
-                            <Badge
-                              className={`font-medium border-0 ${
-                                swap.status === "active"
-                                  ? "bg-green-100 text-green-700 shadow-sm"
-                                  : swap.status === "pending"
-                                    ? "bg-yellow-100 text-yellow-700 shadow-sm"
-                                    : "bg-gray-100 text-gray-700"
-                              }`}
-                            >
-                              {swap.status === "active"
-                                ? "✅ Actif"
-                                : swap.status === "pending"
-                                  ? "⏳ En attente"
-                                  : "✓ Terminé"}
-                            </Badge>
-                            {swap.status === "active" && (
-                              <p className="text-xs text-green-600 mt-1 font-medium">
-                                {swap.daysRemaining || 45} jours restants
-                              </p>
-                            )}
                           </div>
                         </div>
                       </motion.div>
