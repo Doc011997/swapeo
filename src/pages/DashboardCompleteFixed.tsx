@@ -681,7 +681,7 @@ const DashboardCompleteFixed = () => {
       // Footer
       pdf.setFontSize(10);
       pdf.setTextColor(100, 100, 100);
-      pdf.text("Cette facture a été générée automatiquement", 20, 280);
+      pdf.text("Cette facture a ��té générée automatiquement", 20, 280);
 
       pdf.save(`Facture_${transaction.id}.pdf`);
 
@@ -1436,36 +1436,44 @@ const DashboardCompleteFixed = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-              <Card className="p-6 text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="h-6 w-6 text-blue-600" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6">
+              <Card className="p-3 sm:p-6 text-center">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Users className="h-4 w-4 sm:h-6 sm:w-6 text-blue-600" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">
                   {contacts.length}
                 </p>
-                <p className="text-sm text-gray-600">Contacts actifs</p>
+                <p className="text-xs sm:text-sm text-gray-600">
+                  Contacts actifs
+                </p>
               </Card>
-              <Card className="p-6 text-center">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Handshake className="h-6 w-6 text-green-600" />
+              <Card className="p-3 sm:p-6 text-center">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Handshake className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">12</p>
-                <p className="text-sm text-gray-600">Partenariats</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">
+                  12
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600">Partenariats</p>
               </Card>
-              <Card className="p-6 text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Star className="h-6 w-6 text-purple-600" />
+              <Card className="p-3 sm:p-6 text-center">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <Star className="h-4 w-4 sm:h-6 sm:w-6 text-purple-600" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">94%</p>
-                <p className="text-sm text-gray-600">Score moyen</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">
+                  94%
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600">Score moyen</p>
               </Card>
-              <Card className="p-6 text-center">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <TrendingUp className="h-6 w-6 text-orange-600" />
+              <Card className="p-3 sm:p-6 text-center">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                  <TrendingUp className="h-4 w-4 sm:h-6 sm:w-6 text-orange-600" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">+18%</p>
-                <p className="text-sm text-gray-600">Croissance</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900">
+                  +18%
+                </p>
+                <p className="text-xs sm:text-sm text-gray-600">Croissance</p>
               </Card>
             </div>
 
