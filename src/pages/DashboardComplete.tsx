@@ -2310,21 +2310,47 @@ const DashboardComplete = () => {
                         {transaction.amount > 0 ? "+" : ""}
                         {formatCurrency(transaction.amount)}
                       </p>
-                      <Badge
-                        className={`text-xs ${
-                          transaction.status === "completed"
-                            ? "bg-green-100 text-green-700"
-                            : transaction.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {transaction.status === "completed"
-                          ? "Terminé"
-                          : transaction.status === "pending"
-                            ? "En cours"
-                            : "Échoué"}
-                      </Badge>
+                      <div className="space-y-1">
+                        <p
+                          className={`font-semibold ${
+                            transaction.amount > 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {transaction.amount > 0 ? "+" : ""}
+                          {formatCurrency(transaction.amount)}
+                        </p>
+                        <div className="flex items-center space-x-2">
+                          <Badge
+                            className={`text-xs ${
+                              transaction.status === "completed"
+                                ? "bg-green-100 text-green-700"
+                                : transaction.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {transaction.status === "completed"
+                              ? "Terminé"
+                              : transaction.status === "pending"
+                                ? "En cours"
+                                : "Échoué"}
+                          </Badge>
+                          {transaction.status === "completed" && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 px-2 text-xs"
+                              onClick={() => generateInvoicePDF(transaction)}
+                              disabled={generatingPDF}
+                            >
+                              <Download className="h-3 w-3 mr-1" />
+                              PDF
+                            </Button>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
