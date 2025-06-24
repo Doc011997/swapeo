@@ -1074,40 +1074,46 @@ const DashboardCompleteFixed = () => {
             onValueChange={setActiveSection}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6 sm:mb-8 bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-xl p-1 sticky top-20 sm:top-24 z-30">
+            <TabsList className="grid w-full grid-cols-4 mb-6 sm:mb-8 bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-2xl p-2 sticky top-20 sm:top-24 z-30 max-w-sm mx-auto sm:max-w-md">
               <TabsTrigger
                 value="overview"
-                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
+                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
+                title="Aperçu"
               >
-                <Home className="h-5 w-5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm font-medium">
-                  <span className="hidden sm:inline">Aperçu</span>
-                  <span className="sm:hidden">Vue</span>
-                </span>
+                <div className="relative">
+                  <Home className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="absolute -inset-1 bg-violet-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
+                </div>
               </TabsTrigger>
               <TabsTrigger
                 value="swaps"
-                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
+                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
+                title="Swaps"
               >
-                <Handshake className="h-5 w-5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm font-medium">Swaps</span>
+                <div className="relative">
+                  <Handshake className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="absolute -inset-1 bg-indigo-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
+                </div>
               </TabsTrigger>
               <TabsTrigger
                 value="wallet"
-                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
+                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-green-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
+                title="Portefeuille"
               >
-                <Wallet className="h-5 w-5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm font-medium">
-                  <span className="hidden sm:inline">Portefeuille</span>
-                  <span className="sm:hidden">Wallet</span>
-                </span>
+                <div className="relative">
+                  <Wallet className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="absolute -inset-1 bg-green-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
+                </div>
               </TabsTrigger>
               <TabsTrigger
                 value="contacts"
-                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
+                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-blue-500 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
+                title="Contacts"
               >
-                <Users className="h-5 w-5 sm:h-4 sm:w-4" />
-                <span className="text-xs sm:text-sm font-medium">Contacts</span>
+                <div className="relative">
+                  <Users className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="absolute -inset-1 bg-blue-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
+                </div>
               </TabsTrigger>
             </TabsList>
 
