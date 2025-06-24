@@ -2701,6 +2701,102 @@ const DashboardComplete = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Modal Invitation */}
+      <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Inviter une personne</DialogTitle>
+            <DialogDescription>
+              Invitez quelqu'un à rejoindre votre réseau Swapeo
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-gray-700">Prénom</Label>
+                <Input
+                  type="text"
+                  placeholder="Jean"
+                  value={inviteForm.firstName}
+                  onChange={(e) =>
+                    setInviteForm({ ...inviteForm, firstName: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label className="text-gray-700">Nom</Label>
+                <Input
+                  type="text"
+                  placeholder="Dupont"
+                  value={inviteForm.lastName}
+                  onChange={(e) =>
+                    setInviteForm({ ...inviteForm, lastName: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-gray-700">Email</Label>
+              <Input
+                type="email"
+                placeholder="jean.dupont@example.com"
+                value={inviteForm.email}
+                onChange={(e) =>
+                  setInviteForm({ ...inviteForm, email: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-gray-700">Message personnalisé (optionnel)</Label>
+              <Textarea
+                placeholder="Je t'invite à rejoindre Swapeo, une plateforme géniale pour..."
+                value={inviteForm.message}
+                onChange={(e) =>
+                  setInviteForm({ ...inviteForm, message: e.target.value })
+                }
+                className="mt-1 h-20 resize-none"
+              />
+            </div>
+
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium text-blue-900 mb-2">
+                📧 Aperçu de l'invitation
+              </h4>
+              <div className="text-sm text-blue-800">
+                <p><strong>À:</strong> {inviteForm.firstName} {inviteForm.lastName}</p>
+                <p><strong>Email:</strong> {inviteForm.email}</p>
+                <p><strong>De la part de:</strong> {user.firstName} {user.lastName}</p>
+                {inviteForm.message && (
+                  <p><strong>Message:</strong> "{inviteForm.message.substring(0, 50)}..."</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowInviteDialog(false)}
+              >
+                Annuler
+              </Button>
+              <Button
+                onClick={handleInviteUser}
+                disabled={!inviteForm.email || !inviteForm.firstName || !inviteForm.lastName}
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                Envoyer l'invitation
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
