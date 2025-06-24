@@ -2366,17 +2366,14 @@ const DashboardComplete = () => {
                         </div>
                       </div>
                     </div>
-                          <MessageCircle className="h-4 w-4 mr-1" />
-                          Message
-                        </Button>
-                        <Button size="sm">
-                          <Plus className="h-4 w-4 mr-1" />
-                          Nouveau swap
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
+                  </div>
                 ))}
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Section Analytics */}
+          <TabsContent value="analytics" className="space-y-6">
               </div>
             </Card>
           </TabsContent>
