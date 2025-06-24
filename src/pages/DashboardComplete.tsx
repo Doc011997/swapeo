@@ -340,14 +340,11 @@ const DashboardComplete = () => {
 
   const loadTransactions = async () => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/wallet/transactions",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
+      const response = await fetch("https://swapeo.netlify.app/api/wallet/transactions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -578,14 +575,11 @@ const DashboardComplete = () => {
 
   const refreshUserProfile = async () => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/users/profile",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
+      const response = await fetch("https://swapeo.netlify.app/api/users/profile", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -623,22 +617,16 @@ const DashboardComplete = () => {
     });
   };
 
-  const handleWalletDeposit = async (
-    amount: number,
-    method: string = "bank_transfer",
-  ) => {
+  const handleWalletDeposit = async (amount: number, method: string = "bank_transfer") => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/wallet/deposit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
-          body: JSON.stringify({ amount, method }),
+      const response = await fetch("https://swapeo.netlify.app/api/wallet/deposit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+        body: JSON.stringify({ amount, method }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -691,18 +679,16 @@ const DashboardComplete = () => {
       // Simulate interest calculation
       if (Math.random() > 0.7) {
         setTimeout(() => {
-          const interest = Math.floor(
-            netAmount * 0.001 * (Math.random() * 5 + 1),
-          );
+          const interest = Math.floor(netAmount * 0.001 * (Math.random() * 5 + 1));
           const interestTransaction: Transaction = {
             id: `tx-${Date.now()}-int`,
             type: "interest",
             amount: interest,
-            description: `Intérêts générés (+${((interest / netAmount) * 100).toFixed(2)}%)`,
+            description: `Intérêts générés (+${(interest/netAmount*100).toFixed(2)}%)`,
             date: new Date().toISOString(),
             status: "completed",
           };
-          setTransactions((prev) => [interestTransaction, ...prev]);
+          setTransactions(prev => [interestTransaction, ...prev]);
 
           const userWithInterest = {
             ...user,
@@ -727,17 +713,14 @@ const DashboardComplete = () => {
 
   const handleWalletWithdraw = async (amount: number) => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/wallet/withdraw",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
-          body: JSON.stringify({ amount }),
+      const response = await fetch("https://swapeo.netlify.app/api/wallet/withdraw", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+        body: JSON.stringify({ amount }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -851,8 +834,7 @@ const DashboardComplete = () => {
       return;
     }
 
-    const randomContact =
-      availableContacts[Math.floor(Math.random() * availableContacts.length)];
+    const randomContact = availableContacts[Math.floor(Math.random() * availableContacts.length)];
 
     const newContact: Contact = {
       id: `contact-${Date.now()}`,
@@ -862,9 +844,7 @@ const DashboardComplete = () => {
       trustScore: randomContact.trustScore,
       totalSwaps: Math.floor(Math.random() * 15) + 1,
       averageAmount: Math.floor(Math.random() * 20000) + 5000,
-      lastActive: new Date(
-        Date.now() - Math.random() * 24 * 60 * 60 * 1000,
-      ).toISOString(),
+      lastActive: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000).toISOString(),
       verified: true,
     };
 
@@ -896,11 +876,7 @@ const DashboardComplete = () => {
       // Date et numéro de facture
       const currentDate = new Date().toLocaleDateString("fr-FR");
       pdf.text(`Date: ${currentDate}`, pageWidth - 60, yPosition);
-      pdf.text(
-        `Facture: ${transaction.id.toUpperCase()}`,
-        pageWidth - 60,
-        yPosition + 8,
-      );
+      pdf.text(`Facture: ${transaction.id.toUpperCase()}`, pageWidth - 60, yPosition + 8);
 
       yPosition += 40;
 
@@ -928,11 +904,7 @@ const DashboardComplete = () => {
       // Tableau des détails
       const startY = yPosition;
       const tableWidth = pageWidth - 40;
-      const colWidths = [
-        tableWidth * 0.5,
-        tableWidth * 0.25,
-        tableWidth * 0.25,
-      ];
+      const colWidths = [tableWidth * 0.5, tableWidth * 0.25, tableWidth * 0.25];
 
       // Headers du tableau
       pdf.setFillColor(59, 130, 246);
@@ -953,19 +925,12 @@ const DashboardComplete = () => {
       pdf.setTextColor(0, 0, 0);
       pdf.setFont(undefined, "normal");
       pdf.text(transaction.description, 25, yPosition + 10);
+      pdf.text(`${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`, 25 + colWidths[0], yPosition + 10);
       pdf.text(
-        `${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`,
-        25 + colWidths[0],
-        yPosition + 10,
-      );
-      pdf.text(
-        transaction.status === "completed"
-          ? "Terminé"
-          : transaction.status === "pending"
-            ? "En cours"
-            : "Échoué",
+        transaction.status === "completed" ? "Terminé" :
+        transaction.status === "pending" ? "En cours" : "Échoué",
         25 + colWidths[0] + colWidths[1],
-        yPosition + 10,
+        yPosition + 10
       );
 
       yPosition += 30;
@@ -979,27 +944,15 @@ const DashboardComplete = () => {
         yPosition += 15;
         pdf.setFont(undefined, "normal");
         pdf.setFontSize(10);
-        pdf.text(
-          `Type de transaction: ${
-            transaction.type === "deposit"
-              ? "Dépôt"
-              : transaction.type === "withdraw"
-                ? "Retrait"
-                : transaction.type === "interest"
-                  ? "Intérêts"
-                  : "Frais"
-          }`,
-          20,
-          yPosition,
-        );
+        pdf.text(`Type de transaction: ${
+          transaction.type === "deposit" ? "Dépôt" :
+          transaction.type === "withdraw" ? "Retrait" :
+          transaction.type === "interest" ? "Intérêts" : "Frais"
+        }`, 20, yPosition);
 
         if (transaction.type === "deposit" || transaction.type === "withdraw") {
           pdf.text(`Référence: ${transaction.id}`, 20, yPosition + 10);
-          pdf.text(
-            `Date de traitement: ${new Date(transaction.date).toLocaleDateString("fr-FR")}`,
-            20,
-            yPosition + 20,
-          );
+          pdf.text(`Date de traitement: ${new Date(transaction.date).toLocaleDateString("fr-FR")}`, 20, yPosition + 20);
         }
 
         yPosition += 40;
@@ -1013,11 +966,7 @@ const DashboardComplete = () => {
         pdf.setFontSize(14);
         pdf.setFont(undefined, "bold");
         pdf.text("TOTAL", pageWidth - 110, yPosition + 8);
-        pdf.text(
-          formatCurrency(transaction.amount),
-          pageWidth - 110,
-          yPosition + 16,
-        );
+        pdf.text(formatCurrency(transaction.amount), pageWidth - 110, yPosition + 16);
       }
 
       // Footer
@@ -1025,26 +974,12 @@ const DashboardComplete = () => {
       pdf.setTextColor(100, 100, 100);
       pdf.setFontSize(9);
       pdf.setFont(undefined, "normal");
-      pdf.text(
-        "Cette facture a été générée automatiquement par Swapeo",
-        20,
-        footerY,
-      );
-      pdf.text(
-        "Pour toute question, contactez-nous à support@swapeo.fr",
-        20,
-        footerY + 8,
-      );
-      pdf.text(
-        "Swapeo - Plateforme de financement collaboratif sécurisée",
-        20,
-        footerY + 16,
-      );
+      pdf.text("Cette facture a été générée automatiquement par Swapeo", 20, footerY);
+      pdf.text("Pour toute question, contactez-nous à support@swapeo.fr", 20, footerY + 8);
+      pdf.text("Swapeo - Plateforme de financement collaboratif sécurisée", 20, footerY + 16);
 
       // Télécharger le PDF
-      pdf.save(
-        `Facture_Swapeo_${transaction.id}_${currentDate.replace(/\//g, "-")}.pdf`,
-      );
+      pdf.save(`Facture_Swapeo_${transaction.id}_${currentDate.replace(/\//g, "-")}.pdf`);
 
       setMessage("✅ Facture PDF téléchargée avec succès !");
     } catch (error) {
@@ -1057,23 +992,20 @@ const DashboardComplete = () => {
 
   const handleInviteUser = async () => {
     try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/invitations/send",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
-          },
-          body: JSON.stringify({
-            email: inviteForm.email,
-            firstName: inviteForm.firstName,
-            lastName: inviteForm.lastName,
-            message: inviteForm.message,
-            inviterName: `${user.firstName} ${user.lastName}`,
-          }),
+      const response = await fetch("https://swapeo.netlify.app/api/invitations/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
         },
-      );
+        body: JSON.stringify({
+          email: inviteForm.email,
+          firstName: inviteForm.firstName,
+          lastName: inviteForm.lastName,
+          message: inviteForm.message,
+          inviterName: `${user.firstName} ${user.lastName}`,
+        }),
+      });
 
       if (response.ok) {
         setMessage(`✅ Invitation envoyée à ${inviteForm.email} !`);
@@ -1126,16 +1058,8 @@ const DashboardComplete = () => {
       yPosition += 20;
       pdf.setFontSize(12);
       pdf.setTextColor(0, 0, 0);
-      pdf.text(
-        `Période: ${new Date().toLocaleDateString("fr-FR")}`,
-        20,
-        yPosition,
-      );
-      pdf.text(
-        `Client: ${user.firstName} ${user.lastName}`,
-        20,
-        yPosition + 10,
-      );
+      pdf.text(`Période: ${new Date().toLocaleDateString("fr-FR")}`, 20, yPosition);
+      pdf.text(`Client: ${user.firstName} ${user.lastName}`, 20, yPosition + 10);
 
       yPosition += 30;
 
@@ -1147,26 +1071,10 @@ const DashboardComplete = () => {
       yPosition += 15;
       pdf.setFont(undefined, "normal");
       pdf.setFontSize(12);
-      pdf.text(
-        `Solde actuel: ${formatCurrency(walletData.balance)}`,
-        20,
-        yPosition,
-      );
-      pdf.text(
-        `Total déposé: ${formatCurrency(walletData.totalDeposited)}`,
-        20,
-        yPosition + 10,
-      );
-      pdf.text(
-        `Total retiré: ${formatCurrency(walletData.totalWithdrawn)}`,
-        20,
-        yPosition + 20,
-      );
-      pdf.text(
-        `Gains totaux: ${formatCurrency(stats.totalEarnings)}`,
-        20,
-        yPosition + 30,
-      );
+      pdf.text(`Solde actuel: ${formatCurrency(walletData.balance)}`, 20, yPosition);
+      pdf.text(`Total déposé: ${formatCurrency(walletData.totalDeposited)}`, 20, yPosition + 10);
+      pdf.text(`Total retiré: ${formatCurrency(walletData.totalWithdrawn)}`, 20, yPosition + 20);
+      pdf.text(`Gains totaux: ${formatCurrency(stats.totalEarnings)}`, 20, yPosition + 30);
 
       yPosition += 50;
 
@@ -1185,24 +1093,14 @@ const DashboardComplete = () => {
 
         pdf.setFontSize(10);
         pdf.setFont(undefined, "normal");
-        pdf.text(
-          new Date(transaction.date).toLocaleDateString("fr-FR"),
-          20,
-          yPosition,
-        );
+        pdf.text(new Date(transaction.date).toLocaleDateString("fr-FR"), 20, yPosition);
         pdf.text(transaction.description.substring(0, 40), 50, yPosition);
-        pdf.text(
-          `${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`,
-          pageWidth - 40,
-          yPosition,
-        );
+        pdf.text(`${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`, pageWidth - 40, yPosition);
 
         yPosition += 12;
       });
 
-      pdf.save(
-        `Releve_Swapeo_${new Date().toLocaleDateString("fr-FR").replace(/\//g, "-")}.pdf`,
-      );
+      pdf.save(`Releve_Swapeo_${new Date().toLocaleDateString("fr-FR").replace(/\//g, "-")}.pdf`);
       setMessage("✅ Relevé de compte téléchargé !");
     } catch (error) {
       setMessage("❌ Erreur lors de la génération du relevé");
@@ -1512,9 +1410,7 @@ const DashboardComplete = () => {
                       </div>
                       <div className="flex items-center text-green-600 mt-1">
                         <TrendingUp className="h-4 w-4 mr-1" />
-                        <span className="text-sm">
-                          +{stats.averageReturn.toFixed(1)}% rendement moyen
-                        </span>
+                        <span className="text-sm">+{stats.averageReturn.toFixed(1)}% rendement moyen</span>
                       </div>
                     </div>
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -2127,9 +2023,7 @@ const DashboardComplete = () => {
                         <Button
                           className="w-full bg-blue-500 hover:bg-blue-600"
                           onClick={() => {
-                            const amountInput = document.getElementById(
-                              "deposit-amount",
-                            ) as HTMLInputElement;
+                            const amountInput = document.getElementById("deposit-amount") as HTMLInputElement;
                             const amount = parseInt(amountInput?.value || "0");
                             if (amount > 0) {
                               handleWalletDeposit(amount, "bank_transfer");
@@ -2174,9 +2068,7 @@ const DashboardComplete = () => {
                         <Button
                           className="w-full bg-blue-500 hover:bg-blue-600"
                           onClick={() => {
-                            const amountInput = document.getElementById(
-                              "withdraw-amount",
-                            ) as HTMLInputElement;
+                            const amountInput = document.getElementById("withdraw-amount") as HTMLInputElement;
                             const amount = parseInt(amountInput?.value || "0");
                             if (amount > 0) {
                               handleWalletWithdraw(amount);
@@ -2441,49 +2333,49 @@ const DashboardComplete = () => {
                     transition={{ delay: index * 0.1 }}
                   >
                     <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className="flex items-center space-x-4">
-                        <Avatar className="h-12 w-12">
-                          <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                            {contact.name
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center space-x-2">
-                            <h4 className="font-semibold text-gray-900">
-                              {contact.name}
-                            </h4>
-                            {contact.verified && (
-                              <CheckCircle className="h-4 w-4 text-green-500" />
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-600">
-                            {contact.company}
-                          </p>
-                          <div className="flex items-center space-x-4 mt-1">
-                            <div className="flex items-center space-x-1">
-                              <Star className="h-3 w-3 text-yellow-500" />
-                              <span className="text-xs text-gray-600">
-                                {contact.trustScore}%
-                              </span>
-                            </div>
-                            <span className="text-xs text-gray-500">
-                              {contact.totalSwaps} swaps
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              Moy. {formatCurrency(contact.averageAmount)}
-                            </span>
-                          </div>
+                    <div className="text-right">
+                      <div className="space-y-1">
+                        <p
+                          className={`font-semibold ${
+                            transaction.amount > 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {transaction.amount > 0 ? "+" : ""}
+                          {formatCurrency(transaction.amount)}
+                        </p>
+                        <div className="flex items-center justify-end space-x-2">
+                          <Badge
+                            className={`text-xs ${
+                              transaction.status === "completed"
+                                ? "bg-green-100 text-green-700"
+                                : transaction.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {transaction.status === "completed"
+                              ? "Terminé"
+                              : transaction.status === "pending"
+                                ? "En cours"
+                                : "Échoué"}
+                          </Badge>
+                          {transaction.status === "completed" && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-6 px-2 text-xs"
+                              onClick={() => generateInvoicePDF(transaction)}
+                              disabled={generatingPDF}
+                            >
+                              <Download className="h-3 w-3 mr-1" />
+                              PDF
+                            </Button>
+                          )}
                         </div>
                       </div>
-
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-500">
-                          {contact.lastActive}
-                        </span>
-                        <Button size="sm" variant="outline">
+                    </div>
                           <MessageCircle className="h-4 w-4 mr-1" />
                           Message
                         </Button>
