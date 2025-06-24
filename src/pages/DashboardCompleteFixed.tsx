@@ -494,7 +494,7 @@ const DashboardCompleteFixed = () => {
         description: "",
       });
 
-      // Confirmation immédiate détaill��e
+      // Confirmation immédiate détaillée
       const successMessage = `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`;
       setMessage(successMessage);
       setTimeout(() => setMessage(""), 8000);
@@ -1479,12 +1479,22 @@ const DashboardCompleteFixed = () => {
                 </p>
               </div>
               <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
-                <Button onClick={addFictiveContact} className="text-sm">
+                <Button
+                  onClick={() => setShowAddContactDialog(true)}
+                  className="text-sm"
+                >
                   <Plus className="h-4 w-4 mr-2" />
-                  <span className="hidden sm:inline">
-                    Ajouter contact fictif
-                  </span>
+                  <span className="hidden sm:inline">Ajouter un contact</span>
                   <span className="sm:hidden">Ajouter contact</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={addFictiveContact}
+                  className="text-sm"
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">Contact aléatoire</span>
+                  <span className="sm:hidden">Aléatoire</span>
                 </Button>
                 <Button
                   variant="outline"
