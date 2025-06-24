@@ -1697,6 +1697,339 @@ const DashboardCompleteFixed = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Modal Détails du Swap */}
+      <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              {selectedSwap && getStatusIcon(selectedSwap.status)}
+              <span>Détails du Swap {selectedSwap?.id}</span>
+            </DialogTitle>
+            <DialogDescription>
+              Informations complètes sur ce swap financier
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedSwap && (
+            <div className="space-y-6">
+              {/* En-tête du swap */}
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      {formatCurrency(selectedSwap.amount)}
+                    </h3>
+                    <p className="text-gray-600">Montant</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-blue-600">
+                      {selectedSwap.interestRate}%
+                    </h3>
+                    <p className="text-gray-600">Taux d'intérêt</p>
+                  </div>
+                  <div className="text-center">
+                    <h3 className="text-2xl font-bold text-purple-600">
+                      {selectedSwap.duration} mois
+                    </h3>
+                    <p className="text-gray-600">Durée</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Informations principales */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="p-6">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center">
+                    <FileText className="h-5 w-5 mr-2 text-blue-500" />
+                    Informations générales
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Type:</span>
+                      <Badge
+                        className={
+                          selectedSwap.type === "demande"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-green-100 text-green-700"
+                        }
+                      >
+                        {selectedSwap.type === "demande"
+                          ? "💰 Demande de financement"
+                          : "🏦 Offre de financement"}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Statut:</span>
+                      <div className="flex items-center space-x-2">
+                        {getStatusIcon(selectedSwap.status)}
+                        <span className="font-medium">
+                          {selectedSwap.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Catégorie:</span>
+                      <span className="font-medium">
+                        {selectedSwap.category || "Non spécifiée"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Niveau de risque:</span>
+                      <span
+                        className={`font-medium ${
+                          selectedSwap.riskLevel === "low"
+                            ? "text-green-600"
+                            : selectedSwap.riskLevel === "medium"
+                              ? "text-yellow-600"
+                              : "text-red-600"
+                        }`}
+                      >
+                        {selectedSwap.riskLevel === "low"
+                          ? "Faible"
+                          : selectedSwap.riskLevel === "medium"
+                            ? "Modéré"
+                            : "Élevé"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Score de matching:</span>
+                      <div className="flex items-center space-x-1">
+                        <Star className="h-4 w-4 text-yellow-500" />
+                        <span className="font-medium">
+                          {selectedSwap.matchingScore}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                <Card className="p-6">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center">
+                    <User className="h-5 w-5 mr-2 text-green-500" />
+                    Créateur du swap
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <Avatar className="h-12 w-12">
+                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                          {selectedSwap.createdBy
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .join("") || "??"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">
+                          {selectedSwap.createdBy || "Utilisateur"}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {selectedSwap.createdByCompany || "Entreprise"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Trust Score:</span>
+                      <div className="flex items-center space-x-1">
+                        <Shield className="h-4 w-4 text-green-500" />
+                        <span className="font-medium text-green-600">
+                          {selectedSwap.createdByTrustScore || 85}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Contrepartie:</span>
+                      <span className="font-medium">
+                        {selectedSwap.counterparty}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Vérifié:</span>
+                      {selectedSwap.verified ? (
+                        <CheckCircle className="h-5 w-5 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-5 w-5 text-yellow-500" />
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Description et objectifs */}
+              <Card className="p-6">
+                <h4 className="text-lg font-semibold mb-4 flex items-center">
+                  <BookOpen className="h-5 w-5 mr-2 text-purple-500" />
+                  Description et objectifs
+                </h4>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Description du projet:
+                    </p>
+                    <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                      {selectedSwap.description || "Aucune description fournie"}
+                    </p>
+                  </div>
+                  {selectedSwap.purpose && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Objectif des fonds:
+                      </p>
+                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                        {selectedSwap.purpose}
+                      </p>
+                    </div>
+                  )}
+                  {selectedSwap.guarantees && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Garanties proposées:
+                      </p>
+                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                        {selectedSwap.guarantees}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </Card>
+
+              {/* Conditions financières */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="p-6">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center">
+                    <Calculator className="h-5 w-5 mr-2 text-green-500" />
+                    Conditions financières
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Remboursement:</span>
+                      <span className="font-medium">
+                        {getRepaymentScheduleText(
+                          selectedSwap.repaymentSchedule || "monthly",
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">
+                        Remboursement anticipé:
+                      </span>
+                      <span
+                        className={`font-medium ${selectedSwap.earlyRepayment ? "text-green-600" : "text-red-600"}`}
+                      >
+                        {selectedSwap.earlyRepayment
+                          ? "Autorisé"
+                          : "Non autorisé"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Assurance:</span>
+                      <span
+                        className={`font-medium ${selectedSwap.insurance ? "text-green-600" : "text-gray-600"}`}
+                      >
+                        {selectedSwap.insurance ? "Incluse" : "Non incluse"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">
+                        Intérêts totaux estimés:
+                      </span>
+                      <span className="font-medium text-blue-600">
+                        {formatCurrency(selectedSwap.totalInterest || 0)}
+                      </span>
+                    </div>
+                    {selectedSwap.monthlyPayment && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Mensualité:</span>
+                        <span className="font-medium text-purple-600">
+                          {formatCurrency(selectedSwap.monthlyPayment)}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </Card>
+
+                <Card className="p-6">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center">
+                    <Calendar className="h-5 w-5 mr-2 text-orange-500" />
+                    Planning et échéances
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Créé le:</span>
+                      <span className="font-medium">
+                        {formatDate(selectedSwap.createdAt)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">
+                        Dernière mise à jour:
+                      </span>
+                      <span className="font-medium">
+                        {formatDate(
+                          selectedSwap.lastUpdated || selectedSwap.createdAt,
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Jours restants:</span>
+                      <span className="font-medium text-orange-600">
+                        {selectedSwap.daysRemaining || 0} jours
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Progression:</span>
+                      <span className="font-medium">
+                        {selectedSwap.progress}%
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="mt-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>Avancement</span>
+                      <span>{selectedSwap.progress}%</span>
+                    </div>
+                    <Progress value={selectedSwap.progress} className="h-3" />
+                  </div>
+                </Card>
+              </div>
+
+              {/* Actions */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                <div className="flex space-x-3">
+                  <Button variant="outline">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Contacter
+                  </Button>
+                  <Button variant="outline">
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Partager
+                  </Button>
+                  <Button variant="outline">
+                    <Download className="h-4 w-4 mr-2" />
+                    Exporter PDF
+                  </Button>
+                </div>
+                <div className="flex space-x-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowSwapDetails(false)}
+                  >
+                    Fermer
+                  </Button>
+                  {selectedSwap.status === "En recherche" && (
+                    <Button className="bg-green-500 hover:bg-green-600 text-white">
+                      <Handshake className="h-4 w-4 mr-2" />
+                      Accepter le swap
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
