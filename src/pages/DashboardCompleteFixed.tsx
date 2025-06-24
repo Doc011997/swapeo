@@ -2401,23 +2401,26 @@ const DashboardCompleteFixed = () => {
 
       {/* Modal Détails du Swap */}
       <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
-        <DialogContent className="max-w-[95vw] sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
-          <DialogHeader className="pb-3 sm:pb-4 border-b border-gray-100">
-            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-              <DialogTitle className="text-base sm:text-xl font-bold text-gray-900 flex items-center">
-                <span>Détails du Swap #{selectedSwap?.id?.slice(-6)}</span>
+        <DialogContent className="max-w-[98vw] sm:max-w-2xl lg:max-w-4xl max-h-[98vh] overflow-y-auto p-3 sm:p-6 m-2 sm:m-6">
+          <DialogHeader className="pb-2 sm:pb-4 border-b border-gray-100">
+            <div className="flex flex-col space-y-1 sm:space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
+              <DialogTitle className="text-sm sm:text-base md:text-xl font-bold text-gray-900 flex items-center truncate pr-2">
+                <span className="truncate">
+                  Swap #{selectedSwap?.id?.slice(-6)}
+                </span>
+                <span className="hidden sm:inline ml-1">- Détails</span>
               </DialogTitle>
               <Badge
                 className={`${
                   selectedSwap?.type === "demande"
                     ? "bg-orange-100 text-orange-700 border-orange-200"
                     : "bg-lime-100 text-lime-700 border-lime-200"
-                } text-xs sm:text-sm font-medium flex-shrink-0 self-start sm:self-center`}
+                } text-xs font-medium flex-shrink-0 self-start md:self-center`}
               >
-                <span className="sm:hidden">
+                <span className="md:hidden">
                   {selectedSwap?.type === "demande" ? "💰" : "🏦"}
                 </span>
-                <span className="hidden sm:inline">
+                <span className="hidden md:inline">
                   {selectedSwap?.type === "demande" ? "💰 Demande" : "🏦 Offre"}
                 </span>
               </Badge>
@@ -2902,7 +2905,7 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="inviteMessage">Message personnalisé</Label>
+              <Label htmlFor="inviteMessage">Message personnalis��</Label>
               <Textarea
                 id="inviteMessage"
                 placeholder="Ajoutez un message personnel..."
