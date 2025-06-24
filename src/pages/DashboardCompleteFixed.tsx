@@ -924,7 +924,7 @@ const DashboardCompleteFixed = () => {
                     <div className="flex items-center text-green-600">
                       <Star className="h-3 w-3 mr-1" />
                       <span className="text-xs font-medium">
-                        {stats.trustScore}%
+                        {user.trustScore || 85}%
                       </span>
                     </div>
                   </div>
