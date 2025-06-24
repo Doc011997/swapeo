@@ -170,12 +170,19 @@ const DashboardCompleteFixed = () => {
     message: "",
   });
   const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
+  const [showSwapDetails, setShowSwapDetails] = useState(false);
   const [newSwap, setNewSwap] = useState({
     type: "",
     amount: "",
     duration: "",
     description: "",
     category: "",
+    purpose: "",
+    guarantees: "",
+    repaymentSchedule: "monthly",
+    earlyRepayment: true,
+    insurance: false,
   });
 
   // Stats calculées
