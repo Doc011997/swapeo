@@ -916,32 +916,6 @@ const DashboardCompleteFixed = () => {
           </div>
         </div>
       </header>
-                <div className="hidden sm:block">
-                  <p className="text-sm font-medium text-gray-900">
-                    {user.firstName} {user.lastName}
-                  </p>
-                  <div className="flex items-center space-x-1">
-                    <div className="flex items-center text-green-600">
-                      <Star className="h-3 w-3 mr-1" />
-                      <span className="text-xs font-medium">
-                        {user.trustScore || 85}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleLogout}
-                className="text-gray-600 hover:text-gray-900"
-              >
-                <LogOut className="h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
       </header>
 
       {/* Message de feedback */}
