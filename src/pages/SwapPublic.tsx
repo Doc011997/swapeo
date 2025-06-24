@@ -150,12 +150,8 @@ const SwapPublic = () => {
   });
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
-  const [selectedSwap, setSelectedSwap] = useState<MarketplaceSwap | null>(
-    null,
-  );
-  const [matchingInProgress, setMatchingInProgress] = useState<string | null>(
-    null,
-  );
+  const [selectedSwap, setSelectedSwap] = useState<MarketplaceSwap | null>(null);
+  const [matchingInProgress, setMatchingInProgress] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Vérification de l'authentification au chargement
@@ -186,7 +182,104 @@ const SwapPublic = () => {
   }, []);
 
   const loadUserData = () => {
-    // Simulation des données de swaps pour les utilisateurs connectés
+    // Charger les swaps depuis le marketplace global
+    const marketplaceSwaps = SwapService.getMarketplaceSwaps();
+    setSwaps(marketplaceSwaps);
+
+    // Simulation des notifications pour les utilisateurs connectés
+    const mockNotifications: Notification[] = [
+      {
+        id: "notif-1",
+        type: "swap",
+        title: "Nouveau match trouvé !",
+        description:
+          "TechStart Solutions correspond à vos critères d'investissement",
+        time: "Il y a 2h",
+        read: false,
+        actionUrl: "/swap/swap-1",
+      },
+      {
+        id: "notif-2",
+        type: "payment",
+        title: "Paiement reçu",
+        description: "1 597€ d'intérêts de GreenEnergy Corp",
+        time: "Hier",
+        read: false,
+      },
+      {
+        id: "notif-3",
+        type: "system",
+        title: "Nouvel utilisateur vérifié",
+        description: "RestaurantChain Plus a rejoint votre réseau",
+        time: "Il y a 2 jours",
+        read: true,
+      },
+    ];
+
+    setNotifications(mockNotifications);
+  };
+
+  // Charger les swaps même pour les visiteurs non connectés (version réduite)
+  const loadPublicSwaps = () => {
+    const marketplaceSwaps = SwapService.getMarketplaceSwaps();
+    // Limiter à 3 swaps pour les visiteurs
+    setSwaps(marketplaceSwaps.slice(0, 3));
+  };
+
+  // Fonction pour matcher/accepter un swap
+  const handleMatchSwap = async (swapId: string) => {
+    if (!isAuthenticated || !user) {
+      setShowLoginModal(true);
+      return;
+    }
+
+    setMatchingInProgress(swapId);
+
+    try {
+      // Simuler un délai de traitement
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Supprimer le swap du marketplace
+      const success = SwapService.acceptSwap(swapId, user.id);
+
+      if (success) {
+        // Mettre à jour la liste locale
+        setSwaps(prevSwaps => prevSwaps.filter(swap => swap.id !== swapId));
+
+        // Afficher une notification de succès
+        setNotifications(prev => [{
+          id: `match-${Date.now()}`,
+          type: "swap",
+          title: "🎉 Match réalisé !",
+          description: `Vous avez accepté le swap ${swapId}. Le créateur va être notifié.`,
+          time: "À l'instant",
+          read: false,
+        }, ...prev]);
+
+        // Afficher le message dans l'interface
+        alert(`✅ Swap ${swapId} accepté avec succès ! Le créateur sera contacté.`);
+      } else {
+        alert("❌ Erreur lors de l'acceptation du swap");
+      }
+    } catch (error) {
+      console.error("Erreur lors du matching:", error);
+      alert("❌ Erreur lors de l'acceptation du swap");
+    } finally {
+      setMatchingInProgress(null);
+    }
+  };
+
+  // Fonction pour recharger les swaps
+  const refreshSwaps = () => {
+    if (isAuthenticated) {
+      loadUserData();
+    } else {
+      loadPublicSwaps();
+    }
+  };
+
+  // Supprimer les anciens swaps mockés
+  /*
     const mockSwaps: Swap[] = [
       {
         id: "swap-1",
@@ -1235,9 +1328,7 @@ const SwapPublic = () => {
                   >
                     {selectedSwap.type === "offre" ? "Offre" : "Demande"}
                   </Badge>
-                  <Badge
-                    className={getRiskColor(selectedSwap.riskLevel || "medium")}
-                  >
+                  <Badge className={getRiskColor(selectedSwap.riskLevel || "medium")}>
                     Risque{" "}
                     {selectedSwap.riskLevel === "low"
                       ? "Faible"
@@ -1301,28 +1392,20 @@ const SwapPublic = () => {
                     <div className="space-y-3">
                       <div className="flex justify-between">
                         <span className="text-gray-400">Objectif :</span>
-                        <span className="text-white">
-                          {selectedSwap.purpose}
-                        </span>
+                        <span className="text-white">{selectedSwap.purpose}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Catégorie :</span>
-                        <span className="text-white">
-                          {selectedSwap.category}
-                        </span>
+                        <span className="text-white">{selectedSwap.category}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Localisation :</span>
-                        <span className="text-white">
-                          {selectedSwap.location}
-                        </span>
+                        <span className="text-white">{selectedSwap.location}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Créé le :</span>
                         <span className="text-white">
-                          {new Date(
-                            selectedSwap.createdAt,
-                          ).toLocaleDateString()}
+                          {new Date(selectedSwap.createdAt).toLocaleDateString()}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -1348,9 +1431,7 @@ const SwapPublic = () => {
                         </span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">
-                          Paiement mensuel :
-                        </span>
+                        <span className="text-gray-400">Paiement mensuel :</span>
                         <span className="text-white">
                           {selectedSwap.monthlyPayment?.toLocaleString()}€
                         </span>
@@ -1370,18 +1451,14 @@ const SwapPublic = () => {
                               : "text-pink-400"
                           }
                         >
-                          {selectedSwap.earlyRepayment
-                            ? "Autorisé"
-                            : "Non autorisé"}
+                          {selectedSwap.earlyRepayment ? "Autorisé" : "Non autorisé"}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-400">Assurance :</span>
                         <span
                           className={
-                            selectedSwap.insurance
-                              ? "text-lime-400"
-                              : "text-gray-400"
+                            selectedSwap.insurance ? "text-lime-400" : "text-gray-400"
                           }
                         >
                           {selectedSwap.insurance ? "Incluse" : "Non incluse"}
@@ -1399,9 +1476,7 @@ const SwapPublic = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <p className="text-gray-400 mb-2">
-                        Garanties proposées :
-                      </p>
+                      <p className="text-gray-400 mb-2">Garanties proposées :</p>
                       <p className="text-white">{selectedSwap.guarantees}</p>
                     </div>
                     <div>
@@ -1447,9 +1522,7 @@ const SwapPublic = () => {
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <span className="text-gray-400">
-                            Score de confiance :
-                          </span>
+                          <span className="text-gray-400">Score de confiance :</span>
                           <div className="flex items-center">
                             <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
                             <span className="text-white">
@@ -1459,14 +1532,10 @@ const SwapPublic = () => {
                         </div>
                         {selectedSwap.rating && (
                           <div className="flex items-center justify-between">
-                            <span className="text-gray-400">
-                              Note moyenne :
-                            </span>
+                            <span className="text-gray-400">Note moyenne :</span>
                             <div className="flex items-center">
                               <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                              <span className="text-white">
-                                {selectedSwap.rating}
-                              </span>
+                              <span className="text-white">{selectedSwap.rating}</span>
                               <span className="text-gray-400 ml-1">
                                 ({selectedSwap.reviews} avis)
                               </span>
@@ -1481,9 +1550,7 @@ const SwapPublic = () => {
                 {/* Tags */}
                 {selectedSwap.tags && selectedSwap.tags.length > 0 && (
                   <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">
-                      Tags
-                    </h3>
+                    <h3 className="text-lg font-semibold text-white mb-4">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedSwap.tags.map((tag, index) => (
                         <Badge
