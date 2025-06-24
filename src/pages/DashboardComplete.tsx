@@ -325,31 +325,7 @@ const DashboardComplete = () => {
       },
     ];
     setSwaps(demoSwaps);
-
-    // Calculer les stats
-    const totalSwaps = demoSwaps.length;
-    const activeSwaps = demoSwaps.filter((s) => s.status === "Actif").length;
-    const completedSwaps = demoSwaps.filter((s) => s.status === "Terminé");
-    const totalEarnings = completedSwaps.reduce(
-      (sum, swap) => sum + (swap.amount * swap.interestRate) / 100,
-      0,
-    );
-    const averageReturn =
-      completedSwaps.length > 0
-        ? completedSwaps.reduce((sum, swap) => sum + swap.interestRate, 0) /
-          completedSwaps.length
-        : 0;
-    const successRate =
-      totalSwaps > 0 ? (completedSwaps.length / totalSwaps) * 100 : 0;
-
-    setStats({
-      totalSwaps,
-      activeSwaps,
-      totalEarnings,
-      averageReturn,
-      successRate,
-      trustScore: user?.trustScore || 85,
-    });
+    updateUserStats(demoSwaps);
   };
 
   const loadTransactions = () => {
