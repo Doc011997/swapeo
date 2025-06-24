@@ -1720,7 +1720,8 @@ const DashboardCompleteFixed = () => {
 
             <div className="space-y-4 overflow-hidden">
               {swaps.map((swap) => (
-                <div key={swap.id} className="lg:block">
+                <div key={swap.id}>
+                  {/* Version Desktop */}
                   <div className="hidden lg:block">
                     <Card
                       className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
@@ -1729,20 +1730,145 @@ const DashboardCompleteFixed = () => {
                           : ""
                       }`}
                     >
+                      {highlightedSwapId === swap.id && (
+                        <div className="mb-4 p-2 bg-green-100 border border-green-300 rounded-lg text-center">
+                          <span className="text-green-700 font-semibold text-sm">
+                            ✨ Nouveau swap créé ✨
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0 min-w-0">
+                        <div className="flex items-start space-x-2 sm:space-x-4 flex-1 min-w-0">
+                          <div
+                            className={`w-8 h-8 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                              swap.type === "demande"
+                                ? "bg-orange-100"
+                                : "bg-green-100"
+                            }`}
+                          >
+                            {swap.type === "demande" ? (
+                              <ArrowDownRight className="h-4 w-4 sm:h-6 sm:w-6 text-orange-600" />
+                            ) : (
+                              <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0 overflow-hidden">
+                            <div className="flex flex-col space-y-1 sm:space-y-2 mb-2">
+                              <div className="flex items-center space-x-2">
+                                <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate flex-1 min-w-0">
+                                  {swap.description}
+                                </h3>
+                                <Badge
+                                  className={`flex-shrink-0 ${
+                                    swap.type === "demande"
+                                      ? "bg-orange-100 text-orange-700 text-xs"
+                                      : "bg-green-100 text-green-700 text-xs"
+                                  }`}
+                                >
+                                  {swap.type === "demande" ? "Demande" : "Offre"}
+                                </Badge>
+                              </div>
+                            </div>
+                            <div className="space-y-1 sm:space-y-2">
+                              <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
+                                <div className="truncate">
+                                  <span className="font-medium">Montant:</span>{" "}
+                                  <span className="text-green-600 font-semibold">
+                                    {formatCurrency(swap.amount)}
+                                  </span>
+                                </div>
+                                <div>
+                                  <span className="font-medium">Taux:</span>{" "}
+                                  {swap.interestRate}%
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <div className="text-xs text-gray-500 flex items-center">
+                                  <Calendar className="h-3 w-3 mr-1" />
+                                  {formatDate(swap.createdAt)}
+                                </div>
+                                <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 flex-shrink-0">
+                                  Vous
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end space-y-2 flex-shrink-0 w-auto">
+                          <Badge
+                            className={`text-xs flex items-center ${
+                              swap.status === "Actif"
+                                ? "bg-green-100 text-green-700"
+                                : swap.status === "En recherche"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-blue-100 text-blue-700"
+                            }`}
+                          >
+                            {getStatusIcon(swap.status)}
+                            <span className="ml-1 hidden sm:inline">{swap.status}</span>
+                          </Badge>
+                          <div className="flex space-x-1">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedSwap(swap);
+                                setShowSwapDetails(true);
+                              }}
+                              className="text-xs px-2 h-7"
+                            >
+                              <Eye className="h-3 w-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                const contact = contacts.find(
+                                  (c) => c.company === swap.counterparty,
+                                );
+                                if (contact) {
+                                  openChatWithContact(contact, "swap");
+                                } else {
+                                  setMessage(
+                                    "Aucun contact trouvé pour ce partenaire",
+                                  );
+                                  setTimeout(() => setMessage(""), 3000);
+                                }
+                              }}
+                              className="bg-blue-600 hover:bg-blue-700 text-xs px-2 h-7"
+                            >
+                              <MessageCircle className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                      {swap.status === "Actif" && (
+                        <div className="mt-4">
+                          <div className="flex items-center justify-between text-xs sm:text-sm text-gray-600 mb-1">
+                            <span>Progression</span>
+                            <span>{swap.progress}%</span>
+                          </div>
+                          <Progress value={swap.progress} className="h-2" />
+                        </div>
+                      )}
+                    </Card>
                   </div>
+
+                  {/* Version Mobile avec Swipe */}
                   <div className="lg:hidden">
                     <SwipeableCard
                       onSwipeLeft={() => handleSwipeAction(swap.id, "archive")}
                       onSwipeRight={() => handleSwipeAction(swap.id, "favorite")}
                       onSwipeUp={() => handleSwipeAction(swap.id, "quick")}
                       onSwipeDown={() => handleSwipeAction(swap.id, "delete")}
-                      className={`${
-                        highlightedSwapId === swap.id
-                          ? "ring-2 ring-green-500 bg-green-50"
-                          : ""
-                      }`}
                     >
-                      <Card className="p-3 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                      <Card
+                        className={`p-3 hover:shadow-lg transition-all duration-300 overflow-hidden ${
+                          highlightedSwapId === swap.id
+                            ? "ring-2 ring-green-500 bg-green-50"
+                            : ""
+                        }`}
+                      >
                   </div>
                   {highlightedSwapId === swap.id && (
                     <div className="mb-4 p-2 bg-green-100 border border-green-300 rounded-lg text-center">
