@@ -156,58 +156,86 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card
+              <motion.div
                 key={index}
-                className={`
-                  swapeo-card p-8 group relative overflow-hidden hover-tilt
-                  transition-all duration-700 hover:scale-105
-                  ${isVisible.temoignages ? "animate-slide-in-from-bottom" : "opacity-0 translate-y-10"}
-                `}
-                style={{ animationDelay: `${index * 0.2}s` }}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.2 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
-                {/* Gradient background */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${testimonial.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-lg`}
-                />
-
-                {/* Stars with animation */}
-                <div className="flex items-center mb-6 relative z-10">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-6 w-6 text-yellow-400 fill-current animate-pulse"
-                      style={{ animationDelay: `${i * 0.1}s` }}
-                    />
-                  ))}
-                  <Sparkles className="ml-2 h-4 w-4 text-yellow-400 animate-spin-slow" />
-                </div>
-
-                <p className="text-gray-300 mb-8 leading-relaxed text-lg group-hover:text-white transition-colors duration-300">
-                  "{testimonial.comment}"
-                </p>
-
-                <div className="flex items-center space-x-4 relative z-10">
+                <Card className="h-full bg-gradient-to-br from-gray-900/50 to-gray-800/50 backdrop-blur-xl border border-gray-700/50 p-8 group relative overflow-hidden hover:border-violet-500/50 transition-all duration-500">
+                  {/* Enhanced Gradient background */}
                   <div
-                    className={`w-16 h-16 bg-gradient-to-br ${testimonial.color} rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 neon-border`}
-                  >
-                    <span className="text-white font-bold text-xl">
-                      {testimonial.name.charAt(0)}
-                    </span>
-                  </div>
-                  <div>
-                    <div className="text-white font-bold text-lg">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-gray-400">{testimonial.role}</div>
-                    <div className="text-swapeo-primary font-medium">
-                      {testimonial.year}
-                    </div>
-                  </div>
-                </div>
+                    className={`absolute inset-0 bg-gradient-to-br ${testimonial.color} opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-lg`}
+                  />
 
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-swapeo-primary/50 transition-all duration-500" />
-              </Card>
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-violet-500/0 via-violet-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg" />
+
+                  {/* Stars with enhanced animation */}
+                  <div className="flex items-center justify-between mb-6 relative z-10">
+                    <div className="flex items-center">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className="h-5 w-5 text-yellow-400 fill-current"
+                          style={{
+                            animation: `pulse 2s infinite ${i * 0.2}s`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2 bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs font-medium">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                      Vérifié
+                    </div>
+                  </div>
+
+                  <blockquote className="text-gray-300 mb-8 leading-relaxed text-lg group-hover:text-white transition-colors duration-500 relative">
+                    <span className="text-4xl text-violet-400/30 absolute -top-2 -left-2">
+                      "
+                    </span>
+                    <span className="relative z-10">{testimonial.comment}</span>
+                  </blockquote>
+
+                  <div className="flex items-center space-x-4 relative z-10">
+                    <div className="relative">
+                      <div
+                        className={`w-14 h-14 bg-gradient-to-br ${testimonial.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}
+                      >
+                        <span className="text-white font-bold text-lg">
+                          {testimonial.name.charAt(0)}
+                        </span>
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-violet-500 rounded-full flex items-center justify-center">
+                        <Award className="h-3 w-3 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-white font-bold text-lg">
+                        {testimonial.name}
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        {testimonial.role}
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        <div className="text-violet-400 font-medium text-xs">
+                          {testimonial.year}
+                        </div>
+                        <div className="w-1 h-1 bg-gray-500 rounded-full" />
+                        <div className="text-gray-500 text-xs">
+                          Client certifié
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Enhanced hover glow effect */}
+                  <div className="absolute inset-0 rounded-lg border border-transparent group-hover:border-violet-500/30 transition-all duration-500" />
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-violet-500/0 via-violet-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
