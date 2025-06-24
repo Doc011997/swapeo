@@ -609,7 +609,7 @@ const DashboardCompleteFixed = () => {
     };
     setTransactions([demoTransaction, ...transactions]);
 
-    setMessage(`✅ Retrait de ${amount}��� effectué avec succès !`);
+    setMessage(`✅ Retrait de ${amount}€ effectué avec succès !`);
     setTimeout(() => setMessage(""), 4000);
   };
 
@@ -707,6 +707,65 @@ const DashboardCompleteFixed = () => {
 
     setMessage(`✅ ${fullName} ajouté(e) à votre réseau !`);
     setTimeout(() => setMessage(""), 4000);
+  };
+
+  const openChatWithContact = (contact: any) => {
+    setChatContact(contact);
+    // Générer des messages de démonstration
+    const demoMessages = [
+      {
+        id: 1,
+        sender: contact.name,
+        message: `Bonjour ${user?.firstName} ! J'ai vu votre profil sur Swapeo.`,
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        isMe: false,
+      },
+      {
+        id: 2,
+        sender: `${user?.firstName} ${user?.lastName}`,
+        message:
+          "Bonjour ! Merci de m'avoir contacté. En quoi puis-je vous aider ?",
+        timestamp: new Date(Date.now() - 3000000).toISOString(),
+        isMe: true,
+      },
+      {
+        id: 3,
+        sender: contact.name,
+        message:
+          "Je serais intéressé par un échange financier. Pourriez-vous me dire quels montants vous proposez ?",
+        timestamp: new Date(Date.now() - 1800000).toISOString(),
+        isMe: false,
+      },
+    ];
+    setChatMessages(demoMessages);
+    setShowChat(true);
+  };
+
+  const sendChatMessage = () => {
+    if (!chatMessage.trim()) return;
+
+    const newMessage = {
+      id: Date.now(),
+      sender: `${user?.firstName} ${user?.lastName}`,
+      message: chatMessage,
+      timestamp: new Date().toISOString(),
+      isMe: true,
+    };
+
+    setChatMessages((prev) => [...prev, newMessage]);
+    setChatMessage("");
+
+    // Simuler une réponse automatique après 2 secondes
+    setTimeout(() => {
+      const autoReply = {
+        id: Date.now() + 1,
+        sender: chatContact?.name,
+        message: "Merci pour votre message ! Je vous réponds dès que possible.",
+        timestamp: new Date().toISOString(),
+        isMe: false,
+      };
+      setChatMessages((prev) => [...prev, autoReply]);
+    }, 2000);
   };
 
   const generateInvoicePDF = (transaction: Transaction) => {
