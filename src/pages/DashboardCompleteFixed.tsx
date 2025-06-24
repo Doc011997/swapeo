@@ -1236,42 +1236,42 @@ const DashboardCompleteFixed = () => {
               </div>
             </div>
 
-            <Card className="p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-              <div className="flex items-center justify-between mb-6">
+            <Card className="p-4 sm:p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+              <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-4 sm:mb-6">
                 <div>
-                  <h3 className="text-lg font-medium opacity-90">
+                  <h3 className="text-base sm:text-lg font-medium opacity-90">
                     Solde total
                   </h3>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-3xl font-bold">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <span className="text-2xl sm:text-3xl font-bold">
                       {hideBalance ? "••••••" : formatCurrency(animatedBalance)}
                     </span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-white hover:bg-white/20"
+                      className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
                       onClick={() => setHideBalance(!hideBalance)}
                     >
                       {hideBalance ? (
-                        <EyeOff className="h-4 w-4" />
+                        <EyeOff className="h-3 w-3 sm:h-4 sm:w-4" />
                       ) : (
-                        <Eye className="h-4 w-4" />
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
                       )}
                     </Button>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-left sm:text-right">
                   <div className="flex items-center space-x-1 text-green-200">
-                    <TrendingUp className="h-4 w-4" />
+                    <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
                     <span className="text-sm font-medium">
                       +{stats.averageReturn.toFixed(1)}%
                     </span>
                   </div>
-                  <p className="text-sm opacity-75">rendement</p>
+                  <p className="text-xs sm:text-sm opacity-75">rendement</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-3">
+              <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-x-3 sm:space-y-0">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
