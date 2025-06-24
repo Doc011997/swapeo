@@ -675,7 +675,7 @@ const DashboardCompleteFixed = () => {
     if (
       contacts.some((c) => c.name === fullName || c.email === contactForm.email)
     ) {
-      setMessage("❌ Ce contact existe déjà dans votre réseau");
+      setMessage("❌ Ce contact existe d��jà dans votre réseau");
       setTimeout(() => setMessage(""), 4000);
       return;
     }
@@ -1349,7 +1349,7 @@ const DashboardCompleteFixed = () => {
               </div>
             </div>
 
-            <Card className="p-4 sm:p-6 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+            <Card className="p-4 sm:p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg">
               <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-4 sm:mb-6">
                 <div>
                   <h3 className="text-base sm:text-lg font-medium opacity-90">
@@ -2303,7 +2303,7 @@ const DashboardCompleteFixed = () => {
                             ? "🟢 Faible"
                             : selectedSwap.riskLevel === "medium"
                               ? "🟡 Modéré"
-                              : "🔴 Élevé"}
+                              : "��� Élevé"}
                         </Badge>
                       </div>
 
