@@ -1944,14 +1944,26 @@ const DashboardCompleteFixed = () => {
 
       {/* Dialogue de création de swap */}
       <Dialog open={showCreateSwap} onOpenChange={setShowCreateSwap}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-bold">
-              Créer un nouveau swap
-            </DialogTitle>
-            <DialogDescription>
-              Remplissez les informations pour créer votre proposition de swap
-            </DialogDescription>
+        <DialogContent className="w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto m-2 sm:m-auto">
+          <DialogHeader className="pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle className="text-lg sm:text-xl font-bold">
+                  Créer un nouveau swap
+                </DialogTitle>
+                <DialogDescription className="text-sm">
+                  Remplissez les informations pour créer votre proposition
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowCreateSwap(false)}
+                className="sm:hidden h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogHeader>
 
           <div className="space-y-6">
