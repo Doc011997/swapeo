@@ -711,32 +711,66 @@ const DashboardCompleteFixed = () => {
 
   const openChatWithContact = (contact: any) => {
     setChatContact(contact);
-    // Générer des messages de démonstration
-    const demoMessages = [
-      {
-        id: 1,
-        sender: contact.name,
-        message: `Bonjour ${user?.firstName} ! J'ai vu votre profil sur Swapeo.`,
-        timestamp: new Date(Date.now() - 3600000).toISOString(),
-        isMe: false,
-      },
-      {
-        id: 2,
-        sender: `${user?.firstName} ${user?.lastName}`,
-        message:
-          "Bonjour ! Merci de m'avoir contacté. En quoi puis-je vous aider ?",
-        timestamp: new Date(Date.now() - 3000000).toISOString(),
-        isMe: true,
-      },
-      {
-        id: 3,
-        sender: contact.name,
-        message:
-          "Je serais intéressé par un échange financier. Pourriez-vous me dire quels montants vous proposez ?",
-        timestamp: new Date(Date.now() - 1800000).toISOString(),
-        isMe: false,
-      },
-    ];
+
+    // Générer des messages contextuels selon le type de contact
+    let demoMessages = [];
+
+    if (contact.swapId) {
+      // Messages pour un contact depuis un swap
+      demoMessages = [
+        {
+          id: 1,
+          sender: contact.name,
+          message: `Bonjour ${user?.firstName} ! Je vous contacte au sujet du swap ${contact.swapId}.`,
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          isMe: false,
+        },
+        {
+          id: 2,
+          sender: `${user?.firstName} ${user?.lastName}`,
+          message:
+            "Bonjour ! Parfait, parlons de ce swap. Avez-vous des questions spécifiques ?",
+          timestamp: new Date(Date.now() - 3000000).toISOString(),
+          isMe: true,
+        },
+        {
+          id: 3,
+          sender: contact.name,
+          message:
+            "J'aimerais discuter des conditions et voir si nous pouvons finaliser rapidement.",
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          isMe: false,
+        },
+      ];
+    } else {
+      // Messages pour un contact du réseau
+      demoMessages = [
+        {
+          id: 1,
+          sender: contact.name,
+          message: `Bonjour ${user?.firstName} ! J'ai vu votre profil sur Swapeo.`,
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          isMe: false,
+        },
+        {
+          id: 2,
+          sender: `${user?.firstName} ${user?.lastName}`,
+          message:
+            "Bonjour ! Merci de m'avoir contacté. En quoi puis-je vous aider ?",
+          timestamp: new Date(Date.now() - 3000000).toISOString(),
+          isMe: true,
+        },
+        {
+          id: 3,
+          sender: contact.name,
+          message:
+            "Je serais intéressé par un échange financier. Pourriez-vous me dire quels montants vous proposez ?",
+          timestamp: new Date(Date.now() - 1800000).toISOString(),
+          isMe: false,
+        },
+      ];
+    }
+
     setChatMessages(demoMessages);
     setShowChat(true);
   };
