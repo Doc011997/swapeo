@@ -166,6 +166,8 @@ interface Notification {
   actionUrl?: string;
 }
 
+
+
 const DashboardCompleteFixed = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -180,9 +182,7 @@ const DashboardCompleteFixed = () => {
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [analysisStep, setAnalysisStep] = useState("");
   const [createdSwapId, setCreatedSwapId] = useState("");
-  const [analysisResult, setAnalysisResult] = useState<
-    "approved" | "rejected" | null
-  >(null);
+  const [analysisResult, setAnalysisResult] = useState<"approved" | "rejected" | null>(null);
   const [animatedBalance, setAnimatedBalance] = useState(0);
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedTimeRange, setSelectedTimeRange] = useState("30d");
@@ -226,6 +226,8 @@ const DashboardCompleteFixed = () => {
   const [highlightedSwapId, setHighlightedSwapId] = useState<string | null>(
     null,
   );
+
+
 
   useEffect(() => {
     const storedUser = localStorage.getItem("swapeo_user");
@@ -447,6 +449,8 @@ const DashboardCompleteFixed = () => {
     }
   }, []);
 
+
+
   // Fonction d'analyse algorithmique animée
   const startAlgorithmAnalysis = (swapId: string) => {
     setCreatedSwapId(swapId);
@@ -459,7 +463,7 @@ const DashboardCompleteFixed = () => {
       "Analyse du profil entreprise...",
       "Calcul du score de risque...",
       "Validation des garanties...",
-      "Évaluation finale...",
+      "Évaluation finale..."
     ];
 
     let currentStep = 0;
@@ -482,13 +486,9 @@ const DashboardCompleteFixed = () => {
           setAnalysisStep("");
 
           if (isApproved) {
-            setMessage(
-              `🎉 Swap ${swapId} approuvé ! Il est maintenant visible dans le marketplace.`,
-            );
+            setMessage(`🎉 Swap ${swapId} approuvé ! Il est maintenant visible dans le marketplace.`);
           } else {
-            setMessage(
-              `❌ Swap ${swapId} rejeté par l'algorithme. Vérifiez vos critères.`,
-            );
+            setMessage(`❌ Swap ${swapId} rejeté par l'algorithme. Vérifiez vos critères.`);
           }
 
           setTimeout(() => setMessage(""), 5000);
@@ -594,8 +594,7 @@ const DashboardCompleteFixed = () => {
         amount: newSwap.amount,
         duration: newSwap.duration,
         interestRate: newSwap.interestRate,
-        counterparty:
-          newSwap.createdByCompany || newSwap.createdBy || "Entreprise",
+        counterparty: newSwap.createdByCompany || newSwap.createdBy || "Entreprise",
         status: "new", // Statut marketplace différent du dashboard
         progress: 0,
         description: newSwap.description,
@@ -649,6 +648,7 @@ const DashboardCompleteFixed = () => {
     // Highlight du nouveau swap et redirection vers l'onglet Swaps
     setHighlightedSwapId(newSwap.id);
     setActiveSection("swaps");
+
 
     // Supprimer le highlight après 8 secondes
     setTimeout(() => {
@@ -853,6 +853,8 @@ const DashboardCompleteFixed = () => {
     setMessage(
       `✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`,
     );
+
+
 
     setTimeout(() => setMessage(""), 4000);
   };
@@ -1275,39 +1277,7 @@ const DashboardCompleteFixed = () => {
                   </Badge>
                 </div>
 
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium text-gray-700">
-                        Niveau {userLevel?.level}
-                      </span>
-                      <span className="text-sm text-purple-600 font-bold">
-                        {userLevel?.currentXP}/{userLevel?.requiredXP} XP
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <motion.div
-                        className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-1000"
-                        initial={{ width: 0 }}
-                        animate={{
-                          width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
-                        }}
-                      ></motion.div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 text-center">
-                    <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-orange-600">
-                        {totalPoints}
-                      </div>
-                      <div className="text-xs text-gray-600">Points Total</div>
-                    </div>
-                    <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-green-600">
-                        {streakDays}
-                      </div>
-                      <div className="text-xs text-gray-600">
+            <div className="flex items-center space-x-1 sm:space-x-4">
                         Jours d'affilée
                       </div>
                     </div>
@@ -1430,7 +1400,7 @@ const DashboardCompleteFixed = () => {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => (window.location.href = "/swap")}
+                  onClick={() => window.location.href = '/swap'}
                   className="border-green-200 hover:bg-green-50 p-3 sm:p-4 h-auto flex-col transition-all duration-300 hover:scale-105"
                 >
                   <Search className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-green-600" />
@@ -2255,9 +2225,7 @@ const DashboardCompleteFixed = () => {
           <DialogHeader className="pb-2 sm:pb-4 border-b border-gray-100">
             <div className="flex flex-col space-y-1 sm:space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0">
               <DialogTitle className="text-sm sm:text-base md:text-xl font-bold text-gray-900 flex items-center truncate pr-2">
-                <span className="truncate">
-                  Swap #{selectedSwap?.id?.slice(-6)}
-                </span>
+                <span className="truncate">Swap #{selectedSwap?.id?.slice(-6)}</span>
                 <span className="hidden sm:inline ml-1">- Détails</span>
               </DialogTitle>
               <Badge
@@ -2292,12 +2260,11 @@ const DashboardCompleteFixed = () => {
                       {selectedSwap.amount > 999999
                         ? `${(selectedSwap.amount / 1000000).toFixed(1)}M€`
                         : selectedSwap.amount > 999
-                          ? `${(selectedSwap.amount / 1000).toFixed(0)}k€`
-                          : `${selectedSwap.amount.toLocaleString()}€`}
+                        ? `${(selectedSwap.amount / 1000).toFixed(0)}k€`
+                        : `${selectedSwap.amount.toLocaleString()}€`
+                      }
                     </div>
-                    <p className="text-xs sm:text-sm text-violet-600">
-                      Montant
-                    </p>
+                    <p className="text-xs sm:text-sm text-violet-600">Montant</p>
                   </div>
                 </div>
                 <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-2 sm:p-4 rounded-lg sm:rounded-xl border border-cyan-200">
@@ -2349,42 +2316,30 @@ const DashboardCompleteFixed = () => {
                   <div>
                     <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
                       <Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-pink-600 flex-shrink-0" />
-                      <span className="hidden sm:inline">
-                        Informations temporelles
-                      </span>
+                      <span className="hidden sm:inline">Informations temporelles</span>
                       <span className="sm:hidden">Temporel</span>
                     </h3>
                     <div className="bg-gray-50 p-2 sm:p-3 rounded-lg space-y-1 sm:space-y-2">
                       <div className="flex justify-between text-xs sm:text-sm">
                         <span className="text-gray-600">Créé le :</span>
-                        <span className="text-gray-900 text-right">
-                          {selectedSwap.createdAt}
-                        </span>
+                        <span className="text-gray-900 text-right">{selectedSwap.createdAt}</span>
                       </div>
                       {selectedSwap.daysRemaining && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Jours restants :
-                            </span>
+                            <span className="hidden sm:inline">Jours restants :</span>
                             <span className="sm:hidden">Restant :</span>
                           </span>
-                          <span className="text-gray-900">
-                            {selectedSwap.daysRemaining}j
-                          </span>
+                          <span className="text-gray-900">{selectedSwap.daysRemaining}j</span>
                         </div>
                       )}
                       {selectedSwap.nextPaymentDate && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Prochain paiement :
-                            </span>
+                            <span className="hidden sm:inline">Prochain paiement :</span>
                             <span className="sm:hidden">Prochain :</span>
                           </span>
-                          <span className="text-gray-900 text-right">
-                            {selectedSwap.nextPaymentDate}
-                          </span>
+                          <span className="text-gray-900 text-right">{selectedSwap.nextPaymentDate}</span>
                         </div>
                       )}
                     </div>
@@ -2398,15 +2353,13 @@ const DashboardCompleteFixed = () => {
                     <div className="bg-gray-50 p-2 sm:p-3 rounded-lg space-y-1 sm:space-y-2">
                       <div className="flex justify-between items-center text-xs sm:text-sm">
                         <span className="text-gray-600">Statut :</span>
-                        <Badge
-                          className={`text-xs ${
-                            selectedSwap.status === "Actif"
-                              ? "bg-lime-100 text-lime-700"
-                              : selectedSwap.status === "En attente"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-gray-100 text-gray-700"
-                          }`}
-                        >
+                        <Badge className={`text-xs ${
+                          selectedSwap.status === "Actif"
+                            ? "bg-lime-100 text-lime-700"
+                            : selectedSwap.status === "En attente"
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}>
                           {selectedSwap.status}
                         </Badge>
                       </div>
@@ -2414,27 +2367,18 @@ const DashboardCompleteFixed = () => {
                         <div>
                           <div className="flex justify-between text-xs sm:text-sm mb-1">
                             <span className="text-gray-600">Progression :</span>
-                            <span className="text-gray-900">
-                              {selectedSwap.progress}%
-                            </span>
+                            <span className="text-gray-900">{selectedSwap.progress}%</span>
                           </div>
-                          <Progress
-                            value={selectedSwap.progress}
-                            className="h-1.5 sm:h-2"
-                          />
+                          <Progress value={selectedSwap.progress} className="h-1.5 sm:h-2" />
                         </div>
                       )}
                       {selectedSwap.matchingScore && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Score de matching :
-                            </span>
+                            <span className="hidden sm:inline">Score de matching :</span>
                             <span className="sm:hidden">Matching :</span>
                           </span>
-                          <span className="text-cyan-600 font-semibold">
-                            {selectedSwap.matchingScore}%
-                          </span>
+                          <span className="text-cyan-600 font-semibold">{selectedSwap.matchingScore}%</span>
                         </div>
                       )}
                     </div>
@@ -2453,76 +2397,69 @@ const DashboardCompleteFixed = () => {
                       {selectedSwap.estimatedReturn && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Rendement estimé :
-                            </span>
+                            <span className="hidden sm:inline">Rendement estimé :</span>
                             <span className="sm:hidden">Rendement :</span>
                           </span>
                           <span className="text-green-600 font-semibold">
                             {selectedSwap.estimatedReturn > 999999
                               ? `${(selectedSwap.estimatedReturn / 1000000).toFixed(1)}M€`
                               : selectedSwap.estimatedReturn > 999
-                                ? `${(selectedSwap.estimatedReturn / 1000).toFixed(0)}k€`
-                                : `${selectedSwap.estimatedReturn.toLocaleString()}€`}
+                              ? `${(selectedSwap.estimatedReturn / 1000).toFixed(0)}k€`
+                              : `${selectedSwap.estimatedReturn.toLocaleString()}€`
+                            }
                           </span>
                         </div>
                       )}
                       {selectedSwap.totalInterest && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Intérêts totaux :
-                            </span>
+                            <span className="hidden sm:inline">Intérêts totaux :</span>
                             <span className="sm:hidden">Intérêts :</span>
                           </span>
                           <span className="text-gray-900">
                             {selectedSwap.totalInterest > 999999
                               ? `${(selectedSwap.totalInterest / 1000000).toFixed(1)}M€`
                               : selectedSwap.totalInterest > 999
-                                ? `${(selectedSwap.totalInterest / 1000).toFixed(0)}k€`
-                                : `${selectedSwap.totalInterest.toLocaleString()}€`}
+                              ? `${(selectedSwap.totalInterest / 1000).toFixed(0)}k€`
+                              : `${selectedSwap.totalInterest.toLocaleString()}€`
+                            }
                           </span>
                         </div>
                       )}
                       {selectedSwap.monthlyPayment && (
                         <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Paiement mensuel :
-                            </span>
+                            <span className="hidden sm:inline">Paiement mensuel :</span>
                             <span className="sm:hidden">Mensuel :</span>
                           </span>
                           <span className="text-gray-900">
                             {selectedSwap.monthlyPayment > 999999
                               ? `${(selectedSwap.monthlyPayment / 1000000).toFixed(1)}M€`
                               : selectedSwap.monthlyPayment > 999
-                                ? `${(selectedSwap.monthlyPayment / 1000).toFixed(0)}k€`
-                                : `${selectedSwap.monthlyPayment.toLocaleString()}€`}
+                              ? `${(selectedSwap.monthlyPayment / 1000).toFixed(0)}k€`
+                              : `${selectedSwap.monthlyPayment.toLocaleString()}€`
+                            }
                           </span>
                         </div>
                       )}
                       {selectedSwap.riskLevel && (
                         <div className="flex justify-between items-center text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            <span className="hidden sm:inline">
-                              Niveau de risque :
-                            </span>
+                            <span className="hidden sm:inline">Niveau de risque :</span>
                             <span className="sm:hidden">Risque :</span>
                           </span>
-                          <Badge
-                            className={`text-xs ${
-                              selectedSwap.riskLevel === "low"
-                                ? "bg-green-100 text-green-700"
-                                : selectedSwap.riskLevel === "medium"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : "bg-red-100 text-red-700"
-                            }`}
-                          >
+                          <Badge className={`text-xs ${
+                            selectedSwap.riskLevel === "low"
+                              ? "bg-green-100 text-green-700"
+                              : selectedSwap.riskLevel === "medium"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-red-100 text-red-700"
+                          }`}>
                             {selectedSwap.riskLevel === "low"
                               ? "Faible"
                               : selectedSwap.riskLevel === "medium"
-                                ? "Moyen"
-                                : "Élevé"}
+                              ? "Moyen"
+                              : "Élevé"}
                           </Badge>
                         </div>
                       )}
@@ -2531,81 +2468,52 @@ const DashboardCompleteFixed = () => {
                 </div>
 
                 {/* Garanties et conditions */}
-                {(selectedSwap.guarantees ||
-                  selectedSwap.purpose ||
-                  selectedSwap.repaymentSchedule) && (
+                {(selectedSwap.guarantees || selectedSwap.purpose || selectedSwap.repaymentSchedule) && (
                   <div>
                     <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
                       <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 flex-shrink-0" />
-                      <span className="hidden sm:inline">
-                        Conditions et garanties
-                      </span>
+                      <span className="hidden sm:inline">Conditions et garanties</span>
                       <span className="sm:hidden">Garanties</span>
                     </h3>
                     <div className="bg-gray-50 p-2 sm:p-4 rounded-lg space-y-2 sm:space-y-3">
                       {selectedSwap.purpose && (
                         <div>
-                          <span className="text-gray-600 text-xs sm:text-sm font-medium">
-                            Objectif :
-                          </span>
-                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">
-                            {selectedSwap.purpose}
-                          </p>
+                          <span className="text-gray-600 text-xs sm:text-sm font-medium">Objectif :</span>
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">{selectedSwap.purpose}</p>
                         </div>
                       )}
                       {selectedSwap.guarantees && (
                         <div>
-                          <span className="text-gray-600 text-xs sm:text-sm font-medium">
-                            Garanties :
-                          </span>
-                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">
-                            {selectedSwap.guarantees}
-                          </p>
+                          <span className="text-gray-600 text-xs sm:text-sm font-medium">Garanties :</span>
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">{selectedSwap.guarantees}</p>
                         </div>
                       )}
                       {selectedSwap.repaymentSchedule && (
                         <div>
                           <span className="text-gray-600 text-xs sm:text-sm font-medium">
-                            <span className="hidden sm:inline">
-                              Calendrier de remboursement :
-                            </span>
+                            <span className="hidden sm:inline">Calendrier de remboursement :</span>
                             <span className="sm:hidden">Calendrier :</span>
                           </span>
-                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1">
-                            {selectedSwap.repaymentSchedule}
-                          </p>
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1">{selectedSwap.repaymentSchedule}</p>
                         </div>
                       )}
                       <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
                         {selectedSwap.earlyRepayment && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs border-green-300 text-green-700 px-1.5 py-0.5"
-                          >
+                          <Badge variant="outline" className="text-xs border-green-300 text-green-700 px-1.5 py-0.5">
                             <CheckCircle className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
-                            <span className="hidden sm:inline">
-                              Remboursement anticipé autorisé
-                            </span>
+                            <span className="hidden sm:inline">Remboursement anticipé autorisé</span>
                             <span className="sm:hidden">Anticipé OK</span>
                           </Badge>
                         )}
                         {selectedSwap.insurance && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs border-blue-300 text-blue-700 px-1.5 py-0.5"
-                          >
+                          <Badge variant="outline" className="text-xs border-blue-300 text-blue-700 px-1.5 py-0.5">
                             <Shield className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
-                            <span className="hidden sm:inline">
-                              Assurance incluse
-                            </span>
+                            <span className="hidden sm:inline">Assurance incluse</span>
                             <span className="sm:hidden">Assuré</span>
                           </Badge>
                         )}
                         {selectedSwap.verified && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs border-violet-300 text-violet-700 px-1.5 py-0.5"
-                          >
+                          <Badge variant="outline" className="text-xs border-violet-300 text-violet-700 px-1.5 py-0.5">
                             <CheckCircle className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
                             Vérifié
                           </Badge>
@@ -2647,9 +2555,7 @@ const DashboardCompleteFixed = () => {
                   }}
                 >
                   <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-                  <span className="hidden sm:inline">
-                    Contacter le partenaire
-                  </span>
+                  <span className="hidden sm:inline">Contacter le partenaire</span>
                   <span className="sm:hidden">Contacter</span>
                 </Button>
               </motion.div>
@@ -3030,10 +2936,7 @@ const DashboardCompleteFixed = () => {
             <div className="flex justify-center">
               <div className="relative w-32 h-32">
                 {/* Cercle de progression externe */}
-                <svg
-                  className="w-32 h-32 transform -rotate-90"
-                  viewBox="0 0 100 100"
-                >
+                <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
                   <circle
                     cx="50"
                     cy="50"
@@ -3061,11 +2964,7 @@ const DashboardCompleteFixed = () => {
                   {analysisResult === null ? (
                     <motion.div
                       animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                       className="w-12 h-12 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 flex items-center justify-center"
                     >
                       <Calculator className="h-6 w-6 text-white" />
@@ -3093,9 +2992,7 @@ const DashboardCompleteFixed = () => {
 
                 {/* Pourcentage */}
                 <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-                  <span className="text-2xl font-bold text-white">
-                    {Math.round(analysisProgress)}%
-                  </span>
+                  <span className="text-2xl font-bold text-white">{Math.round(analysisProgress)}%</span>
                 </div>
               </div>
             </div>
@@ -3107,23 +3004,23 @@ const DashboardCompleteFixed = () => {
                   ? "Analyse en cours..."
                   : analysisResult === "approved"
                     ? "🎉 Swap Approuvé !"
-                    : "❌ Swap Rejeté"}
+                    : "❌ Swap Rejeté"
+                }
               </h3>
               <p className="text-gray-400">
                 {analysisResult === null
                   ? analysisStep || "Préparation de l'analyse..."
                   : analysisResult === "approved"
                     ? "Votre swap est maintenant visible dans le marketplace"
-                    : "Votre swap ne respecte pas nos critères de qualité"}
+                    : "Votre swap ne respecte pas nos critères de qualité"
+                }
               </p>
             </div>
 
             {/* ID du swap */}
             <div className="bg-black/20 backdrop-blur-sm rounded-lg p-3 text-center">
               <p className="text-xs text-gray-400">Swap ID</p>
-              <p className="text-violet-400 font-mono font-semibold">
-                {createdSwapId}
-              </p>
+              <p className="text-violet-400 font-mono font-semibold">{createdSwapId}</p>
             </div>
 
             {/* Résultat détaillé */}
@@ -3144,21 +3041,19 @@ const DashboardCompleteFixed = () => {
                     <AlertCircle className="h-5 w-5 text-red-400" />
                   )}
                   <div>
-                    <p
-                      className={`font-semibold ${
-                        analysisResult === "approved"
-                          ? "text-lime-400"
-                          : "text-red-400"
-                      }`}
-                    >
+                    <p className={`font-semibold ${
+                      analysisResult === "approved" ? "text-lime-400" : "text-red-400"
+                    }`}>
                       {analysisResult === "approved"
                         ? "Validation réussie"
-                        : "Validation échouée"}
+                        : "Validation échouée"
+                      }
                     </p>
                     <p className="text-xs text-gray-400">
                       {analysisResult === "approved"
                         ? "Score algorithmique: 87/100"
-                        : "Score algorithmique: 42/100"}
+                        : "Score algorithmique: 42/100"
+                      }
                     </p>
                   </div>
                 </div>
@@ -3174,7 +3069,7 @@ const DashboardCompleteFixed = () => {
                 className="space-y-3"
               >
                 <Button
-                  onClick={() => (window.location.href = "/swap")}
+                  onClick={() => window.location.href = '/swap'}
                   className="w-full bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
                 >
                   <Globe className="h-4 w-4 mr-2" />
