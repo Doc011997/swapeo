@@ -2195,31 +2195,41 @@ const DashboardCompleteFixed = () => {
           </DialogHeader>
 
           <div className="space-y-4 pt-4">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="firstName">Prénom</Label>
+                <Label htmlFor="firstName" className="text-sm font-medium">
+                  Prénom
+                </Label>
                 <Input
                   id="firstName"
                   value={inviteForm.firstName}
                   onChange={(e) =>
                     setInviteForm({ ...inviteForm, firstName: e.target.value })
                   }
+                  className="h-12 mt-1 text-base"
+                  placeholder="Ex: Marie"
                 />
               </div>
               <div>
-                <Label htmlFor="lastName">Nom</Label>
+                <Label htmlFor="lastName" className="text-sm font-medium">
+                  Nom
+                </Label>
                 <Input
                   id="lastName"
                   value={inviteForm.lastName}
                   onChange={(e) =>
                     setInviteForm({ ...inviteForm, lastName: e.target.value })
                   }
+                  className="h-12 mt-1 text-base"
+                  placeholder="Ex: Dubois"
                 />
               </div>
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm font-medium">
+                Email
+              </Label>
               <Input
                 id="email"
                 type="email"
@@ -2227,11 +2237,15 @@ const DashboardCompleteFixed = () => {
                 onChange={(e) =>
                   setInviteForm({ ...inviteForm, email: e.target.value })
                 }
+                className="h-12 mt-1 text-base"
+                placeholder="marie.dubois@entreprise.com"
               />
             </div>
 
             <div>
-              <Label htmlFor="message">Message personnalisé (optionnel)</Label>
+              <Label htmlFor="message" className="text-sm font-medium">
+                Message personnalisé (optionnel)
+              </Label>
               <Textarea
                 id="message"
                 placeholder="Ajouter un message personnel..."
@@ -2240,17 +2254,23 @@ const DashboardCompleteFixed = () => {
                   setInviteForm({ ...inviteForm, message: e.target.value })
                 }
                 rows={3}
+                className="mt-1 text-base resize-none"
               />
             </div>
 
-            <div className="flex justify-end space-x-3">
+            <div className="flex flex-col-reverse sm:flex-row justify-end space-y-reverse space-y-3 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-100">
               <Button
                 variant="outline"
                 onClick={() => setShowInviteDialog(false)}
+                className="w-full sm:w-auto h-12 sm:h-10"
               >
                 Annuler
               </Button>
-              <Button onClick={handleInviteContact}>
+              <Button
+                onClick={handleInviteContact}
+                className="w-full sm:w-auto h-12 sm:h-10 bg-gradient-to-r from-violet-600 to-cyan-600"
+              >
+                <Mail className="h-4 w-4 mr-2" />
                 Envoyer l'invitation
               </Button>
             </div>
