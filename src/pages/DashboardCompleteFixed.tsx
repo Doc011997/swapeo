@@ -103,6 +103,12 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import PWAFeatures from "@/components/PWAFeatures";
+import {
+  SwipeableCard,
+  PullToRefresh,
+  HapticFeedback,
+  useSwipeNavigation
+} from "@/components/MobileGestures";
 
 interface Swap {
   id: string;
@@ -262,12 +268,27 @@ const DashboardCompleteFixed = () => {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([]);
   const [showAchievementModal, setShowAchievementModal] = useState(false);
-  const [newAchievement, setNewAchievement] = useState<Achievement | null>(
-    null,
-  );
+  const [newAchievement, setNewAchievement] = useState<Achievement | null>(null);
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [streakDays, setStreakDays] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
+
+  // Navigation par gestes
+  const sections = ["overview", "swaps", "wallet", "network"];
+  const currentIndex = sections.indexOf(activeSection);
+
+  useSwipeNavigation(
+    () => {
+      // Swipe gauche = section suivante
+      const nextIndex = (currentIndex + 1) % sections.length;
+      setActiveSection(sections[nextIndex]);
+    },
+    () => {
+      // Swipe droite = section précédente
+      const prevIndex = (currentIndex - 1 + sections.length) % sections.length;
+      setActiveSection(sections[prevIndex]);
+    }
+  );
 
   useEffect(() => {
     const storedUser = localStorage.getItem("swapeo_user");
@@ -601,9 +622,7 @@ const DashboardCompleteFixed = () => {
     completeQuest("check-swaps");
 
     // Vérifier achievements
-    const userSwaps = swaps.filter((s) =>
-      s.createdBy?.includes(user.firstName),
-    );
+    const userSwaps = swaps.filter(s => s.createdBy?.includes(user.firstName));
     if (userSwaps.length === 0) {
       unlockAchievement("first-swap");
     }
@@ -808,9 +827,7 @@ const DashboardCompleteFixed = () => {
       role: "",
     });
 
-    setMessage(
-      `✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`,
-    );
+    setMessage(`✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`);
 
     // Gamification
     addXP(50, "ajout de contact");
@@ -1065,14 +1082,14 @@ const DashboardCompleteFixed = () => {
   };
 
   const unlockAchievement = (achievementId: string) => {
-    const achievement = achievements.find((a) => a.id === achievementId);
+    const achievement = achievements.find(a => a.id === achievementId);
     if (achievement && !achievement.unlockedAt) {
       const updatedAchievement = {
         ...achievement,
         unlockedAt: new Date().toISOString(),
       };
-      setAchievements((prev) =>
-        prev.map((a) => (a.id === achievementId ? updatedAchievement : a)),
+      setAchievements(prev =>
+        prev.map(a => a.id === achievementId ? updatedAchievement : a)
       );
       setNewAchievement(updatedAchievement);
       setShowAchievementModal(true);
@@ -1081,19 +1098,54 @@ const DashboardCompleteFixed = () => {
   };
 
   const completeQuest = (questId: string) => {
-    setDailyQuests((prev) =>
-      prev.map((quest) =>
+    setDailyQuests(prev =>
+      prev.map(quest =>
         quest.id === questId
           ? { ...quest, completed: true, current: quest.target }
-          : quest,
-      ),
+          : quest
+      )
     );
 
-    const quest = dailyQuests.find((q) => q.id === questId);
+    const quest = dailyQuests.find(q => q.id === questId);
     if (quest && !quest.completed) {
       addXP(quest.xpReward, quest.title);
-      setTotalPoints((prev) => prev + quest.reward);
+      setTotalPoints(prev => prev + quest.reward);
     }
+  };
+
+  const handleRefresh = async () => {
+    // Simulation d'un refresh
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Actualiser les données
+    const userData = JSON.parse(localStorage.getItem("swapeo_user") || "{}");
+    if (userData) {
+      initializeGamification(userData);
+    }
+
+    setMessage("✅ Données actualisées !");
+    setTimeout(() => setMessage(""), 2000);
+  };
+
+  const handleSwipeAction = (swapId: string, action: "archive" | "favorite" | "quick" | "delete") => {
+    switch (action) {
+      case "archive":
+        setMessage("📦 Swap archivé");
+        addXP(25, "archivage de swap");
+        break;
+      case "favorite":
+        setMessage("❤️ Ajouté aux favoris");
+        addXP(15, "ajout aux favoris");
+        break;
+      case "quick":
+        setMessage("⚡ Action rapide effectuée");
+        addXP(10, "action rapide");
+        break;
+      case "delete":
+        setMessage("🗑️ Swap supprimé");
+        break;
+    }
+    setTimeout(() => setMessage(""), 2000);
   };
 
   if (loading) {
@@ -1144,9 +1196,7 @@ const DashboardCompleteFixed = () => {
                 <div className="w-16 bg-gray-200 rounded-full h-1.5">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-blue-500 h-1.5 rounded-full transition-all duration-500"
-                    style={{
-                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
-                    }}
+                    style={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
                   ></div>
                 </div>
                 <div className="text-xs font-bold text-blue-600">
@@ -1156,15 +1206,11 @@ const DashboardCompleteFixed = () => {
 
               {/* Version Mobile Compacte */}
               <div className="sm:hidden flex items-center space-x-1 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-full px-2 py-1">
-                <span className="text-xs font-bold text-purple-600">
-                  Lv.{userLevel?.level}
-                </span>
+                <span className="text-xs font-bold text-purple-600">Lv.{userLevel?.level}</span>
                 <div className="w-8 bg-gray-200 rounded-full h-1">
                   <div
                     className="bg-gradient-to-r from-purple-500 to-blue-500 h-1 rounded-full"
-                    style={{
-                      width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
-                    }}
+                    style={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
                   ></div>
                 </div>
               </div>
@@ -1284,12 +1330,7 @@ const DashboardCompleteFixed = () => {
                     </div>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleLogout}
-                  className="h-8 w-8 sm:h-10 sm:w-10"
-                >
+                <Button variant="ghost" size="icon" onClick={handleLogout} className="h-8 w-8 sm:h-10 sm:w-10">
                   <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
@@ -1314,36 +1355,25 @@ const DashboardCompleteFixed = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeSection} onValueChange={setActiveSection}>
+        <PullToRefresh onRefresh={handleRefresh}>
+          <Tabs value={activeSection} onValueChange={setActiveSection}>
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger
-              value="overview"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
+            <TabsTrigger value="overview" className="flex items-center space-x-1 sm:space-x-2">
               <Home className="h-4 w-4" />
               <span className="hidden sm:inline">Vue d'ensemble</span>
               <span className="sm:hidden text-xs">Accueil</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="swaps"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
+            <TabsTrigger value="swaps" className="flex items-center space-x-1 sm:space-x-2">
               <Handshake className="h-4 w-4" />
               <span className="hidden sm:inline">Mes Swaps</span>
               <span className="sm:hidden text-xs">Swaps</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="wallet"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
+            <TabsTrigger value="wallet" className="flex items-center space-x-1 sm:space-x-2">
               <Wallet className="h-4 w-4" />
               <span className="hidden sm:inline">Portefeuille</span>
               <span className="sm:hidden text-xs">Wallet</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="network"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
+            <TabsTrigger value="network" className="flex items-center space-x-1 sm:space-x-2">
               <Users className="h-4 w-4" />
               <span className="hidden sm:inline">Réseau</span>
               <span className="sm:hidden text-xs">Réseau</span>
@@ -1444,27 +1474,19 @@ const DashboardCompleteFixed = () => {
                       <motion.div
                         className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-1000"
                         initial={{ width: 0 }}
-                        animate={{
-                          width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
-                        }}
+                        animate={{ width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%` }}
                       ></motion.div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-orange-600">
-                        {totalPoints}
-                      </div>
+                      <div className="text-lg font-bold text-orange-600">{totalPoints}</div>
                       <div className="text-xs text-gray-600">Points Total</div>
                     </div>
                     <div className="bg-white/50 rounded-lg p-3">
-                      <div className="text-lg font-bold text-green-600">
-                        {streakDays}
-                      </div>
-                      <div className="text-xs text-gray-600">
-                        Jours d'affilée
-                      </div>
+                      <div className="text-lg font-bold text-green-600">{streakDays}</div>
+                      <div className="text-xs text-gray-600">Jours d'affilée</div>
                     </div>
                   </div>
                 </div>
@@ -1484,19 +1506,13 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <span className="text-lg">{quest.icon}</span>
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
-                              {quest.title}
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              {quest.description}
-                            </p>
+                            <p className="text-sm font-medium text-gray-900">{quest.title}</p>
+                            <p className="text-xs text-gray-600">{quest.description}</p>
                           </div>
                         </div>
                         <div className="text-right">
                           {quest.completed ? (
-                            <Badge className="bg-green-100 text-green-700">
-                              ✓ Terminé
-                            </Badge>
+                            <Badge className="bg-green-100 text-green-700">✓ Terminé</Badge>
                           ) : (
                             <div className="text-xs text-gray-500">
                               {quest.current}/{quest.target}
@@ -1507,9 +1523,7 @@ const DashboardCompleteFixed = () => {
                       <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
                         <div
                           className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
-                          style={{
-                            width: `${(quest.current / quest.target) * 100}%`,
-                          }}
+                          style={{ width: `${(quest.current / quest.target) * 100}%` }}
                         ></div>
                       </div>
                     </div>
@@ -1536,36 +1550,21 @@ const DashboardCompleteFixed = () => {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {achievements
-                  .filter((a) => a.unlockedAt)
-                  .slice(0, 3)
-                  .map((achievement) => (
-                    <div
-                      key={achievement.id}
-                      className="bg-white/70 rounded-lg p-3 text-center"
-                    >
-                      <div className="text-2xl mb-2">{achievement.icon}</div>
-                      <h4 className="font-medium text-sm text-gray-900">
-                        {achievement.name}
-                      </h4>
-                      <p className="text-xs text-gray-600 mt-1">
-                        {achievement.description}
-                      </p>
-                      <Badge
-                        className={`mt-2 text-xs ${
-                          achievement.rarity === "legendary"
-                            ? "bg-purple-100 text-purple-700"
-                            : achievement.rarity === "epic"
-                              ? "bg-blue-100 text-blue-700"
-                              : achievement.rarity === "rare"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {achievement.rarity}
-                      </Badge>
-                    </div>
-                  ))}
+                {achievements.filter(a => a.unlockedAt).slice(0, 3).map((achievement) => (
+                  <div key={achievement.id} className="bg-white/70 rounded-lg p-3 text-center">
+                    <div className="text-2xl mb-2">{achievement.icon}</div>
+                    <h4 className="font-medium text-sm text-gray-900">{achievement.name}</h4>
+                    <p className="text-xs text-gray-600 mt-1">{achievement.description}</p>
+                    <Badge className={`mt-2 text-xs ${
+                      achievement.rarity === 'legendary' ? 'bg-purple-100 text-purple-700' :
+                      achievement.rarity === 'epic' ? 'bg-blue-100 text-blue-700' :
+                      achievement.rarity === 'rare' ? 'bg-green-100 text-green-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {achievement.rarity}
+                    </Badge>
+                  </div>
+                ))}
               </div>
             </Card>
 
@@ -1589,9 +1588,7 @@ const DashboardCompleteFixed = () => {
                 >
                   <Search className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-green-600" />
                   <span className="text-xs sm:text-sm">Chercher</span>
-                  <span className="hidden lg:inline sm:text-sm">
-                    Opportunités
-                  </span>
+                  <span className="hidden lg:inline sm:text-sm">Opportunités</span>
                 </Button>
                 <Button
                   variant="outline"
@@ -1708,9 +1705,7 @@ const DashboardCompleteFixed = () => {
                   className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-sm px-3 sm:px-4"
                 >
                   <Plus className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">
-                    Créer un nouveau swap
-                  </span>
+                  <span className="hidden sm:inline">Créer un nouveau swap</span>
                 </Button>
                 <Button
                   variant="outline"
@@ -1725,14 +1720,30 @@ const DashboardCompleteFixed = () => {
 
             <div className="space-y-4 overflow-hidden">
               {swaps.map((swap) => (
-                <Card
-                  key={swap.id}
-                  className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
-                    highlightedSwapId === swap.id
-                      ? "ring-2 ring-green-500 bg-green-50"
-                      : ""
-                  }`}
-                >
+                <div key={swap.id} className="lg:block">
+                  <div className="hidden lg:block">
+                    <Card
+                      className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
+                        highlightedSwapId === swap.id
+                          ? "ring-2 ring-green-500 bg-green-50"
+                          : ""
+                      }`}
+                    >
+                  </div>
+                  <div className="lg:hidden">
+                    <SwipeableCard
+                      onSwipeLeft={() => handleSwipeAction(swap.id, "archive")}
+                      onSwipeRight={() => handleSwipeAction(swap.id, "favorite")}
+                      onSwipeUp={() => handleSwipeAction(swap.id, "quick")}
+                      onSwipeDown={() => handleSwipeAction(swap.id, "delete")}
+                      className={`${
+                        highlightedSwapId === swap.id
+                          ? "ring-2 ring-green-500 bg-green-50"
+                          : ""
+                      }`}
+                    >
+                      <Card className="p-3 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                  </div>
                   {highlightedSwapId === swap.id && (
                     <div className="mb-4 p-2 bg-green-100 border border-green-300 rounded-lg text-center">
                       <span className="text-green-700 font-semibold text-sm">
@@ -1809,9 +1820,7 @@ const DashboardCompleteFixed = () => {
                         }`}
                       >
                         {getStatusIcon(swap.status)}
-                        <span className="ml-1 hidden sm:inline">
-                          {swap.status}
-                        </span>
+                        <span className="ml-1 hidden sm:inline">{swap.status}</span>
                       </Badge>
                       <div className="flex space-x-1">
                         <Button
@@ -1856,7 +1865,13 @@ const DashboardCompleteFixed = () => {
                       <Progress value={swap.progress} className="h-2" />
                     </div>
                   )}
-                </Card>
+                      </Card>
+                    </SwipeableCard>
+                  </div>
+                  <div className="hidden lg:block">
+                    </Card>
+                  </div>
+                </div>
               ))}
             </div>
           </TabsContent>
@@ -2198,6 +2213,7 @@ const DashboardCompleteFixed = () => {
             </Card>
           </TabsContent>
         </Tabs>
+        </PullToRefresh>
       </main>
 
       {/* Modal Création de Swap */}
@@ -2680,9 +2696,7 @@ const DashboardCompleteFixed = () => {
                   }}
                 >
                   <MessageCircle className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">
-                    Contacter le partenaire
-                  </span>
+                  <span className="hidden sm:inline">Contacter le partenaire</span>
                   <span className="sm:hidden">Contacter</span>
                 </Button>
               </motion.div>
@@ -3057,12 +3071,12 @@ const DashboardCompleteFixed = () => {
               <motion.div
                 animate={{
                   scale: [1, 1.2, 1],
-                  rotate: [0, 360, 720],
+                  rotate: [0, 360, 720]
                 }}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
-                  ease: "easeInOut",
+                  ease: "easeInOut"
                 }}
                 className="text-6xl mb-6"
               >
@@ -3086,9 +3100,7 @@ const DashboardCompleteFixed = () => {
               >
                 <p className="text-xl">Niveau {userLevel.level}</p>
                 <p className="text-lg font-semibold">{userLevel.title}</p>
-                <p className="text-sm opacity-90">
-                  Nouveaux avantages débloqués !
-                </p>
+                <p className="text-sm opacity-90">Nouveaux avantages débloqués !</p>
               </motion.div>
 
               <motion.div
@@ -3098,10 +3110,7 @@ const DashboardCompleteFixed = () => {
                 className="space-y-2"
               >
                 {userLevel.benefits.slice(-1).map((benefit, index) => (
-                  <Badge
-                    key={index}
-                    className="bg-white/20 text-white border-white/30 mr-2"
-                  >
+                  <Badge key={index} className="bg-white/20 text-white border-white/30 mr-2">
                     ✨ {benefit}
                   </Badge>
                 ))}
@@ -3112,10 +3121,7 @@ const DashboardCompleteFixed = () => {
       </AnimatePresence>
 
       {/* Modal Tous les Achievements */}
-      <Dialog
-        open={showAchievementModal}
-        onOpenChange={setShowAchievementModal}
-      >
+      <Dialog open={showAchievementModal} onOpenChange={setShowAchievementModal}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center">
@@ -3132,47 +3138,33 @@ const DashboardCompleteFixed = () => {
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <span className="text-green-600 mr-2">✓</span>
-                Débloqués ({achievements.filter((a) => a.unlockedAt).length})
+                Débloqués ({achievements.filter(a => a.unlockedAt).length})
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {achievements
-                  .filter((a) => a.unlockedAt)
-                  .map((achievement) => (
-                    <Card
-                      key={achievement.id}
-                      className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="text-3xl">{achievement.icon}</div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900">
-                            {achievement.name}
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            {achievement.description}
-                          </p>
-                          <div className="flex items-center space-x-2 mt-2">
-                            <Badge
-                              className={`text-xs ${
-                                achievement.rarity === "legendary"
-                                  ? "bg-purple-100 text-purple-700"
-                                  : achievement.rarity === "epic"
-                                    ? "bg-blue-100 text-blue-700"
-                                    : achievement.rarity === "rare"
-                                      ? "bg-green-100 text-green-700"
-                                      : "bg-gray-100 text-gray-700"
-                              }`}
-                            >
-                              {achievement.rarity}
-                            </Badge>
-                            <span className="text-xs text-gray-500">
-                              {formatDate(achievement.unlockedAt!)}
-                            </span>
-                          </div>
+                {achievements.filter(a => a.unlockedAt).map((achievement) => (
+                  <Card key={achievement.id} className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="text-3xl">{achievement.icon}</div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{achievement.name}</h4>
+                        <p className="text-sm text-gray-600">{achievement.description}</p>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <Badge className={`text-xs ${
+                            achievement.rarity === 'legendary' ? 'bg-purple-100 text-purple-700' :
+                            achievement.rarity === 'epic' ? 'bg-blue-100 text-blue-700' :
+                            achievement.rarity === 'rare' ? 'bg-green-100 text-green-700' :
+                            'bg-gray-100 text-gray-700'
+                          }`}>
+                            {achievement.rarity}
+                          </Badge>
+                          <span className="text-xs text-gray-500">
+                            {formatDate(achievement.unlockedAt!)}
+                          </span>
                         </div>
                       </div>
-                    </Card>
-                  ))}
+                    </div>
+                  </Card>
+                ))}
               </div>
             </div>
 
@@ -3180,60 +3172,37 @@ const DashboardCompleteFixed = () => {
             <div>
               <h3 className="text-lg font-semibold mb-4 flex items-center">
                 <span className="text-orange-600 mr-2">⏳</span>
-                En cours ({achievements.filter((a) => !a.unlockedAt).length})
+                En cours ({achievements.filter(a => !a.unlockedAt).length})
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {achievements
-                  .filter((a) => !a.unlockedAt)
-                  .map((achievement) => (
-                    <Card
-                      key={achievement.id}
-                      className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <div className="text-3xl opacity-60">
-                          {achievement.icon}
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900">
-                            {achievement.name}
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            {achievement.description}
-                          </p>
-                          {achievement.progress !== undefined && (
-                            <div className="mt-2">
-                              <div className="flex justify-between text-xs text-gray-500 mb-1">
-                                <span>
-                                  {achievement.progress}/
-                                  {achievement.maxProgress}
-                                </span>
-                                <span>
-                                  {Math.round(
-                                    (achievement.progress /
-                                      (achievement.maxProgress || 1)) *
-                                      100,
-                                  )}
-                                  %
-                                </span>
-                              </div>
-                              <div className="w-full bg-gray-200 rounded-full h-2">
-                                <div
-                                  className="bg-orange-500 h-2 rounded-full transition-all duration-500"
-                                  style={{
-                                    width: `${(achievement.progress / (achievement.maxProgress || 1)) * 100}%`,
-                                  }}
-                                ></div>
-                              </div>
+                {achievements.filter(a => !a.unlockedAt).map((achievement) => (
+                  <Card key={achievement.id} className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="text-3xl opacity-60">{achievement.icon}</div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900">{achievement.name}</h4>
+                        <p className="text-sm text-gray-600">{achievement.description}</p>
+                        {achievement.progress !== undefined && (
+                          <div className="mt-2">
+                            <div className="flex justify-between text-xs text-gray-500 mb-1">
+                              <span>{achievement.progress}/{achievement.maxProgress}</span>
+                              <span>{Math.round((achievement.progress / (achievement.maxProgress || 1)) * 100)}%</span>
                             </div>
-                          )}
-                          <Badge className="mt-2 text-xs bg-gray-100 text-gray-700">
-                            {achievement.rarity}
-                          </Badge>
-                        </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-orange-500 h-2 rounded-full transition-all duration-500"
+                                style={{ width: `${(achievement.progress / (achievement.maxProgress || 1)) * 100}%` }}
+                              ></div>
+                            </div>
+                          </div>
+                        )}
+                        <Badge className="mt-2 text-xs bg-gray-100 text-gray-700">
+                          {achievement.rarity}
+                        </Badge>
                       </div>
-                    </Card>
-                  ))}
+                    </div>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
