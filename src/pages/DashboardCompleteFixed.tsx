@@ -1864,71 +1864,90 @@ const DashboardCompleteFixed = () => {
               </div>
 
               {/* Informations principales */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="p-6">
-                  <h4 className="text-lg font-semibold mb-4 flex items-center">
-                    <FileText className="h-5 w-5 mr-2 text-blue-500" />
-                    Informations générales
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Type:</span>
-                      <Badge
-                        className={
-                          selectedSwap.type === "demande"
-                            ? "bg-orange-100 text-orange-700"
-                            : "bg-green-100 text-green-700"
-                        }
-                      >
-                        {selectedSwap.type === "demande"
-                          ? "💰 Demande de financement"
-                          : "🏦 Offre de financement"}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Statut:</span>
-                      <div className="flex items-center space-x-2">
-                        {getStatusIcon(selectedSwap.status)}
-                        <span className="font-medium">
-                          {selectedSwap.status}
-                        </span>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-blue-100">
+                    <h4 className="text-lg font-semibold mb-6 flex items-center">
+                      <div className="p-2 bg-blue-100 rounded-lg mr-3">
+                        <FileText className="h-5 w-5 text-blue-600" />
                       </div>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Catégorie:</span>
-                      <span className="font-medium">
-                        {selectedSwap.category || "Non spécifiée"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Niveau de risque:</span>
-                      <span
-                        className={`font-medium ${
-                          selectedSwap.riskLevel === "low"
-                            ? "text-green-600"
+                      Informations générales
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Statut:
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          {getStatusIcon(selectedSwap.status)}
+                          <span className="font-semibold">
+                            {selectedSwap.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Catégorie:
+                        </span>
+                        <Badge variant="outline" className="bg-gray-50">
+                          {selectedSwap.category || "Non spécifiée"}
+                        </Badge>
+                      </div>
+
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Niveau de risque:
+                        </span>
+                        <Badge
+                          className={`${
+                            selectedSwap.riskLevel === "low"
+                              ? "bg-green-100 text-green-700 border-green-200"
+                              : selectedSwap.riskLevel === "medium"
+                                ? "bg-yellow-100 text-yellow-700 border-yellow-200"
+                                : "bg-red-100 text-red-700 border-red-200"
+                          }`}
+                        >
+                          {selectedSwap.riskLevel === "low"
+                            ? "🟢 Faible"
                             : selectedSwap.riskLevel === "medium"
-                              ? "text-yellow-600"
-                              : "text-red-600"
-                        }`}
-                      >
-                        {selectedSwap.riskLevel === "low"
-                          ? "Faible"
-                          : selectedSwap.riskLevel === "medium"
-                            ? "Modéré"
-                            : "Élevé"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Score de matching:</span>
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-4 w-4 text-yellow-500" />
-                        <span className="font-medium">
-                          {selectedSwap.matchingScore}%
+                              ? "🟡 Modéré"
+                              : "🔴 Élevé"}
+                        </Badge>
+                      </div>
+
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Score de compatibilité:
                         </span>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i <
+                                  Math.floor(
+                                    (selectedSwap.matchingScore || 0) / 20,
+                                  )
+                                    ? "text-yellow-400 fill-current"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="font-bold text-blue-600">
+                            {selectedSwap.matchingScore}%
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                </motion.div>
 
                 <Card className="p-6">
                   <h4 className="text-lg font-semibold mb-4 flex items-center">
