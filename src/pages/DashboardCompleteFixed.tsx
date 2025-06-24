@@ -1407,22 +1407,31 @@ const DashboardCompleteFixed = () => {
 
           {/* Section Réseau */}
           <TabsContent value="network" className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Mon Réseau</h2>
-                <p className="text-gray-600">Vos partenaires de confiance</p>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Mon Réseau
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Vos partenaires de confiance
+                </p>
               </div>
-              <div className="flex space-x-3">
-                <Button onClick={addFictiveContact}>
+              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+                <Button onClick={addFictiveContact} className="text-sm">
                   <Plus className="h-4 w-4 mr-2" />
-                  Ajouter contact fictif
+                  <span className="hidden sm:inline">
+                    Ajouter contact fictif
+                  </span>
+                  <span className="sm:hidden">Ajouter contact</span>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowInviteDialog(true)}
+                  className="text-sm"
                 >
                   <Mail className="h-4 w-4 mr-2" />
-                  Inviter par email
+                  <span className="hidden sm:inline">Inviter par email</span>
+                  <span className="sm:hidden">Inviter</span>
                 </Button>
               </div>
             </div>
