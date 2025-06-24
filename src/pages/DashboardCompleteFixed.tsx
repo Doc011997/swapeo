@@ -681,7 +681,7 @@ const DashboardCompleteFixed = () => {
       // Footer
       pdf.setFontSize(10);
       pdf.setTextColor(100, 100, 100);
-      pdf.text("Cette facture a ��té générée automatiquement", 20, 280);
+      pdf.text("Cette facture a été générée automatiquement", 20, 280);
 
       pdf.save(`Facture_${transaction.id}.pdf`);
 
@@ -1477,7 +1477,7 @@ const DashboardCompleteFixed = () => {
               </Card>
             </div>
 
-            <Card className="p-6">
+            <Card className="p-4 sm:p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Mes contacts
               </h3>
@@ -1485,30 +1485,30 @@ const DashboardCompleteFixed = () => {
                 {contacts.map((contact) => (
                   <div
                     key={contact.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 p-3 sm:p-4 bg-gray-50 rounded-lg"
                   >
-                    <div className="flex items-center space-x-4">
-                      <Avatar className="h-12 w-12">
-                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                    <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                      <Avatar className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0">
+                        <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm">
                           {contact.name
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-center space-x-2">
-                          <h4 className="font-semibold text-gray-900">
+                          <h4 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                             {contact.name}
                           </h4>
                           {contact.verified && (
-                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-xs sm:text-sm text-gray-600 truncate">
                           {contact.company}
                         </p>
-                        <div className="flex items-center space-x-4 mt-1">
+                        <div className="flex items-center space-x-3 sm:space-x-4 mt-1">
                           <div className="flex items-center space-x-1">
                             <Star className="h-3 w-3 text-yellow-500" />
                             <span className="text-xs text-gray-600">
@@ -1521,14 +1521,20 @@ const DashboardCompleteFixed = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Button size="sm" variant="outline">
-                        <MessageCircle className="h-4 w-4 mr-1" />
-                        Message
+                    <div className="flex items-center space-x-2 flex-shrink-0">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-xs px-2 py-1"
+                      >
+                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                        <span className="hidden sm:inline">Message</span>
+                        <span className="sm:hidden">Msg</span>
                       </Button>
-                      <Button size="sm">
-                        <Plus className="h-4 w-4 mr-1" />
-                        Nouveau swap
+                      <Button size="sm" className="text-xs px-2 py-1">
+                        <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                        <span className="hidden sm:inline">Nouveau swap</span>
+                        <span className="sm:hidden">Swap</span>
                       </Button>
                     </div>
                   </div>
