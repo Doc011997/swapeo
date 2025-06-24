@@ -1645,47 +1645,53 @@ const DashboardCompleteFixed = () => {
               </div>
             </TabsContent>
 
-            <TabsContent value="wallet" className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <TabsContent value="wallet" className="space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Solde principal */}
-                <Card className="lg:col-span-2 p-6 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                  <div className="flex items-center justify-between mb-6">
-                    <div>
-                      <h2 className="text-xl font-semibold mb-2">
-                        Solde du portefeuille
-                      </h2>
-                      <div className="flex items-center space-x-2">
-                        <p className="text-3xl font-bold">
-                          {hideBalance
-                            ? "•••••"
-                            : formatCurrency(animatedBalance)}
-                        </p>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setHideBalance(!hideBalance)}
-                          className="text-white hover:bg-white/20"
-                        >
-                          {hideBalance ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                    <Wallet className="h-12 w-12 opacity-80" />
-                  </div>
+                <Card className="lg:col-span-2 p-4 sm:p-6 bg-gradient-to-br from-blue-500 to-purple-600 text-white relative overflow-hidden">
+                  {/* Background effects pour mobile */}
+                  <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/10 rounded-full blur-2xl" />
+                  <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-cyan-300/20 rounded-full blur-xl" />
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
-                      <ArrowDownRight className="h-4 w-4 mr-2" />
-                      Déposer
-                    </Button>
-                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
-                      <ArrowUpRight className="h-4 w-4 mr-2" />
-                      Retirer
-                    </Button>
+                  <div className="relative z-10">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
+                      <div className="mb-4 sm:mb-0">
+                        <h2 className="text-lg sm:text-xl font-semibold mb-2">
+                          Solde du portefeuille
+                        </h2>
+                        <div className="flex items-center space-x-2">
+                          <p className="text-2xl sm:text-3xl font-bold">
+                            {hideBalance
+                              ? "•••••"
+                              : formatCurrency(animatedBalance)}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setHideBalance(!hideBalance)}
+                            className="text-white hover:bg-white/20 h-8 w-8 sm:h-10 sm:w-10"
+                          >
+                            {hideBalance ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                      <Wallet className="h-10 w-10 sm:h-12 sm:w-12 opacity-80 self-start sm:self-auto" />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <Button className="bg-white/20 hover:bg-white/30 text-white border-0 h-12 sm:h-10 rounded-xl font-semibold">
+                        <ArrowDownRight className="h-4 w-4 mr-2" />
+                        Déposer
+                      </Button>
+                      <Button className="bg-white/20 hover:bg-white/30 text-white border-0 h-12 sm:h-10 rounded-xl font-semibold">
+                        <ArrowUpRight className="h-4 w-4 mr-2" />
+                        Retirer
+                      </Button>
+                    </div>
                   </div>
                 </Card>
 
