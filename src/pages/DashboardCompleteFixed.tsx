@@ -1459,27 +1459,33 @@ const DashboardCompleteFixed = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Montant (€)</Label>
+                <Label className="flex items-center">
+                  Montant (€) <span className="text-red-500 ml-1">*</span>
+                </Label>
                 <Input
                   type="number"
-                  placeholder="10 000"
+                  placeholder="10 000 (min. 1 000€)"
                   value={newSwap.amount}
                   onChange={(e) =>
                     setNewSwap({ ...newSwap, amount: e.target.value })
                   }
-                  className="mt-1"
+                  className={`mt-1 ${!newSwap.amount || parseInt(newSwap.amount) < 1000 ? "border-red-200" : ""}`}
+                  min="1000"
                 />
               </div>
               <div>
-                <Label>Durée (mois)</Label>
+                <Label className="flex items-center">
+                  Durée (mois) <span className="text-red-500 ml-1">*</span>
+                </Label>
                 <Input
                   type="number"
-                  placeholder="6"
+                  placeholder="6 (min. 1 mois)"
                   value={newSwap.duration}
                   onChange={(e) =>
                     setNewSwap({ ...newSwap, duration: e.target.value })
                   }
-                  className="mt-1"
+                  className={`mt-1 ${!newSwap.duration || parseInt(newSwap.duration) < 1 ? "border-red-200" : ""}`}
+                  min="1"
                 />
               </div>
             </div>
