@@ -1647,6 +1647,15 @@ const DashboardCompleteFixed = () => {
               </div>
             </div>
 
+            <div className="bg-gray-50 p-3 rounded-lg text-sm text-gray-600">
+              <p className="flex items-center">
+                <Info className="h-4 w-4 mr-2 text-blue-500" />
+                <span className="text-red-500">*</span> Champs obligatoires -
+                Votre swap apparaîtra immédiatement dans votre liste après
+                création
+              </p>
+            </div>
+
             <Button
               onClick={handleCreateSwap}
               disabled={
@@ -1663,7 +1672,17 @@ const DashboardCompleteFixed = () => {
               className="w-full bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Plus className="mr-2 h-4 w-4" />
-              Créer le swap
+              {!newSwap.type ||
+              !newSwap.amount ||
+              !newSwap.duration ||
+              !newSwap.description ||
+              !newSwap.category ||
+              !newSwap.purpose ||
+              !newSwap.guarantees ||
+              parseInt(newSwap.amount) < 1000 ||
+              parseInt(newSwap.duration) < 1
+                ? "Veuillez remplir tous les champs obligatoires"
+                : "Créer le swap"}
             </Button>
           </div>
         </DialogContent>
