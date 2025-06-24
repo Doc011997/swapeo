@@ -986,51 +986,78 @@ const DashboardCompleteFixed = () => {
 
               {/* Stats rapides */}
               <div className="space-y-4">
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <TrendingUp className="h-6 w-6 text-green-600" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-green-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div className="flex items-center">
+                      <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <TrendingUp className="h-7 w-7 text-white" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600 mb-1">
+                          Rendement Moy.
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">3.8%</p>
+                        <p className="text-xs text-green-600 font-medium">
+                          +0.3% vs mois dernier
+                        </p>
+                      </div>
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Rendement Moy.
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900">3.8%</p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </motion.div>
 
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Star className="h-6 w-6 text-blue-600" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-yellow-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div className="flex items-center">
+                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Star className="h-7 w-7 text-white" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600 mb-1">
+                          Note Moyenne
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {user.stats?.avgRating || 4.8}★
+                        </p>
+                        <p className="text-xs text-yellow-600 font-medium">
+                          Excellent profil
+                        </p>
+                      </div>
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Note Moyenne
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900">
-                        {user.stats?.avgRating || 4.8}★
-                      </p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </motion.div>
 
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <Users className="h-6 w-6 text-orange-600" />
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                >
+                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div className="flex items-center">
+                      <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Users className="h-7 w-7 text-white" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600 mb-1">
+                          Contacts
+                        </p>
+                        <p className="text-2xl font-bold text-gray-900">
+                          {contacts.length}
+                        </p>
+                        <p className="text-xs text-blue-600 font-medium">
+                          Réseau actif
+                        </p>
+                      </div>
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Contacts
-                      </p>
-                      <p className="text-2xl font-bold text-gray-900">
-                        {contacts.length}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </motion.div>
               </div>
             </div>
 
