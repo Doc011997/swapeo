@@ -1753,12 +1753,25 @@ const DashboardComplete = () => {
                             placeholder="500"
                             max={walletData.balance}
                             className="mt-1"
+                            id="withdraw-amount"
                           />
                           <p className="text-sm text-gray-500 mt-1">
                             Disponible: {formatCurrency(walletData.balance)}
                           </p>
                         </div>
-                        <Button className="w-full bg-blue-500 hover:bg-blue-600">
+                        <Button
+                          className="w-full bg-blue-500 hover:bg-blue-600"
+                          onClick={() => {
+                            const amountInput = document.getElementById(
+                              "withdraw-amount",
+                            ) as HTMLInputElement;
+                            const amount = parseInt(amountInput?.value || "0");
+                            if (amount > 0) {
+                              handleWalletWithdraw(amount);
+                              amountInput.value = "";
+                            }
+                          }}
+                        >
                           Confirmer le retrait
                         </Button>
                       </div>
