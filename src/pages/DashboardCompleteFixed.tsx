@@ -1191,7 +1191,7 @@ const DashboardCompleteFixed = () => {
               </div>
               <Button
                 onClick={() => setShowCreateSwap(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nouveau swap
