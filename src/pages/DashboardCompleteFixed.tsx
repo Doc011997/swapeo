@@ -2472,24 +2472,24 @@ const DashboardCompleteFixed = () => {
               </div>
 
               {/* Description et détails */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                    <Building className="h-4 w-4 mr-2 text-violet-600" />
-                    Partenaire
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                    <Building className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-violet-600 flex-shrink-0" />
+                    <span className="truncate">Partenaire</span>
                   </h3>
-                  <p className="text-gray-700 bg-gray-50 p-3 rounded-lg">
+                  <p className="text-sm sm:text-base text-gray-700 bg-gray-50 p-2 sm:p-3 rounded-lg break-words">
                     {selectedSwap.counterparty}
                   </p>
                 </div>
 
                 {selectedSwap.description && (
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <Info className="h-4 w-4 mr-2 text-cyan-600" />
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                      <Info className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-cyan-600 flex-shrink-0" />
                       Description
                     </h3>
-                    <p className="text-gray-700 bg-gray-50 p-3 rounded-lg">
+                    <p className="text-sm sm:text-base text-gray-700 bg-gray-50 p-2 sm:p-3 rounded-lg leading-relaxed">
                       {selectedSwap.description}
                     </p>
                   </div>
