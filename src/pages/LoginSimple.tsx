@@ -293,7 +293,7 @@ const LoginSimple = () => {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4"
                 >
                   <div className="flex items-center space-x-3 mb-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                       {testimonial.avatar}
                     </div>
                     <div>
