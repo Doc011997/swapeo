@@ -924,35 +924,64 @@ const DashboardCompleteFixed = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Card principale de bienvenue */}
               <div className="lg:col-span-2">
-                <Card className="p-6 bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-500 text-white">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h2 className="text-2xl font-bold">
-                        Bienvenue, {user.firstName} !
-                      </h2>
-                      <p className="text-violet-100">
-                        Votre espace de gestion Swapeo
-                      </p>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Card className="p-8 bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 text-white relative overflow-hidden shadow-2xl border-0">
+                    {/* Background effects */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-cyan-500/20" />
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-cyan-300/20 rounded-full blur-xl" />
+
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-6">
+                        <div>
+                          <h2 className="text-3xl font-bold mb-2">
+                            Bienvenue, {user.firstName} ! 👋
+                          </h2>
+                          <p className="text-violet-100 text-lg">
+                            Votre espace de gestion Swapeo
+                          </p>
+                        </div>
+                        <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                          <Handshake className="h-10 w-10" />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                          <p className="text-violet-100 text-sm font-medium mb-1">
+                            Solde total
+                          </p>
+                          <p className="text-3xl font-bold">
+                            {formatCurrency(animatedBalance)}
+                          </p>
+                          <div className="flex items-center mt-2 text-green-300 text-sm">
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                            +12.5% ce mois
+                          </div>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                          <p className="text-violet-100 text-sm font-medium mb-1">
+                            Swaps actifs
+                          </p>
+                          <p className="text-3xl font-bold">
+                            {swaps.filter((s) => s.status === "active").length}
+                          </p>
+                          <div className="flex items-center mt-2 text-cyan-300 text-sm">
+                            <Activity className="h-4 w-4 mr-1" />
+                            {
+                              swaps.filter((s) => s.status === "pending").length
+                            }{" "}
+                            en attente
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                      <Handshake className="h-8 w-8" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-violet-100 text-sm">Solde total</p>
-                      <p className="text-2xl font-bold">
-                        {formatCurrency(animatedBalance)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-violet-100 text-sm">Swaps actifs</p>
-                      <p className="text-2xl font-bold">
-                        {swaps.filter((s) => s.status === "active").length}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </motion.div>
               </div>
 
               {/* Stats rapides */}
