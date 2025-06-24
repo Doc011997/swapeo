@@ -1275,12 +1275,12 @@ const DashboardCompleteFixed = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm border-violet-200/50 shadow-lg">
-                  <div className="flex items-center mb-4 sm:mb-6">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-2 sm:mr-3">
-                      <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <Card className="p-6 sm:p-8 bg-white/90 backdrop-blur-md border-violet-200/50 shadow-xl rounded-3xl">
+                  <div className="flex items-center mb-6 sm:mb-8">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-violet-500 to-purple-500 rounded-2xl flex items-center justify-center mr-3 sm:mr-4 shadow-lg">
+                      <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
                       Actions Rapides
                     </h3>
                   </div>
