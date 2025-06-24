@@ -436,25 +436,34 @@ const Index = () => {
             ))}
           </div>
 
-          <div
-            className={`
-            text-center mt-12 transition-all duration-1000 delay-500
-            ${isVisible.faq ? "animate-fade-in" : "opacity-0"}
-          `}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mt-16"
           >
-            <p className="text-gray-300 mb-6 text-lg">
-              Vous avez d'autres questions ?
-            </p>
-            <Button
-              variant="outline"
-              className="glass-effect neon-border text-lg px-8 py-4 group"
-            >
-              <span className="flex items-center text-white">
-                Voir toute la FAQ
-                <Sparkles className="ml-2 h-5 w-5 group-hover:animate-spin transition-all duration-300" />
-              </span>
-            </Button>
-          </div>
+            <div className="bg-gradient-to-r from-gray-800/50 to-gray-700/50 backdrop-blur-xl border border-gray-600/50 rounded-2xl p-8">
+              <p className="text-gray-300 mb-6 text-lg">
+                Une question spécifique ? Notre équipe est là pour vous aider
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-8 py-3 rounded-xl group">
+                  <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
+                  Contacter le support
+                </Button>
+                <Button
+                  variant="outline"
+                  className="border-gray-600 text-gray-300 hover:text-white hover:border-blue-500 px-8 py-3 rounded-xl group"
+                >
+                  <span className="flex items-center">
+                    Voir toute la FAQ
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  </span>
+                </Button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
