@@ -1434,14 +1434,18 @@ const DashboardCompleteFixed = () => {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label>Type de swap</Label>
+              <Label className="flex items-center">
+                Type de swap <span className="text-red-500 ml-1">*</span>
+              </Label>
               <Select
                 value={newSwap.type}
                 onValueChange={(value) =>
                   setNewSwap({ ...newSwap, type: value })
                 }
               >
-                <SelectTrigger className="mt-1">
+                <SelectTrigger
+                  className={`mt-1 ${!newSwap.type ? "border-red-200" : ""}`}
+                >
                   <SelectValue placeholder="Choisissez le type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -1652,7 +1656,7 @@ const DashboardCompleteFixed = () => {
           <DialogHeader>
             <DialogTitle>Inviter une personne</DialogTitle>
             <DialogDescription>
-              Invitez quelqu'un �� rejoindre votre réseau Swapeo
+              Invitez quelqu'un à rejoindre votre réseau Swapeo
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
