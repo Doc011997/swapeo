@@ -428,7 +428,7 @@ const DashboardCompleteFixed = () => {
           id: "notif2",
           type: "payment",
           title: "Paiement reçu",
-          description: "124.50��� d'intérêts crédités",
+          description: "124.50€ d'intérêts crédités",
           time: "Il y a 5h",
           read: false,
         },
@@ -746,9 +746,9 @@ const DashboardCompleteFixed = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-violet-50/30">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
+      <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-gray-200/50 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
