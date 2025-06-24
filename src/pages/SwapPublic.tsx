@@ -66,6 +66,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
+import { SwapService, MarketplaceSwap } from "@/lib/swapService";
 
 interface User {
   id: string;
@@ -649,7 +650,7 @@ const SwapPublic = () => {
                     Calculateur Avancé
                   </h3>
                   <p className="text-gray-400">
-                    Simulez vos investissements et financements avec précision
+                    Simulez vos investissements et financements avec pr��cision
                   </p>
                 </div>
               </Card>
@@ -980,7 +981,7 @@ const SwapPublic = () => {
 
                       <div>
                         <Label className="text-white mb-2 block">
-                          Dur��e (mois)
+                          Durée (mois)
                         </Label>
                         <Input
                           type="number"
