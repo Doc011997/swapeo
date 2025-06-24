@@ -548,7 +548,7 @@ const DashboardCompleteFixed = () => {
       {
         id: "swap-master",
         name: "Maître des Swaps",
-        description: "Complétez 10 swaps avec succ��s",
+        description: "Complétez 10 swaps avec succès",
         icon: "🏆",
         category: "swap",
         rarity: "rare",
@@ -615,7 +615,7 @@ const DashboardCompleteFixed = () => {
 
   const getLevelTitle = (level: number) => {
     if (level >= 10) return "🏆 Expert Swapeo";
-    if (level >= 7) return "💎 Trader Avancé";
+    if (level >= 7) return "���� Trader Avancé";
     if (level >= 5) return "⭐ Swapper Confirmé";
     if (level >= 3) return "🚀 Entrepreneur";
     return "🌱 Débutant";
@@ -685,6 +685,67 @@ const DashboardCompleteFixed = () => {
       addXP(quest.xpReward, quest.title);
       setTotalPoints((prev) => prev + quest.reward);
     }
+  };
+
+  // Fonction d'analyse algorithmique animée
+  const startAlgorithmAnalysis = (swapId: string) => {
+    setCreatedSwapId(swapId);
+    setShowAlgorithmAnalysis(true);
+    setAnalysisProgress(0);
+    setAnalysisResult(null);
+
+    const steps = [
+      "Vérification des données...",
+      "Analyse du profil entreprise...",
+      "Calcul du score de risque...",
+      "Validation des garanties...",
+      "Évaluation finale...",
+    ];
+
+    let currentStep = 0;
+    let progress = 0;
+
+    const interval = setInterval(() => {
+      progress += Math.random() * 15 + 5; // Progression aléatoire mais cohérente
+
+      if (progress > 100) {
+        progress = 100;
+        clearInterval(interval);
+
+        // Simulation du résultat (90% de chance d'approbation)
+        const isApproved = Math.random() > 0.1;
+        setAnalysisResult(isApproved ? "approved" : "rejected");
+
+        setTimeout(() => {
+          setShowAlgorithmAnalysis(false);
+          setAnalysisProgress(0);
+          setAnalysisStep("");
+
+          if (isApproved) {
+            setMessage(
+              `🎉 Swap ${swapId} approuvé ! Il est maintenant visible dans le marketplace.`,
+            );
+          } else {
+            setMessage(
+              `❌ Swap ${swapId} rejeté par l'algorithme. Vérifiez vos critères.`,
+            );
+          }
+
+          setTimeout(() => setMessage(""), 5000);
+        }, 2000);
+
+        return;
+      }
+
+      setAnalysisProgress(progress);
+
+      // Changer d'étape toutes les quelques itérations
+      if (progress > (currentStep + 1) * 20 && currentStep < steps.length - 1) {
+        currentStep++;
+      }
+
+      setAnalysisStep(steps[currentStep]);
+    }, 200); // Mise à jour toutes les 200ms
   };
 
   const handleCreateSwap = () => {
