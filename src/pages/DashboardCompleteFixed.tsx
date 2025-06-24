@@ -192,12 +192,6 @@ const DashboardCompleteFixed = () => {
     amount: "",
     duration: "",
     description: "",
-    category: "",
-    purpose: "",
-    guarantees: "",
-    repaymentSchedule: "monthly",
-    earlyRepayment: true,
-    insurance: false,
   });
 
   // Stats calculées
