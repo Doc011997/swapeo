@@ -2339,32 +2339,36 @@ const DashboardCompleteFixed = () => {
             initial={{ opacity: 0, x: 300 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 300 }}
-            className="fixed right-4 bottom-4 w-80 h-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 flex flex-col"
+            className="fixed inset-x-2 bottom-2 sm:right-4 sm:bottom-4 sm:left-auto w-auto sm:w-80 h-[calc(100vh-6rem)] sm:h-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 flex flex-col"
           >
             {/* Header du chat */}
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="p-3 sm:p-4 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-violet-50 to-cyan-50">
               <div className="flex items-center space-x-3">
-                <Avatar className="h-8 w-8">
+                <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                   <AvatarImage
                     src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${chatContact.name}`}
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-gradient-to-br from-violet-500 to-cyan-500 text-white text-xs">
                     {chatContact.name
                       .split(" ")
                       .map((n) => n[0])
                       .join("")}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="font-medium text-sm">{chatContact.name}</p>
-                  <p className="text-xs text-gray-500">{chatContact.company}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-sm sm:text-base truncate">
+                    {chatContact.name}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {chatContact.company}
+                  </p>
                 </div>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setShowChat(false)}
-                className="h-6 w-6"
+                className="h-8 w-8 flex-shrink-0 hover:bg-red-50 hover:text-red-600"
               >
                 <X className="h-4 w-4" />
               </Button>
