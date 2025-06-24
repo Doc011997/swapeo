@@ -1871,43 +1871,46 @@ const DashboardCompleteFixed = () => {
               </div>
 
               {/* Informations principales */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <Card className="p-6 bg-gradient-to-br from-blue-50 to-white border-blue-100">
-                    <h4 className="text-lg font-semibold mb-6 flex items-center">
-                      <div className="p-2 bg-blue-100 rounded-lg mr-3">
-                        <FileText className="h-5 w-5 text-blue-600" />
+                  <Card className="p-4 sm:p-6 bg-gradient-to-br from-blue-50 to-white border-blue-100">
+                    <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 flex items-center">
+                      <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg mr-2 sm:mr-3">
+                        <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
                       </div>
                       Informations générales
                     </h4>
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                    <div className="space-y-3 sm:space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Statut:
                         </span>
                         <div className="flex items-center space-x-2">
                           {getStatusIcon(selectedSwap.status)}
-                          <span className="font-semibold">
+                          <span className="font-semibold text-sm">
                             {selectedSwap.status}
                           </span>
                         </div>
                       </div>
 
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Catégorie:
                         </span>
-                        <Badge variant="outline" className="bg-gray-50">
+                        <Badge
+                          variant="outline"
+                          className="bg-gray-50 text-xs self-start sm:self-center"
+                        >
                           {selectedSwap.category || "Non spécifiée"}
                         </Badge>
                       </div>
 
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Niveau de risque:
                         </span>
                         <Badge
@@ -1917,7 +1920,7 @@ const DashboardCompleteFixed = () => {
                               : selectedSwap.riskLevel === "medium"
                                 ? "bg-yellow-100 text-yellow-700 border-yellow-200"
                                 : "bg-red-100 text-red-700 border-red-200"
-                          }`}
+                          } text-xs self-start sm:self-center`}
                         >
                           {selectedSwap.riskLevel === "low"
                             ? "🟢 Faible"
@@ -1927,8 +1930,8 @@ const DashboardCompleteFixed = () => {
                         </Badge>
                       </div>
 
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-2 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Score de compatibilité:
                         </span>
                         <div className="flex items-center space-x-2">
@@ -1936,7 +1939,7 @@ const DashboardCompleteFixed = () => {
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
-                                className={`h-4 w-4 ${
+                                className={`h-3 w-3 sm:h-4 sm:w-4 ${
                                   i <
                                   Math.floor(
                                     (selectedSwap.matchingScore || 0) / 20,
@@ -1947,7 +1950,7 @@ const DashboardCompleteFixed = () => {
                               />
                             ))}
                           </div>
-                          <span className="font-bold text-blue-600">
+                          <span className="font-bold text-blue-600 text-sm">
                             {selectedSwap.matchingScore}%
                           </span>
                         </div>
