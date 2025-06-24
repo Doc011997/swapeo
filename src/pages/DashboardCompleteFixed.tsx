@@ -380,37 +380,57 @@ const DashboardCompleteFixed = () => {
 
   const handleCreateSwap = () => {
     try {
-      // Validation supplémentaire côté client
+      // Validation simple et rapide
       if (
         !newSwap.type ||
         !newSwap.amount ||
         !newSwap.duration ||
-        !newSwap.description ||
-        !newSwap.category ||
-        !newSwap.purpose ||
-        !newSwap.guarantees
+        !newSwap.description
       ) {
-        setMessage("❌ Veuillez remplir tous les champs obligatoires");
-        setTimeout(() => setMessage(""), 4000);
+        setMessage("❌ Veuillez remplir tous les champs");
+        setTimeout(() => setMessage(""), 3000);
         return;
       }
 
-      if (parseInt(newSwap.amount) < 1000) {
-        setMessage("❌ Le montant minimum est de 1 000€");
-        setTimeout(() => setMessage(""), 4000);
+      const amount = parseInt(newSwap.amount);
+      const duration = parseInt(newSwap.duration);
+
+      if (amount < 1000) {
+        setMessage("❌ Montant minimum: 1 000€");
+        setTimeout(() => setMessage(""), 3000);
         return;
       }
 
-      if (parseInt(newSwap.duration) < 1) {
-        setMessage("❌ La durée minimum est de 1 mois");
-        setTimeout(() => setMessage(""), 4000);
+      if (duration < 1) {
+        setMessage("❌ Durée minimum: 1 mois");
+        setTimeout(() => setMessage(""), 3000);
         return;
       }
 
       const currentDate = new Date();
-      const amount = parseInt(newSwap.amount);
-      const duration = parseInt(newSwap.duration);
       const interestRate = newSwap.type === "demande" ? 3.5 : 3.0;
+
+      // Générer des données automatiques intelligentes
+      const categories = [
+        "Tech & Digital",
+        "Commerce",
+        "Services",
+        "Restauration",
+        "Industrie",
+      ];
+      const purposes = [
+        "Développement",
+        "Équipement",
+        "Stock",
+        "Expansion",
+        "Innovation",
+      ];
+      const guarantees = [
+        "Caution personnelle",
+        "Garantie bancaire",
+        "Nantissement",
+        "Hypothèque",
+      ];
 
       const demoSwap: Swap = {
         id: `SW-${Date.now()}`,
@@ -425,15 +445,15 @@ const DashboardCompleteFixed = () => {
         description: newSwap.description,
         daysRemaining: duration * 30,
         matchingScore: Math.floor(Math.random() * 15) + 85,
-        category: newSwap.category,
+        category: categories[Math.floor(Math.random() * categories.length)],
         riskLevel: amount > 20000 ? "medium" : "low",
         verified: false,
-        // Détails complets de création
-        purpose: newSwap.purpose,
-        guarantees: newSwap.guarantees,
-        repaymentSchedule: newSwap.repaymentSchedule,
-        earlyRepayment: newSwap.earlyRepayment,
-        insurance: newSwap.insurance,
+        // Données générées automatiquement
+        purpose: purposes[Math.floor(Math.random() * purposes.length)],
+        guarantees: guarantees[Math.floor(Math.random() * guarantees.length)],
+        repaymentSchedule: "monthly",
+        earlyRepayment: true,
+        insurance: amount > 15000,
         createdBy: `${user.firstName} ${user.lastName}`,
         createdByCompany: user.company || "Particulier",
         createdByTrustScore: user.trustScore || 85,
@@ -448,38 +468,32 @@ const DashboardCompleteFixed = () => {
         lastUpdated: currentDate.toISOString(),
       };
 
-      // Mise à jour immédiate de la liste des swaps
+      // Mise à jour immédiate avec animation
       const updatedSwaps = [demoSwap, ...swaps];
       setSwaps(updatedSwaps);
       updateUserStats(updatedSwaps);
 
-      // Fermer le modal et réinitialiser le formulaire
+      // Réinitialisation du formulaire
       setShowCreateSwap(false);
       setNewSwap({
         type: "",
         amount: "",
         duration: "",
         description: "",
-        category: "",
-        purpose: "",
-        guarantees: "",
-        repaymentSchedule: "monthly",
-        earlyRepayment: true,
-        insurance: false,
       });
 
-      // Message de succès détaillé
+      // Feedback de succès
       setMessage(
-        `🎉 Swap créé avec succès ! ID: ${demoSwap.id} - ${formatCurrency(amount)} sur ${duration} mois`,
+        `🎉 Swap créé ! ${formatCurrency(amount)} sur ${duration} mois`,
       );
-      setTimeout(() => setMessage(""), 6000);
-
-      // Passer automatiquement à l'onglet swaps pour voir le nouveau swap
-      setActiveSection("swaps");
-    } catch (error) {
-      console.error("Erreur lors de la création du swap:", error);
-      setMessage("❌ Erreur lors de la création du swap. Veuillez réessayer.");
       setTimeout(() => setMessage(""), 4000);
+
+      // Redirection fluide vers les swaps
+      setTimeout(() => setActiveSection("swaps"), 500);
+    } catch (error) {
+      console.error("Erreur création swap:", error);
+      setMessage("❌ Erreur. Veuillez réessayer.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
