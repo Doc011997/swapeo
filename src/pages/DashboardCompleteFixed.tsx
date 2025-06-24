@@ -587,12 +587,10 @@ const DashboardCompleteFixed = () => {
       return;
     }
 
-    // Simulation d'envoi d'invitation
     setMessage(
       `Invitation envoyée à ${inviteForm.firstName} ${inviteForm.lastName}`,
     );
 
-    // Réinitialiser le formulaire
     setInviteForm({
       email: "",
       firstName: "",
@@ -630,7 +628,6 @@ const DashboardCompleteFixed = () => {
     setContacts([newContact, ...contacts]);
     setMessage(`Contact ${newContact.name} ajouté avec succès`);
 
-    // Réinitialiser le formulaire
     setContactForm({
       firstName: "",
       lastName: "",
@@ -648,7 +645,6 @@ const DashboardCompleteFixed = () => {
     setChatContact(contact);
     setShowChat(true);
 
-    // Messages d'exemple
     const exampleMessages = [
       {
         id: 1,
@@ -688,7 +684,6 @@ const DashboardCompleteFixed = () => {
     setChatMessages([...chatMessages, newMessage]);
     setChatMessage("");
 
-    // Réponse automatique après 2 secondes
     setTimeout(() => {
       const responses = [
         "Merci pour votre message !",
@@ -723,15 +718,18 @@ const DashboardCompleteFixed = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-violet-50/30 flex items-center justify-center">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Chargement de votre espace...</p>
+          <div className="w-16 h-16 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto mb-6 shadow-lg"></div>
+          <p className="text-gray-700 text-xl font-medium">
+            Chargement de votre espace...
+          </p>
+          <p className="text-gray-500 text-sm mt-2">Préparation du dashboard</p>
         </motion.div>
       </div>
     );
@@ -751,7 +749,12 @@ const DashboardCompleteFixed = () => {
       <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-gray-200/50 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center space-x-3"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Handshake className="h-6 w-6 text-white" />
               </div>
@@ -759,50 +762,66 @@ const DashboardCompleteFixed = () => {
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-cyan-600 bg-clip-text text-transparent">
                   SWAPEO
                 </h1>
-                <p className="text-xs text-gray-500 font-medium">Dashboard</p>
+                <p className="text-xs text-gray-500 font-medium">
+                  Dashboard Pro
+                </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center space-x-1 sm:space-x-4">
+            <div className="flex items-center space-x-4">
               <div className="relative">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative h-8 w-8 sm:h-10 sm:w-10"
+                  className="relative h-10 w-10 hover:bg-violet-50"
                   onClick={() => setShowNotifications(!showNotifications)}
                 >
-                  <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <Bell className="h-5 w-5 text-gray-600" />
                   {notifications.filter((n) => !n.read).length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-pink-500 text-white text-xs rounded-full flex items-center justify-center">
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg"
+                    >
                       {notifications.filter((n) => !n.read).length}
-                    </span>
+                    </motion.span>
                   )}
                 </Button>
 
-                {/* Panel de notifications */}
                 <AnimatePresence>
                   {showNotifications && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 top-12 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50"
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 top-12 w-80 bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 z-50"
                     >
                       <div className="p-4 border-b border-gray-100">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                          <Bell className="h-5 w-5 mr-2 text-violet-500" />
                           Notifications
                         </h3>
                       </div>
                       <div className="max-h-96 overflow-y-auto">
                         {notifications.map((notification) => (
-                          <div
+                          <motion.div
                             key={notification.id}
-                            className={`p-4 border-b border-gray-50 hover:bg-gray-50 cursor-pointer ${
-                              !notification.read ? "bg-blue-50" : ""
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className={`p-4 border-b border-gray-50 hover:bg-violet-50/50 cursor-pointer transition-colors duration-200 ${
+                              !notification.read ? "bg-blue-50/50" : ""
                             }`}
                           >
                             <div className="flex items-start space-x-3">
-                              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                              <div
+                                className={`w-3 h-3 rounded-full mt-2 ${
+                                  notification.type === "swap"
+                                    ? "bg-violet-500"
+                                    : notification.type === "payment"
+                                      ? "bg-green-500"
+                                      : "bg-blue-500"
+                                } shadow-sm`}
+                              ></div>
                               <div className="flex-1">
                                 <p className="text-sm font-medium text-gray-900">
                                   {notification.title}
@@ -815,7 +834,7 @@ const DashboardCompleteFixed = () => {
                                 </p>
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
                       </div>
                     </motion.div>
@@ -823,18 +842,18 @@ const DashboardCompleteFixed = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="flex items-center space-x-2">
-                <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
+              <div className="flex items-center space-x-3">
+                <Avatar className="h-10 w-10 ring-2 ring-violet-200">
                   <AvatarImage
                     src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${user.firstName}`}
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-500 text-white font-bold">
                     {user.firstName?.[0]}
                     {user.lastName?.[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden sm:block">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-sm font-semibold text-gray-900">
                     {user.firstName} {user.lastName}
                   </p>
                   <p className="text-xs text-gray-500">{user.company}</p>
@@ -844,34 +863,36 @@ const DashboardCompleteFixed = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-8 w-8 sm:h-10 sm:w-10"
+                className="h-10 w-10 hover:bg-red-50 text-gray-600 hover:text-red-600"
               >
-                <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
+                <LogOut className="h-5 w-5" />
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Message d'état */}
         <AnimatePresence>
           {message && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between"
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/50 rounded-xl flex items-center justify-between shadow-sm"
             >
-              <div className="flex items-center space-x-2">
-                <Info className="h-5 w-5 text-blue-600" />
-                <p className="text-blue-800">{message}</p>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Info className="h-5 w-5 text-blue-600" />
+                </div>
+                <p className="text-blue-800 font-medium">{message}</p>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setMessage("")}
-                className="h-6 w-6 text-blue-600"
+                className="h-8 w-8 text-blue-600 hover:bg-blue-100"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -883,7 +904,7 @@ const DashboardCompleteFixed = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           <Tabs
             value={activeSection}
@@ -911,7 +932,9 @@ const DashboardCompleteFixed = () => {
                 className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
               >
                 <Wallet className="h-4 w-4" />
-                <span className="hidden sm:inline font-medium">Portefeuille</span>
+                <span className="hidden sm:inline font-medium">
+                  Portefeuille
+                </span>
                 <span className="sm:hidden font-medium">Wallet</span>
               </TabsTrigger>
               <TabsTrigger
@@ -923,771 +946,819 @@ const DashboardCompleteFixed = () => {
               </TabsTrigger>
             </TabsList>
 
-          {/* Contenu des onglets */}
-          <TabsContent value="overview" className="space-y-6">
-            {/* Section Hero avec stats */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Card principale de bienvenue */}
-              <div className="lg:col-span-2">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Card className="p-8 bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 text-white relative overflow-hidden shadow-2xl border-0">
-                    {/* Background effects */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-cyan-500/20" />
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 bg-cyan-300/20 rounded-full blur-xl" />
-
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-6">
-                        <div>
-                          <h2 className="text-3xl font-bold mb-2">
-                            Bienvenue, {user.firstName} ! 👋
-                          </h2>
-                          <p className="text-violet-100 text-lg">
-                            Votre espace de gestion Swapeo
-                          </p>
-                        </div>
-                        <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                          <Handshake className="h-10 w-10" />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-6">
-                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                          <p className="text-violet-100 text-sm font-medium mb-1">Solde total</p>
-                          <p className="text-3xl font-bold">
-                            {formatCurrency(animatedBalance)}
-                          </p>
-                          <div className="flex items-center mt-2 text-green-300 text-sm">
-                            <TrendingUp className="h-4 w-4 mr-1" />
-                            +12.5% ce mois
-                          </div>
-                        </div>
-                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                          <p className="text-violet-100 text-sm font-medium mb-1">Swaps actifs</p>
-                          <p className="text-3xl font-bold">
-                            {swaps.filter((s) => s.status === "active").length}
-                          </p>
-                          <div className="flex items-center mt-2 text-cyan-300 text-sm">
-                            <Activity className="h-4 w-4 mr-1" />
-                            {swaps.filter((s) => s.status === "pending").length} en attente
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              </div>
-
-              {/* Stats rapides */}
-              <div className="space-y-4">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                >
-                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-green-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <div className="flex items-center">
-                      <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <TrendingUp className="h-7 w-7 text-white" />
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                          Rendement Moy.
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900">3.8%</p>
-                        <p className="text-xs text-green-600 font-medium">
-                          +0.3% vs mois dernier
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                >
-                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-yellow-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <div className="flex items-center">
-                      <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <Star className="h-7 w-7 text-white" />
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                          Note Moyenne
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {user.stats?.avgRating || 4.8}★
-                        </p>
-                        <p className="text-xs text-yellow-600 font-medium">
-                          Excellent profil
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                  <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
-                    <div className="flex items-center">
-                      <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
-                        <Users className="h-7 w-7 text-white" />
-                      </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600 mb-1">
-                          Contacts
-                        </p>
-                        <p className="text-2xl font-bold text-gray-900">
-                          {contacts.length}
-                        </p>
-                        <p className="text-xs text-blue-600 font-medium">
-                          Réseau actif
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              </div>
-            </div>
-
-            {/* Actions rapides */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Card className="p-6 bg-white/80 backdrop-blur-sm border-violet-200/50 shadow-lg">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
-                    <Zap className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">
-                    Actions Rapides
-                  </h3>
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <Button
-                    onClick={() => setShowCreateSwap(true)}
-                    className="bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white p-6 h-auto flex-col rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+            {/* Contenu des onglets */}
+            <TabsContent value="overview" className="space-y-8">
+              {/* Section Hero avec stats */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Card principale de bienvenue */}
+                <div className="lg:col-span-2">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
                   >
-                    <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <Plus className="h-6 w-6" />
-                    </div>
-                    <span className="text-sm font-semibold">Créer un Swap</span>
-                    <span className="text-xs opacity-80 mt-1">Nouvelle proposition</span>
-                  </Button>
+                    <Card className="p-8 bg-gradient-to-br from-violet-600 via-purple-600 to-cyan-500 text-white relative overflow-hidden shadow-2xl border-0">
+                      {/* Background effects */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-cyan-500/20" />
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-cyan-300/20 rounded-full blur-xl" />
 
-                  <Button
-                    variant="outline"
-                    onClick={() => (window.location.href = "/swap")}
-                    className="border-2 border-green-200 hover:bg-green-50 hover:border-green-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
-                  >
-                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
-                      <Search className="h-6 w-6 text-green-600" />
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900">Marketplace</span>
-                    <span className="text-xs text-gray-600 mt-1">Chercher opportunités</span>
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    className="border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
-                    onClick={() => setShowInviteDialog(true)}
-                  >
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
-                      <Mail className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <span className="text-sm font-semibold text-gray-900">Inviter</span>
-                    <span className="text-xs text-gray-600 mt-1">Nouveaux contacts</span>
-                  </Button>
-                </div>
-              </Card>
-            </motion.div>
-
-            {/* Liste des swaps récents */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <Card className="p-6 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-lg">
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center">
-                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
-                      <Handshake className="h-5 w-5 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      Swaps Récents
-                    </h3>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setActiveSection("swaps")}
-                    className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300"
-                  >
-                    <Eye className="h-4 w-4 mr-1" />
-                    Voir tout
-                  </Button>
-                </div>
-                <div className="space-y-3">
-                  {swaps.slice(0, 3).map((swap, index) => (
-                    <motion.div
-                      key={swap.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                      className="group"
-                    >
-                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
-                        <div className="flex items-center space-x-4">
-                          <div className="relative">
-                            <div
-                              className={`w-4 h-4 rounded-full ${
-                                swap.status === "active"
-                                  ? "bg-green-500 shadow-lg shadow-green-500/30"
-                                  : swap.status === "pending"
-                                    ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
-                                    : "bg-gray-400"
-                              } ${swap.status === "active" ? "animate-pulse" : ""}`}
-                            ></div>
-                            {swap.status === "active" && (
-                              <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
-                            )}
-                          </div>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-6">
                           <div>
-                            <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300">
-                              {swap.type === "offre" ? "💼 Offre de" : "🎯 Demande de"}{" "}
-                              {formatCurrency(swap.amount)}
-                            </p>
-                            <p className="text-sm text-gray-600 group-hover:text-gray-700">
-                              {swap.counterparty} • {swap.interestRate}% • {swap.duration} mois
+                            <h2 className="text-3xl font-bold mb-2">
+                              Bienvenue, {user.firstName} ! 👋
+                            </h2>
+                            <p className="text-violet-100 text-lg">
+                              Votre espace de gestion Swapeo
                             </p>
                           </div>
-                        </div>
-                        <div className="text-right">
-                          <Badge
-                            className={`font-medium border-0 ${
-                              swap.status === "active"
-                                ? "bg-green-100 text-green-700 shadow-sm"
-                                : swap.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-700 shadow-sm"
-                                  : "bg-gray-100 text-gray-700"
-                            }`}
-                          >
-                            {swap.status === "active"
-                              ? "✅ Actif"
-                              : swap.status === "pending"
-                                ? "⏳ En attente"
-                                : "✓ Terminé"}
-                          </Badge>
-                          {swap.status === "active" && (
-                            <p className="text-xs text-green-600 mt-1 font-medium">
-                              {swap.daysRemaining || 45} jours restants
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {swaps.length === 0 && (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Handshake className="h-8 w-8 text-gray-400" />
-                    </div>
-                    <p className="text-gray-500 font-medium">Aucun swap pour le moment</p>
-                    <p className="text-gray-400 text-sm mt-1">Créez votre premier swap pour commencer</p>
-                  </div>
-                )}
-              </Card>
-            </motion.div>
-
-            {/* Notifications récentes */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 shadow-lg">
-                <div className="flex items-center mb-6">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
-                    <Bell className="h-5 w-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">
-                    Notifications Récentes
-                  </h3>
-                  {notifications.filter((n) => !n.read).length > 0 && (
-                    <div className="ml-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-                      {notifications.filter((n) => !n.read).length}
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-3">
-                  {notifications.slice(0, 3).map((notification, index) => (
-                    <motion.div
-                      key={notification.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.4, delay: 0.7 + index * 0.1 }}
-                      className={`group cursor-pointer transition-all duration-300 hover:scale-102 ${
-                        !notification.read ? "bg-blue-50/80" : "bg-gray-50/80"
-                      } rounded-xl p-4 border border-gray-100/50 hover:border-blue-200/50 hover:shadow-md`}
-                    >
-                      <div className="flex items-start space-x-4">
-                        <div className={`w-3 h-3 rounded-full mt-2 ${
-                          notification.type === "swap"
-                            ? "bg-violet-500 shadow-lg shadow-violet-500/30"
-                            : notification.type === "payment"
-                              ? "bg-green-500 shadow-lg shadow-green-500/30"
-                              : "bg-blue-500 shadow-lg shadow-blue-500/30"
-                        } ${!notification.read ? "animate-pulse" : ""}`}></div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
-                              {notification.title}
-                            </p>
-                            {!notification.read && (
-                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                            )}
+                          <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                            <Handshake className="h-10 w-10" />
                           </div>
-                          <p className="text-sm text-gray-600 mt-1 group-hover:text-gray-700">
-                            {notification.description}
-                          </p>
-                          <div className="flex items-center justify-between mt-2">
-                            <p className="text-xs text-gray-400 font-medium">
-                              {notification.time}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <p className="text-violet-100 text-sm font-medium mb-1">
+                              Solde total
                             </p>
-                            <div className={`text-xs px-2 py-1 rounded-full font-medium ${
-                              notification.type === "swap"
-                                ? "bg-violet-100 text-violet-600"
-                                : notification.type === "payment"
-                                  ? "bg-green-100 text-green-600"
-                                  : "bg-blue-100 text-blue-600"
-                            }`}>
-                              {notification.type === "swap" ? "🤝 Swap" :
-                               notification.type === "payment" ? "💰 Paiement" : "📢 Système"}
+                            <p className="text-3xl font-bold">
+                              {formatCurrency(animatedBalance)}
+                            </p>
+                            <div className="flex items-center mt-2 text-green-300 text-sm">
+                              <TrendingUp className="h-4 w-4 mr-1" />
+                              +12.5% ce mois
+                            </div>
+                          </div>
+                          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <p className="text-violet-100 text-sm font-medium mb-1">
+                              Swaps actifs
+                            </p>
+                            <p className="text-3xl font-bold">
+                              {
+                                swaps.filter((s) => s.status === "active")
+                                  .length
+                              }
+                            </p>
+                            <div className="flex items-center mt-2 text-cyan-300 text-sm">
+                              <Activity className="h-4 w-4 mr-1" />
+                              {
+                                swaps.filter((s) => s.status === "pending")
+                                  .length
+                              }{" "}
+                              en attente
                             </div>
                           </div>
                         </div>
                       </div>
-                    </motion.div>
-                  ))}
+                    </Card>
+                  </motion.div>
                 </div>
 
-                {notifications.length > 3 && (
-                  <div className="mt-4 text-center">
+                {/* Stats rapides */}
+                <div className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                  >
+                    <Card className="p-6 bg-white/80 backdrop-blur-sm border-green-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                      <div className="flex items-center">
+                        <div className="w-14 h-14 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <TrendingUp className="h-7 w-7 text-white" />
+                        </div>
+                        <div className="ml-4">
+                          <p className="text-sm font-medium text-gray-600 mb-1">
+                            Rendement Moy.
+                          </p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            3.8%
+                          </p>
+                          <p className="text-xs text-green-600 font-medium">
+                            +0.3% vs mois dernier
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    <Card className="p-6 bg-white/80 backdrop-blur-sm border-yellow-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                      <div className="flex items-center">
+                        <div className="w-14 h-14 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <Star className="h-7 w-7 text-white" />
+                        </div>
+                        <div className="ml-4">
+                          <p className="text-sm font-medium text-gray-600 mb-1">
+                            Note Moyenne
+                          </p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {user.stats?.avgRating || 4.8}★
+                          </p>
+                          <p className="text-xs text-yellow-600 font-medium">
+                            Excellent profil
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 hover:shadow-lg transition-all duration-300 hover:scale-105">
+                      <div className="flex items-center">
+                        <div className="w-14 h-14 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                          <Users className="h-7 w-7 text-white" />
+                        </div>
+                        <div className="ml-4">
+                          <p className="text-sm font-medium text-gray-600 mb-1">
+                            Contacts
+                          </p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            {contacts.length}
+                          </p>
+                          <p className="text-xs text-blue-600 font-medium">
+                            Réseau actif
+                          </p>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Actions rapides */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                <Card className="p-6 bg-white/80 backdrop-blur-sm border-violet-200/50 shadow-lg">
+                  <div className="flex items-center mb-6">
+                    <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                      <Zap className="h-5 w-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Actions Rapides
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <Button
+                      onClick={() => setShowCreateSwap(true)}
+                      className="bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white p-6 h-auto flex-col rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                    >
+                      <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                        <Plus className="h-6 w-6" />
+                      </div>
+                      <span className="text-sm font-semibold">
+                        Créer un Swap
+                      </span>
+                      <span className="text-xs opacity-80 mt-1">
+                        Nouvelle proposition
+                      </span>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      onClick={() => (window.location.href = "/swap")}
+                      className="border-2 border-green-200 hover:bg-green-50 hover:border-green-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                    >
+                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
+                        <Search className="h-6 w-6 text-green-600" />
+                      </div>
+                      <span className="text-sm font-semibold text-gray-900">
+                        Marketplace
+                      </span>
+                      <span className="text-xs text-gray-600 mt-1">
+                        Chercher opportunités
+                      </span>
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 p-6 h-auto flex-col rounded-xl transition-all duration-300 hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                      onClick={() => setShowInviteDialog(true)}
+                    >
+                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
+                        <Mail className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <span className="text-sm font-semibold text-gray-900">
+                        Inviter
+                      </span>
+                      <span className="text-xs text-gray-600 mt-1">
+                        Nouveaux contacts
+                      </span>
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+
+              {/* Liste des swaps récents */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+              >
+                <Card className="p-6 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                        <Handshake className="h-5 w-5 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900">
+                        Swaps Récents
+                      </h3>
+                    </div>
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                      onClick={() => setActiveSection("swaps")}
+                      className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300"
                     >
-                      Voir toutes les notifications ({notifications.length})
+                      <Eye className="h-4 w-4 mr-1" />
+                      Voir tout
                     </Button>
                   </div>
-                )}
-              </Card>
-            </motion.div>
-          </TabsContent>
-
-          <TabsContent value="swaps" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Mes Swaps</h2>
-              <Button
-                onClick={() => setShowCreateSwap(true)}
-                className="bg-gradient-to-r from-violet-600 to-cyan-600"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Nouveau Swap
-              </Button>
-            </div>
-
-            <div className="grid gap-6">
-              {swaps.map((swap) => (
-                <Card key={swap.id} className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      <div
-                        className={`w-3 h-3 rounded-full ${
-                          swap.status === "active"
-                            ? "bg-green-500"
-                            : swap.status === "pending"
-                              ? "bg-yellow-500"
-                              : "bg-gray-400"
-                        }`}
-                      ></div>
-                      <h3 className="text-lg font-semibold">
-                        {swap.type === "offre" ? "Offre de" : "Demande de"}{" "}
-                        {formatCurrency(swap.amount)}
-                      </h3>
-                    </div>
-                    <Badge
-                      className={
-                        swap.status === "active"
-                          ? "bg-green-100 text-green-700"
-                          : swap.status === "pending"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-gray-100 text-gray-700"
-                      }
-                    >
-                      {swap.status === "active"
-                        ? "Actif"
-                        : swap.status === "pending"
-                          ? "En attente"
-                          : "Terminé"}
-                    </Badge>
+                  <div className="space-y-3">
+                    {swaps.slice(0, 3).map((swap, index) => (
+                      <motion.div
+                        key={swap.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                        className="group"
+                      >
+                        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
+                          <div className="flex items-center space-x-4">
+                            <div className="relative">
+                              <div
+                                className={`w-4 h-4 rounded-full ${
+                                  swap.status === "active"
+                                    ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                    : swap.status === "pending"
+                                      ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
+                                      : "bg-gray-400"
+                                } ${swap.status === "active" ? "animate-pulse" : ""}`}
+                              ></div>
+                              {swap.status === "active" && (
+                                <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300">
+                                {swap.type === "offre"
+                                  ? "💼 Offre de"
+                                  : "🎯 Demande de"}{" "}
+                                {formatCurrency(swap.amount)}
+                              </p>
+                              <p className="text-sm text-gray-600 group-hover:text-gray-700">
+                                {swap.counterparty} • {swap.interestRate}% •{" "}
+                                {swap.duration} mois
+                              </p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <Badge
+                              className={`font-medium border-0 ${
+                                swap.status === "active"
+                                  ? "bg-green-100 text-green-700 shadow-sm"
+                                  : swap.status === "pending"
+                                    ? "bg-yellow-100 text-yellow-700 shadow-sm"
+                                    : "bg-gray-100 text-gray-700"
+                              }`}
+                            >
+                              {swap.status === "active"
+                                ? "✅ Actif"
+                                : swap.status === "pending"
+                                  ? "⏳ En attente"
+                                  : "✓ Terminé"}
+                            </Badge>
+                            {swap.status === "active" && (
+                              <p className="text-xs text-green-600 mt-1 font-medium">
+                                {swap.daysRemaining || 45} jours restants
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-600">Contrepartie</p>
-                      <p className="font-medium">{swap.counterparty}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Taux d'intérêt</p>
-                      <p className="font-medium">{swap.interestRate}%</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Durée</p>
-                      <p className="font-medium">{swap.duration} mois</p>
-                    </div>
-                  </div>
-
-                  {swap.status === "active" && (
-                    <div className="mb-4">
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
-                        <span>Progression</span>
-                        <span>{swap.progress}%</span>
+                  {swaps.length === 0 && (
+                    <div className="text-center py-8">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Handshake className="h-8 w-8 text-gray-400" />
                       </div>
-                      <Progress value={swap.progress} className="h-2" />
+                      <p className="text-gray-500 font-medium">
+                        Aucun swap pour le moment
+                      </p>
+                      <p className="text-gray-400 text-sm mt-1">
+                        Créez votre premier swap pour commencer
+                      </p>
                     </div>
                   )}
-
-                  {swap.description && (
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-600 mb-1">Description</p>
-                      <p className="text-sm">{swap.description}</p>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Créé le {formatDate(swap.createdAt)}</span>
-                    <div className="flex space-x-2">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4 mr-1" />
-                        Voir
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        <MessageCircle className="h-4 w-4 mr-1" />
-                        Messages
-                      </Button>
-                    </div>
-                  </div>
                 </Card>
-              ))}
-            </div>
-          </TabsContent>
+              </motion.div>
 
-          <TabsContent value="wallet" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Solde principal */}
-              <Card className="lg:col-span-2 p-6 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h2 className="text-xl font-semibold mb-2">
-                      Solde du portefeuille
-                    </h2>
-                    <div className="flex items-center space-x-2">
-                      <p className="text-3xl font-bold">
-                        {hideBalance
-                          ? "•••••"
-                          : formatCurrency(animatedBalance)}
-                      </p>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setHideBalance(!hideBalance)}
-                        className="text-white hover:bg-white/20"
-                      >
-                        {hideBalance ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                  <Wallet className="h-12 w-12 opacity-80" />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
-                    <ArrowDownRight className="h-4 w-4 mr-2" />
-                    Déposer
-                  </Button>
-                  <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
-                    <ArrowUpRight className="h-4 w-4 mr-2" />
-                    Retirer
-                  </Button>
-                </div>
-              </Card>
-
-              {/* Stats rapides */}
-              <div className="space-y-4">
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <TrendingUp className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Total Déposé
-                      </p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(walletData.totalDeposited)}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                      <TrendingDown className="h-6 w-6 text-red-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Total Retiré
-                      </p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(walletData.totalWithdrawn)}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Euro className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-600">
-                        Gains Totaux
-                      </p>
-                      <p className="text-xl font-bold text-gray-900">
-                        {formatCurrency(user.stats?.totalEarnings || 3847)}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              </div>
-            </div>
-
-            {/* Historique des transactions */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Historique des Transactions
-                </h3>
-                <div className="flex space-x-2">
-                  <Select
-                    value={selectedTimeRange}
-                    onValueChange={setSelectedTimeRange}
-                  >
-                    <SelectTrigger className="w-32">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="7d">7 jours</SelectItem>
-                      <SelectItem value="30d">30 jours</SelectItem>
-                      <SelectItem value="90d">90 jours</SelectItem>
-                      <SelectItem value="1y">1 an</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Exporter
-                  </Button>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                {transactions.map((transaction) => (
-                  <motion.div
-                    key={transaction.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div
-                        className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                          transaction.type === "deposit"
-                            ? "bg-green-100"
-                            : transaction.type === "withdraw"
-                              ? "bg-red-100"
-                              : "bg-blue-100"
-                        }`}
-                      >
-                        {transaction.type === "deposit" ? (
-                          <ArrowDownRight
-                            className={`h-5 w-5 ${
-                              transaction.type === "deposit"
-                                ? "text-green-600"
-                                : "text-red-600"
-                            }`}
-                          />
-                        ) : transaction.type === "withdraw" ? (
-                          <ArrowUpRight className="h-5 w-5 text-red-600" />
-                        ) : (
-                          <Euro className="h-5 w-5 text-blue-600" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {transaction.description}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {formatDate(transaction.date)}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p
-                        className={`font-semibold ${
-                          transaction.type === "deposit" ||
-                          transaction.type === "interest"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {transaction.type === "deposit" ||
-                        transaction.type === "interest"
-                          ? "+"
-                          : "-"}
-                        {formatCurrency(transaction.amount)}
-                      </p>
-                      <Badge
-                        className={
-                          transaction.status === "completed"
-                            ? "bg-green-100 text-green-700"
-                            : transaction.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-red-100 text-red-700"
-                        }
-                      >
-                        {transaction.status === "completed"
-                          ? "Terminé"
-                          : transaction.status === "pending"
-                            ? "En attente"
-                            : "Échoué"}
-                      </Badge>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="contacts" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Mes Contacts</h2>
-              <Button
-                onClick={() => setShowAddContactDialog(true)}
-                className="bg-gradient-to-r from-violet-600 to-cyan-600"
+              {/* Notifications récentes */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
               >
-                <Plus className="h-4 w-4 mr-2" />
-                Ajouter Contact
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {contacts.map((contact) => (
-                <Card
-                  key={contact.id}
-                  className="p-6 hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-center space-x-3 mb-4">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage
-                        src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.name}`}
-                      />
-                      <AvatarFallback>
-                        {contact.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900">
-                        {contact.name}
-                      </h3>
-                      <p className="text-sm text-gray-600">{contact.company}</p>
+                <Card className="p-6 bg-white/80 backdrop-blur-sm border-blue-200/50 shadow-lg">
+                  <div className="flex items-center mb-6">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                      <Bell className="h-5 w-5 text-white" />
                     </div>
-                  </div>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Score de confiance</span>
-                      <span className="font-medium">
-                        {contact.trustScore || 85}%
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Swaps réalisés</span>
-                      <span className="font-medium">
-                        {contact.swapsCount || 0}
-                      </span>
-                    </div>
-                    {contact.lastContact && (
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-600">Dernier contact</span>
-                        <span className="font-medium">
-                          {formatDate(contact.lastContact)}
-                        </span>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Notifications Récentes
+                    </h3>
+                    {notifications.filter((n) => !n.read).length > 0 && (
+                      <div className="ml-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                        {notifications.filter((n) => !n.read).length}
                       </div>
                     )}
                   </div>
-
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      onClick={() => openChat(contact)}
-                    >
-                      <MessageCircle className="h-4 w-4 mr-1" />
-                      Message
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Mail className="h-4 w-4 mr-1" />
-                      Email
-                    </Button>
+                  <div className="space-y-3">
+                    {notifications.slice(0, 3).map((notification, index) => (
+                      <motion.div
+                        key={notification.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.7 + index * 0.1 }}
+                        className={`group cursor-pointer transition-all duration-300 hover:scale-102 ${
+                          !notification.read ? "bg-blue-50/80" : "bg-gray-50/80"
+                        } rounded-xl p-4 border border-gray-100/50 hover:border-blue-200/50 hover:shadow-md`}
+                      >
+                        <div className="flex items-start space-x-4">
+                          <div
+                            className={`w-3 h-3 rounded-full mt-2 ${
+                              notification.type === "swap"
+                                ? "bg-violet-500 shadow-lg shadow-violet-500/30"
+                                : notification.type === "payment"
+                                  ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                  : "bg-blue-500 shadow-lg shadow-blue-500/30"
+                            } ${!notification.read ? "animate-pulse" : ""}`}
+                          ></div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
+                                {notification.title}
+                              </p>
+                              {!notification.read && (
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              )}
+                            </div>
+                            <p className="text-sm text-gray-600 mt-1 group-hover:text-gray-700">
+                              {notification.description}
+                            </p>
+                            <div className="flex items-center justify-between mt-2">
+                              <p className="text-xs text-gray-400 font-medium">
+                                {notification.time}
+                              </p>
+                              <div
+                                className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                  notification.type === "swap"
+                                    ? "bg-violet-100 text-violet-600"
+                                    : notification.type === "payment"
+                                      ? "bg-green-100 text-green-600"
+                                      : "bg-blue-100 text-blue-600"
+                                }`}
+                              >
+                                {notification.type === "swap"
+                                  ? "🤝 Swap"
+                                  : notification.type === "payment"
+                                    ? "💰 Paiement"
+                                    : "📢 Système"}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
 
-                  {contact.category && (
-                    <div className="mt-3">
-                      <Badge className="bg-blue-100 text-blue-700">
-                        {contact.category}
-                      </Badge>
+                  {notifications.length > 3 && (
+                    <div className="mt-4 text-center">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-blue-200 text-blue-600 hover:bg-blue-50"
+                      >
+                        Voir toutes les notifications ({notifications.length})
+                      </Button>
                     </div>
                   )}
                 </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+              </motion.div>
+            </TabsContent>
+
+            <TabsContent value="swaps" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-900">Mes Swaps</h2>
+                <Button
+                  onClick={() => setShowCreateSwap(true)}
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Nouveau Swap
+                </Button>
+              </div>
+
+              <div className="grid gap-6">
+                {swaps.map((swap) => (
+                  <Card key={swap.id} className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div
+                          className={`w-3 h-3 rounded-full ${
+                            swap.status === "active"
+                              ? "bg-green-500"
+                              : swap.status === "pending"
+                                ? "bg-yellow-500"
+                                : "bg-gray-400"
+                          }`}
+                        ></div>
+                        <h3 className="text-lg font-semibold">
+                          {swap.type === "offre" ? "Offre de" : "Demande de"}{" "}
+                          {formatCurrency(swap.amount)}
+                        </h3>
+                      </div>
+                      <Badge
+                        className={
+                          swap.status === "active"
+                            ? "bg-green-100 text-green-700"
+                            : swap.status === "pending"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-gray-100 text-gray-700"
+                        }
+                      >
+                        {swap.status === "active"
+                          ? "Actif"
+                          : swap.status === "pending"
+                            ? "En attente"
+                            : "Terminé"}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div>
+                        <p className="text-sm text-gray-600">Contrepartie</p>
+                        <p className="font-medium">{swap.counterparty}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Taux d'intérêt</p>
+                        <p className="font-medium">{swap.interestRate}%</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Durée</p>
+                        <p className="font-medium">{swap.duration} mois</p>
+                      </div>
+                    </div>
+
+                    {swap.status === "active" && (
+                      <div className="mb-4">
+                        <div className="flex justify-between text-sm text-gray-600 mb-1">
+                          <span>Progression</span>
+                          <span>{swap.progress}%</span>
+                        </div>
+                        <Progress value={swap.progress} className="h-2" />
+                      </div>
+                    )}
+
+                    {swap.description && (
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-600 mb-1">
+                          Description
+                        </p>
+                        <p className="text-sm">{swap.description}</p>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <span>Créé le {formatDate(swap.createdAt)}</span>
+                      <div className="flex space-x-2">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="h-4 w-4 mr-1" />
+                          Voir
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <MessageCircle className="h-4 w-4 mr-1" />
+                          Messages
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="wallet" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Solde principal */}
+                <Card className="lg:col-span-2 p-6 bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h2 className="text-xl font-semibold mb-2">
+                        Solde du portefeuille
+                      </h2>
+                      <div className="flex items-center space-x-2">
+                        <p className="text-3xl font-bold">
+                          {hideBalance
+                            ? "•••••"
+                            : formatCurrency(animatedBalance)}
+                        </p>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setHideBalance(!hideBalance)}
+                          className="text-white hover:bg-white/20"
+                        >
+                          {hideBalance ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    <Wallet className="h-12 w-12 opacity-80" />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
+                      <ArrowDownRight className="h-4 w-4 mr-2" />
+                      Déposer
+                    </Button>
+                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
+                      <ArrowUpRight className="h-4 w-4 mr-2" />
+                      Retirer
+                    </Button>
+                  </div>
+                </Card>
+
+                {/* Stats rapides */}
+                <div className="space-y-4">
+                  <Card className="p-6">
+                    <div className="flex items-center">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <TrendingUp className="h-6 w-6 text-green-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">
+                          Total Déposé
+                        </p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {formatCurrency(walletData.totalDeposited)}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6">
+                    <div className="flex items-center">
+                      <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <TrendingDown className="h-6 w-6 text-red-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">
+                          Total Retiré
+                        </p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {formatCurrency(walletData.totalWithdrawn)}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6">
+                    <div className="flex items-center">
+                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Euro className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-sm font-medium text-gray-600">
+                          Gains Totaux
+                        </p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {formatCurrency(user.stats?.totalEarnings || 3847)}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+
+              {/* Historique des transactions */}
+              <Card className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Historique des Transactions
+                  </h3>
+                  <div className="flex space-x-2">
+                    <Select
+                      value={selectedTimeRange}
+                      onValueChange={setSelectedTimeRange}
+                    >
+                      <SelectTrigger className="w-32">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="7d">7 jours</SelectItem>
+                        <SelectItem value="30d">30 jours</SelectItem>
+                        <SelectItem value="90d">90 jours</SelectItem>
+                        <SelectItem value="1y">1 an</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button variant="outline" size="sm">
+                      <Download className="h-4 w-4 mr-2" />
+                      Exporter
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {transactions.map((transaction) => (
+                    <motion.div
+                      key={transaction.id}
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                      whileHover={{ scale: 1.01 }}
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div
+                          className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                            transaction.type === "deposit"
+                              ? "bg-green-100"
+                              : transaction.type === "withdraw"
+                                ? "bg-red-100"
+                                : "bg-blue-100"
+                          }`}
+                        >
+                          {transaction.type === "deposit" ? (
+                            <ArrowDownRight
+                              className={`h-5 w-5 ${
+                                transaction.type === "deposit"
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            />
+                          ) : transaction.type === "withdraw" ? (
+                            <ArrowUpRight className="h-5 w-5 text-red-600" />
+                          ) : (
+                            <Euro className="h-5 w-5 text-blue-600" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {transaction.description}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {formatDate(transaction.date)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p
+                          className={`font-semibold ${
+                            transaction.type === "deposit" ||
+                            transaction.type === "interest"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {transaction.type === "deposit" ||
+                          transaction.type === "interest"
+                            ? "+"
+                            : "-"}
+                          {formatCurrency(transaction.amount)}
+                        </p>
+                        <Badge
+                          className={
+                            transaction.status === "completed"
+                              ? "bg-green-100 text-green-700"
+                              : transaction.status === "pending"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-red-100 text-red-700"
+                          }
+                        >
+                          {transaction.status === "completed"
+                            ? "Terminé"
+                            : transaction.status === "pending"
+                              ? "En attente"
+                              : "Échoué"}
+                        </Badge>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="contacts" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Mes Contacts
+                </h2>
+                <Button
+                  onClick={() => setShowAddContactDialog(true)}
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Ajouter Contact
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {contacts.map((contact) => (
+                  <Card
+                    key={contact.id}
+                    className="p-6 hover:shadow-lg transition-shadow"
+                  >
+                    <div className="flex items-center space-x-3 mb-4">
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage
+                          src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${contact.name}`}
+                        />
+                        <AvatarFallback>
+                          {contact.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900">
+                          {contact.name}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {contact.company}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">
+                          Score de confiance
+                        </span>
+                        <span className="font-medium">
+                          {contact.trustScore || 85}%
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Swaps réalisés</span>
+                        <span className="font-medium">
+                          {contact.swapsCount || 0}
+                        </span>
+                      </div>
+                      {contact.lastContact && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600">Dernier contact</span>
+                          <span className="font-medium">
+                            {formatDate(contact.lastContact)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => openChat(contact)}
+                      >
+                        <MessageCircle className="h-4 w-4 mr-1" />
+                        Message
+                      </Button>
+                      <Button variant="outline" size="sm" className="flex-1">
+                        <Mail className="h-4 w-4 mr-1" />
+                        Email
+                      </Button>
+                    </div>
+
+                    {contact.category && (
+                      <div className="mt-3">
+                        <Badge className="bg-blue-100 text-blue-700">
+                          {contact.category}
+                        </Badge>
+                      </div>
+                    )}
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
       </div>
 
       {/* Dialogue de création de swap */}
@@ -2225,8 +2296,8 @@ const DashboardCompleteFixed = () => {
                     <p
                       className={`font-semibold ${
                         analysisResult === "approved"
-                          ? "text-lime-400"
-                          : "text-red-400"
+                          ? "text-green-600"
+                          : "text-red-600"
                       }`}
                     >
                       {analysisResult === "approved"
@@ -2263,8 +2334,6 @@ const DashboardCompleteFixed = () => {
           </div>
         </DialogContent>
       </Dialog>
-          </Tabs>
-        </motion.div>
     </div>
   );
 };
