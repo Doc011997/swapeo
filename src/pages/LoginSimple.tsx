@@ -237,8 +237,8 @@ const LoginSimple = () => {
               {/* Key features */}
               <div className="space-y-4 mb-8">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
-                    <Zap className="h-4 w-4 text-green-400" />
+                  <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
+                    <Zap className="h-4 w-4 text-emerald-400" />
                   </div>
                   <span className="text-gray-300">Financement en 24-48h</span>
                 </div>
@@ -251,8 +251,8 @@ const LoginSimple = () => {
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-4 w-4 text-purple-400" />
+                  <div className="w-8 h-8 bg-indigo-500/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-4 w-4 text-indigo-400" />
                   </div>
                   <span className="text-gray-300">
                     Taux avantageux négociés
