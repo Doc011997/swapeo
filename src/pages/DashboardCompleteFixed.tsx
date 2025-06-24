@@ -186,6 +186,15 @@ const DashboardCompleteFixed = () => {
     lastName: "",
     message: "",
   });
+  const [showAddContactDialog, setShowAddContactDialog] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    company: "",
+    role: "",
+  });
   const [generatingPDF, setGeneratingPDF] = useState(false);
   const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
