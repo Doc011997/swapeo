@@ -2197,9 +2197,14 @@ const DashboardComplete = () => {
                   Actions rapides
                 </h3>
                 <div className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={generateWalletStatementPDF}
+                    disabled={generatingPDF}
+                  >
                     <Download className="h-4 w-4 mr-3" />
-                    Télécharger relevé
+                    {generatingPDF ? "Génération..." : "Télécharger relevé"}
                   </Button>
                   <Button variant="outline" className="w-full justify-start">
                     <CreditCard className="h-4 w-4 mr-3" />
