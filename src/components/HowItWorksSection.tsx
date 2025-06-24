@@ -1,5 +1,13 @@
 import { Card } from "@/components/ui/card";
-import { UserPlus, Search, Handshake, CreditCard } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  UserPlus,
+  Search,
+  Handshake,
+  CreditCard,
+  ArrowRight,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HowItWorksSection = () => {
   const steps = [
