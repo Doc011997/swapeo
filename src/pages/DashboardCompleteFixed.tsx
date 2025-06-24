@@ -2128,7 +2128,7 @@ const DashboardCompleteFixed = () => {
                   !contactForm.email ||
                   !contactForm.company
                 }
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white disabled:opacity-50 shadow-md"
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Ajouter
@@ -2486,7 +2486,7 @@ const DashboardCompleteFixed = () => {
                         </span>
                         <Badge className="bg-blue-100 text-blue-700 border-blue-200">
                           {selectedSwap.repaymentSchedule === "monthly"
-                            ? "📅 Mensuel"
+                            ? "���� Mensuel"
                             : selectedSwap.repaymentSchedule === "quarterly"
                               ? "📅 Trimestriel"
                               : "📅 En fin de période"}
