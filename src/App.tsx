@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import DashboardCompleteFixed from "./pages/DashboardCompleteFixed";
 import LoginSimple from "./pages/LoginSimple";
 import Register from "./pages/Register";
+import SwapPublic from "./pages/SwapPublic";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/login" element={<LoginSimple />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<DashboardCompleteFixed />} />
+          <Route path="/swap" element={<SwapPublic />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
