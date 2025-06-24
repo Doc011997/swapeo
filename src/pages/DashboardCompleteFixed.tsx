@@ -1964,42 +1964,42 @@ const DashboardCompleteFixed = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 }}
                 >
-                  <Card className="p-6 bg-gradient-to-br from-green-50 to-white border-green-100">
-                    <h4 className="text-lg font-semibold mb-6 flex items-center">
-                      <div className="p-2 bg-green-100 rounded-lg mr-3">
-                        <User className="h-5 w-5 text-green-600" />
+                  <Card className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-white border-green-100">
+                    <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 flex items-center">
+                      <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg mr-2 sm:mr-3">
+                        <User className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
                       </div>
                       Créateur du swap
                     </h4>
 
                     {/* Profil du créateur */}
-                    <div className="bg-white p-4 rounded-lg border border-gray-100 mb-4">
-                      <div className="flex items-center space-x-4 mb-4">
-                        <Avatar className="h-16 w-16 border-2 border-green-200">
-                          <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-500 text-white text-lg font-bold">
+                    <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-100 mb-3 sm:mb-4">
+                      <div className="flex items-center space-x-3 sm:space-x-4 mb-3 sm:mb-4">
+                        <Avatar className="h-12 w-12 sm:h-16 sm:w-16 border-2 border-green-200 flex-shrink-0">
+                          <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-500 text-white text-sm sm:text-lg font-bold">
                             {selectedSwap.createdBy
                               ?.split(" ")
                               .map((n) => n[0])
                               .join("") || "??"}
                           </AvatarFallback>
                         </Avatar>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2">
-                            <h5 className="font-bold text-gray-900">
+                            <h5 className="font-bold text-gray-900 text-sm sm:text-base truncate">
                               {selectedSwap.createdBy || "Utilisateur"}
                             </h5>
                             {selectedSwap.verified ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0" />
                             ) : (
-                              <AlertCircle className="h-5 w-5 text-yellow-500" />
+                              <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0" />
                             )}
                           </div>
-                          <p className="text-sm text-gray-600 font-medium">
+                          <p className="text-xs sm:text-sm text-gray-600 font-medium truncate">
                             {selectedSwap.createdByCompany || "Entreprise"}
                           </p>
                           <div className="flex items-center space-x-2 mt-1">
-                            <Shield className="h-4 w-4 text-green-500" />
-                            <span className="text-sm font-semibold text-green-600">
+                            <Shield className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
+                            <span className="text-xs sm:text-sm font-semibold text-green-600">
                               Trust Score:{" "}
                               {selectedSwap.createdByTrustScore || 85}%
                             </span>
@@ -2010,20 +2010,20 @@ const DashboardCompleteFixed = () => {
 
                     {/* Informations complémentaires */}
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Contrepartie:
                         </span>
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-gray-900 text-sm break-words">
                           {selectedSwap.counterparty}
                         </span>
                       </div>
 
-                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
-                        <span className="text-gray-600 font-medium">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
+                        <span className="text-gray-600 font-medium text-sm">
                           Créé le:
                         </span>
-                        <span className="font-semibold text-gray-900">
+                        <span className="font-semibold text-gray-900 text-sm">
                           {formatDate(selectedSwap.createdAt)}
                         </span>
                       </div>
