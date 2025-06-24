@@ -2023,42 +2023,60 @@ const DashboardCompleteFixed = () => {
               </div>
 
               {/* Description et objectifs */}
-              <Card className="p-6">
-                <h4 className="text-lg font-semibold mb-4 flex items-center">
-                  <BookOpen className="h-5 w-5 mr-2 text-purple-500" />
-                  Description et objectifs
-                </h4>
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-gray-600 mb-2">
-                      Description du projet:
-                    </p>
-                    <p className="text-gray-900 bg-gray-50 p-3 rounded">
-                      {selectedSwap.description || "Aucune description fournie"}
-                    </p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <Card className="p-6 bg-gradient-to-br from-purple-50 to-white border-purple-100">
+                  <h4 className="text-lg font-semibold mb-6 flex items-center">
+                    <div className="p-2 bg-purple-100 rounded-lg mr-3">
+                      <BookOpen className="h-5 w-5 text-purple-600" />
+                    </div>
+                    Description et objectifs
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="bg-white p-4 rounded-xl border border-gray-100">
+                      <div className="flex items-center mb-2">
+                        <FileText className="h-4 w-4 text-gray-500 mr-2" />
+                        <p className="text-sm font-medium text-gray-700">
+                          Description du projet:
+                        </p>
+                      </div>
+                      <p className="text-gray-900 leading-relaxed">
+                        {selectedSwap.description ||
+                          "Aucune description fournie"}
+                      </p>
+                    </div>
+
+                    {selectedSwap.purpose && (
+                      <div className="bg-white p-4 rounded-xl border border-gray-100">
+                        <div className="flex items-center mb-2">
+                          <Target className="h-4 w-4 text-blue-500 mr-2" />
+                          <p className="text-sm font-medium text-gray-700">
+                            Objectif des fonds:
+                          </p>
+                        </div>
+                        <p className="text-gray-900">{selectedSwap.purpose}</p>
+                      </div>
+                    )}
+
+                    {selectedSwap.guarantees && (
+                      <div className="bg-white p-4 rounded-xl border border-gray-100">
+                        <div className="flex items-center mb-2">
+                          <Shield className="h-4 w-4 text-green-500 mr-2" />
+                          <p className="text-sm font-medium text-gray-700">
+                            Garanties proposées:
+                          </p>
+                        </div>
+                        <p className="text-gray-900">
+                          {selectedSwap.guarantees}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  {selectedSwap.purpose && (
-                    <div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Objectif des fonds:
-                      </p>
-                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
-                        {selectedSwap.purpose}
-                      </p>
-                    </div>
-                  )}
-                  {selectedSwap.guarantees && (
-                    <div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Garanties proposées:
-                      </p>
-                      <p className="text-gray-900 bg-gray-50 p-3 rounded">
-                        {selectedSwap.guarantees}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
 
               {/* Conditions financières */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
