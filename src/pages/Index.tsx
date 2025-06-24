@@ -372,41 +372,67 @@ const Index = () => {
       </section>
 
       {/* Revolutionary FAQ Section */}
-      <section id="faq" className="py-20 relative overflow-hidden">
+      <section id="faq" className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl animate-pulse-glow" />
+        </div>
+
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div
-            className={`
-            text-center mb-16 transition-all duration-1000
-            ${isVisible.faq ? "animate-slide-in-from-top" : "opacity-0 translate-y-10"}
-          `}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Questions{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-swapeo-primary to-blue-500 animate-text-glow">
-                Fréquentes
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/20 rounded-full px-6 py-3 mb-6">
+              <Sparkles className="h-5 w-5 text-blue-400" />
+              <span className="text-blue-300 font-medium">
+                Questions fréquentes
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Tout ce que vous devez{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 animate-text-glow">
+                savoir
               </span>
             </h2>
-          </div>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Les réponses aux questions les plus posées par nos utilisateurs
+            </p>
+          </motion.div>
 
           <div className="space-y-6">
             {faqItems.map((item, index) => (
-              <Card
+              <motion.div
                 key={index}
-                className={`
-                  swapeo-card p-8 hover-lift group
-                  transition-all duration-700
-                  ${isVisible.faq ? "animate-slide-in-from-left" : "opacity-0 translate-x-10"}
-                `}
-                style={{ animationDelay: `${index * 0.1}s` }}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ x: 8, transition: { duration: 0.3 } }}
               >
-                <h3 className="text-lg md:text-xl font-semibold text-white mb-4 group-hover:text-swapeo-primary transition-colors duration-300 flex items-center">
-                  <Zap className="h-5 w-5 text-swapeo-primary mr-3 animate-pulse" />
-                  {item.question}
-                </h3>
-                <p className="text-gray-300 leading-relaxed text-lg group-hover:text-white transition-colors duration-300">
-                  {item.answer}
-                </p>
-              </Card>
+                <Card className="bg-gradient-to-br from-gray-900/70 to-gray-800/70 backdrop-blur-xl border border-gray-700/50 p-8 group hover:border-blue-500/50 transition-all duration-500 relative overflow-hidden">
+                  {/* Hover glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/5 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div className="relative z-10">
+                    <h3 className="text-xl font-semibold text-white mb-4 group-hover:text-blue-400 transition-colors duration-300 flex items-center">
+                      <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center mr-4 group-hover:bg-blue-500/30 transition-colors duration-300">
+                        <Sparkles className="h-4 w-4 text-blue-400" />
+                      </div>
+                      {item.question}
+                    </h3>
+                    <p className="text-gray-300 leading-relaxed text-lg group-hover:text-white transition-colors duration-300 ml-12">
+                      {item.answer}
+                    </p>
+                  </div>
+
+                  {/* Border glow effect */}
+                  <div className="absolute inset-0 rounded-lg border border-transparent group-hover:border-blue-500/30 transition-all duration-500" />
+                </Card>
+              </motion.div>
             ))}
           </div>
 
