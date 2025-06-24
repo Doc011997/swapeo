@@ -1696,6 +1696,9 @@ const DashboardComplete = () => {
                     <p className="text-xl font-semibold">
                       {formatCurrency(stats.totalEarnings)}
                     </p>
+                    <p className="text-xs opacity-60">
+                      {stats.averageReturn.toFixed(1)}% taux moyen
+                    </p>
                   </div>
                 </div>
 
