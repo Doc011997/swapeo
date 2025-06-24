@@ -1584,9 +1584,14 @@ const DashboardCompleteFixed = () => {
                 !newSwap.type ||
                 !newSwap.amount ||
                 !newSwap.duration ||
-                !newSwap.description
+                !newSwap.description ||
+                !newSwap.category ||
+                !newSwap.purpose ||
+                !newSwap.guarantees ||
+                parseInt(newSwap.amount) < 1000 ||
+                parseInt(newSwap.duration) < 1
               }
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Plus className="mr-2 h-4 w-4" />
               Créer le swap
