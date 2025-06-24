@@ -2940,3 +2940,5 @@ const DashboardCompleteFixed = () => {
 };
 
 export default DashboardCompleteFixed;
+
+export default DashboardCompleteFixed;
