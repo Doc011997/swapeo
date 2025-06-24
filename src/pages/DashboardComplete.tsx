@@ -2339,7 +2339,10 @@ const DashboardComplete = () => {
                   <Plus className="h-4 w-4 mr-2" />
                   Ajouter contact fictif
                 </Button>
-                <Button variant="outline">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowInviteDialog(true)}
+                >
                   <Mail className="h-4 w-4 mr-2" />
                   Inviter par email
                 </Button>
