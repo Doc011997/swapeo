@@ -482,14 +482,20 @@ const DashboardCompleteFixed = () => {
         description: "",
       });
 
-      // Feedback de succès
+      // Confirmation immédiate détaillée
       setMessage(
-        `🎉 Swap créé ! ${formatCurrency(amount)} sur ${duration} mois`,
+        `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`,
       );
-      setTimeout(() => setMessage(""), 4000);
+      setTimeout(() => setMessage(""), 8000);
 
-      // Redirection fluide vers les swaps
-      setTimeout(() => setActiveSection("swaps"), 500);
+      // Redirection immédiate vers l'onglet swaps pour voir le nouveau swap
+      setActiveSection("swaps");
+
+      // Stocker l'ID du nouveau swap pour le mettre en évidence
+      localStorage.setItem("newSwapId", demoSwap.id);
+      setTimeout(() => {
+        localStorage.removeItem("newSwapId");
+      }, 10000);
     } catch (error) {
       console.error("Erreur création swap:", error);
       setMessage("❌ Erreur. Veuillez réessayer.");
