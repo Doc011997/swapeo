@@ -1234,43 +1234,41 @@ const DashboardCompleteFixed = () => {
 
           {/* Mes Swaps */}
           <TabsContent value="swaps" className="space-y-6">
-            <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+            <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">
                   Mes Swaps
                 </h2>
-                <p className="text-gray-600 text-sm sm:text-base">
+                <p className="text-gray-600 text-xs sm:text-base">
                   Gérez vos swaps financiers
                 </p>
               </div>
-              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+              <div className="flex space-x-2 flex-shrink-0">
                 <Button
                   onClick={() => setShowCreateSwap(true)}
-                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-sm sm:text-base"
+                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-sm px-3 sm:px-4"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">
                     Créer un nouveau swap
                   </span>
-                  <span className="sm:hidden">Nouveau swap</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-sm sm:text-base"
+                  className="text-sm px-2 sm:px-4"
                   onClick={() => window.location.reload()}
                 >
-                  <RefreshCw className="h-4 w-4 mr-2" />
+                  <RefreshCw className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Actualiser</span>
-                  <span className="sm:hidden">Actualiser</span>
                 </Button>
               </div>
             </div>
 
-            <div className="grid gap-6">
+            <div className="space-y-4 overflow-hidden">
               {swaps.map((swap) => (
                 <Card
                   key={swap.id}
-                  className={`p-4 sm:p-6 hover:shadow-lg transition-all duration-300 ${
+                  className={`p-3 sm:p-6 hover:shadow-lg transition-all duration-300 overflow-hidden ${
                     highlightedSwapId === swap.id
                       ? "ring-2 ring-green-500 bg-green-50"
                       : ""
@@ -1284,81 +1282,79 @@ const DashboardCompleteFixed = () => {
                     </div>
                   )}
 
-                  <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0">
-                    <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
+                  <div className="flex flex-col space-y-4 sm:flex-row sm:items-start sm:justify-between sm:space-y-0 min-w-0">
+                    <div className="flex items-start space-x-2 sm:space-x-4 flex-1 min-w-0">
                       <div
-                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                        className={`w-8 h-8 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                           swap.type === "demande"
                             ? "bg-orange-100"
                             : "bg-green-100"
                         }`}
                       >
                         {swap.type === "demande" ? (
-                          <ArrowDownRight className="h-5 w-5 sm:h-6 sm:w-6 text-orange-600" />
+                          <ArrowDownRight className="h-4 w-4 sm:h-6 sm:w-6 text-orange-600" />
                         ) : (
-                          <ArrowUpRight className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                          <ArrowUpRight className="h-4 w-4 sm:h-6 sm:w-6 text-green-600" />
                         )}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2 mb-2">
-                          <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
-                            {swap.description}
-                          </h3>
-                          <div className="flex space-x-2">
+                      <div className="flex-1 min-w-0 overflow-hidden">
+                        <div className="flex flex-col space-y-1 sm:space-y-2 mb-2">
+                          <div className="flex items-center space-x-2">
+                            <h3 className="text-sm sm:text-lg font-semibold text-gray-900 truncate flex-1 min-w-0">
+                              {swap.description}
+                            </h3>
                             <Badge
-                              className={
+                              className={`flex-shrink-0 ${
                                 swap.type === "demande"
-                                  ? "bg-orange-100 text-orange-700 text-xs sm:text-sm"
-                                  : "bg-green-100 text-green-700 text-xs sm:text-sm"
-                              }
+                                  ? "bg-orange-100 text-orange-700 text-xs"
+                                  : "bg-green-100 text-green-700 text-xs"
+                              }`}
                             >
                               {swap.type === "demande" ? "Demande" : "Offre"}
                             </Badge>
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600">
-                          <div>
-                            <span className="font-medium">Montant:</span>{" "}
-                            {formatCurrency(swap.amount)}
+                        <div className="space-y-1 sm:space-y-2">
+                          <div className="grid grid-cols-2 gap-2 text-xs sm:text-sm text-gray-600">
+                            <div className="truncate">
+                              <span className="font-medium">Montant:</span>{" "}
+                              <span className="text-green-600 font-semibold">
+                                {formatCurrency(swap.amount)}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="font-medium">Taux:</span>{" "}
+                              {swap.interestRate}%
+                            </div>
                           </div>
-                          <div>
-                            <span className="font-medium">Durée:</span>{" "}
-                            {swap.duration} mois
-                          </div>
-                          <div>
-                            <span className="font-medium">Taux:</span>{" "}
-                            {swap.interestRate}%
-                          </div>
-                          <div className="col-span-2 sm:col-span-3">
-                            <span className="font-medium">Créé par:</span>{" "}
-                            <span className="inline-flex items-center">
-                              {swap.createdBy}
-                              <Badge className="ml-2 bg-blue-100 text-blue-700 text-xs px-2 py-1">
-                                Vous
-                              </Badge>
-                            </span>
-                          </div>
-                          <div className="col-span-2 sm:col-span-3 text-xs text-gray-500">
-                            <Calendar className="h-3 w-3 inline mr-1" />
-                            Créé le {formatDate(swap.createdAt)}
+                          <div className="flex items-center justify-between">
+                            <div className="text-xs text-gray-500 flex items-center">
+                              <Calendar className="h-3 w-3 mr-1" />
+                              {formatDate(swap.createdAt)}
+                            </div>
+                            <Badge className="bg-blue-100 text-blue-700 text-xs px-2 py-1 flex-shrink-0">
+                              Vous
+                            </Badge>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-start sm:items-end space-y-2 flex-shrink-0">
+                    <div className="flex flex-col items-end space-y-2 flex-shrink-0 w-auto">
                       <Badge
-                        className={
+                        className={`text-xs flex items-center ${
                           swap.status === "Actif"
                             ? "bg-green-100 text-green-700"
                             : swap.status === "En recherche"
                               ? "bg-yellow-100 text-yellow-700"
                               : "bg-blue-100 text-blue-700"
-                        }
+                        }`}
                       >
                         {getStatusIcon(swap.status)}
-                        <span className="ml-1">{swap.status}</span>
+                        <span className="ml-1 hidden sm:inline">
+                          {swap.status}
+                        </span>
                       </Badge>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-1">
                         <Button
                           variant="outline"
                           size="sm"
@@ -1366,10 +1362,9 @@ const DashboardCompleteFixed = () => {
                             setSelectedSwap(swap);
                             setShowSwapDetails(true);
                           }}
-                          className="text-xs sm:text-sm px-2 sm:px-3"
+                          className="text-xs px-2 h-7"
                         >
-                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                          <span className="hidden sm:inline">Voir détails</span>
+                          <Eye className="h-3 w-3" />
                         </Button>
                         <Button
                           size="sm"
@@ -1386,10 +1381,9 @@ const DashboardCompleteFixed = () => {
                               setTimeout(() => setMessage(""), 3000);
                             }
                           }}
-                          className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm px-2 sm:px-3"
+                          className="bg-blue-600 hover:bg-blue-700 text-xs px-2 h-7"
                         >
-                          <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                          <span className="hidden sm:inline">Contacter</span>
+                          <MessageCircle className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
