@@ -437,9 +437,6 @@ const DashboardCompleteFixed = () => {
       setContacts(demoContacts);
       setNotifications(demoNotifications);
 
-      // Initialisation gamification
-      initializeGamification(userData);
-
       // Animation du solde
       setTimeout(() => {
         setAnimatedBalance(userData.wallet?.balance || 42847);
