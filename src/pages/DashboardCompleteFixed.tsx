@@ -199,6 +199,10 @@ const DashboardCompleteFixed = () => {
   const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
   const [newSwapId, setNewSwapId] = useState<string | null>(null);
+  const [showChat, setShowChat] = useState(false);
+  const [chatContact, setChatContact] = useState<any>(null);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [chatMessage, setChatMessage] = useState("");
   const [newSwap, setNewSwap] = useState({
     type: "",
     amount: "",
@@ -605,7 +609,7 @@ const DashboardCompleteFixed = () => {
     };
     setTransactions([demoTransaction, ...transactions]);
 
-    setMessage(`✅ Retrait de ${amount}€ effectué avec succès !`);
+    setMessage(`✅ Retrait de ${amount}��� effectué avec succès !`);
     setTimeout(() => setMessage(""), 4000);
   };
 
