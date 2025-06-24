@@ -187,6 +187,7 @@ const DashboardCompleteFixed = () => {
   const [generatingPDF, setGeneratingPDF] = useState(false);
   const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
+  const [newSwapId, setNewSwapId] = useState<string | null>(null);
   const [newSwap, setNewSwap] = useState({
     type: "",
     amount: "",
@@ -528,7 +529,7 @@ const DashboardCompleteFixed = () => {
       case "quarterly":
         return "Trimestriel";
       case "end":
-        return "En fin de période";
+        return "En fin de p��riode";
       default:
         return "Mensuel";
     }
