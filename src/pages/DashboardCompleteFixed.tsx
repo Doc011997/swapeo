@@ -1074,38 +1074,40 @@ const DashboardCompleteFixed = () => {
             onValueChange={setActiveSection}
             className="w-full"
           >
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-xl p-1">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6 sm:mb-8 bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-xl p-1 sticky top-20 sm:top-24 z-30">
               <TabsTrigger
                 value="overview"
-                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
               >
-                <Home className="h-4 w-4" />
-                <span className="hidden sm:inline font-medium">Aperçu</span>
-                <span className="sm:hidden font-medium">Vue</span>
+                <Home className="h-5 w-5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-medium">
+                  <span className="hidden sm:inline">Aperçu</span>
+                  <span className="sm:hidden">Vue</span>
+                </span>
               </TabsTrigger>
               <TabsTrigger
                 value="swaps"
-                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
               >
-                <Handshake className="h-4 w-4" />
-                <span className="font-medium">Swaps</span>
+                <Handshake className="h-5 w-5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-medium">Swaps</span>
               </TabsTrigger>
               <TabsTrigger
                 value="wallet"
-                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
               >
-                <Wallet className="h-4 w-4" />
-                <span className="hidden sm:inline font-medium">
-                  Portefeuille
+                <Wallet className="h-5 w-5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-medium">
+                  <span className="hidden sm:inline">Portefeuille</span>
+                  <span className="sm:hidden">Wallet</span>
                 </span>
-                <span className="sm:hidden font-medium">Wallet</span>
               </TabsTrigger>
               <TabsTrigger
                 value="contacts"
-                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+                className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-2 sm:py-3 px-2 touch-manipulation"
               >
-                <Users className="h-4 w-4" />
-                <span className="font-medium">Contacts</span>
+                <Users className="h-5 w-5 sm:h-4 sm:w-4" />
+                <span className="text-xs sm:text-sm font-medium">Contacts</span>
               </TabsTrigger>
             </TabsList>
 
