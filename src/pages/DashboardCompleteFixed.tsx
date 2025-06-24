@@ -210,6 +210,13 @@ const DashboardCompleteFixed = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showCreateSwap, setShowCreateSwap] = useState(false);
   const [hideBalance, setHideBalance] = useState(false);
+  const [showAlgorithmAnalysis, setShowAlgorithmAnalysis] = useState(false);
+  const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [analysisStep, setAnalysisStep] = useState("");
+  const [createdSwapId, setCreatedSwapId] = useState("");
+  const [analysisResult, setAnalysisResult] = useState<
+    "approved" | "rejected" | null
+  >(null);
   const [animatedBalance, setAnimatedBalance] = useState(0);
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedTimeRange, setSelectedTimeRange] = useState("30d");
@@ -541,7 +548,7 @@ const DashboardCompleteFixed = () => {
       {
         id: "swap-master",
         name: "Maître des Swaps",
-        description: "Complétez 10 swaps avec succès",
+        description: "Complétez 10 swaps avec succ��s",
         icon: "🏆",
         category: "swap",
         rarity: "rare",
