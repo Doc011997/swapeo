@@ -2778,77 +2778,7 @@ const DashboardCompleteFixed = () => {
         )}
       </AnimatePresence>
 
-      {/* Modal Level Up */}
-      <AnimatePresence>
-        {showLevelUp && userLevel && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-          >
-            <motion.div
-              initial={{ y: -100, rotate: -10 }}
-              animate={{ y: 0, rotate: 0 }}
-              transition={{ type: "spring", damping: 15 }}
-              className="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 rounded-3xl p-8 text-center text-white shadow-2xl max-w-md mx-4"
-            >
-              <motion.div
-                animate={{
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 360, 720],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="text-6xl mb-6"
-              >
-                🏆
-              </motion.div>
 
-              <motion.h2
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-3xl font-bold mb-4"
-              >
-                LEVEL UP !
-              </motion.h2>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="space-y-2 mb-6"
-              >
-                <p className="text-xl">Niveau {userLevel.level}</p>
-                <p className="text-lg font-semibold">{userLevel.title}</p>
-                <p className="text-sm opacity-90">
-                  Nouveaux avantages débloqués !
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-                className="space-y-2"
-              >
-                {userLevel.benefits.slice(-1).map((benefit, index) => (
-                  <Badge
-                    key={index}
-                    className="bg-white/20 text-white border-white/30 mr-2"
-                  >
-                    ✨ {benefit}
-                  </Badge>
-                ))}
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Modal d'analyse algorithmique */}
       <Dialog open={showAlgorithmAnalysis} onOpenChange={() => {}}>
