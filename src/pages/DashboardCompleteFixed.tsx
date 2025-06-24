@@ -854,12 +854,6 @@ const DashboardCompleteFixed = () => {
       `✅ Contact ${newContact.name} ajouté avec succès à votre réseau !`,
     );
 
-    // Gamification
-    addXP(50, "ajout de contact");
-    if (contacts.length >= 4) {
-      unlockAchievement("network-builder");
-    }
-
     setTimeout(() => setMessage(""), 4000);
   };
 
