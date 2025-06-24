@@ -1412,6 +1412,159 @@ const DashboardCompleteFixed = () => {
               </Card>
             </div>
 
+            {/* Section Gamification */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Progression et Niveau */}
+              <Card className="p-4 sm:p-6 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                    <Trophy className="h-5 w-5 mr-2 text-purple-600" />
+                    Votre Progression
+                  </h3>
+                  <Badge className="bg-purple-100 text-purple-700 font-bold">
+                    {userLevel?.title}
+                  </Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-gray-700">
+                        Niveau {userLevel?.level}
+                      </span>
+                      <span className="text-sm text-purple-600 font-bold">
+                        {userLevel?.currentXP}/{userLevel?.requiredXP} XP
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <motion.div
+                        className="bg-gradient-to-r from-purple-500 to-blue-500 h-3 rounded-full transition-all duration-1000"
+                        initial={{ width: 0 }}
+                        animate={{
+                          width: `${userLevel ? (userLevel.currentXP / userLevel.requiredXP) * 100 : 0}%`,
+                        }}
+                      ></motion.div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="bg-white/50 rounded-lg p-3">
+                      <div className="text-lg font-bold text-orange-600">
+                        {totalPoints}
+                      </div>
+                      <div className="text-xs text-gray-600">Points Total</div>
+                    </div>
+                    <div className="bg-white/50 rounded-lg p-3">
+                      <div className="text-lg font-bold text-green-600">
+                        {streakDays}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Jours d'affilée
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+
+              {/* Quêtes Quotidiennes */}
+              <Card className="p-4 sm:p-6 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Target className="h-5 w-5 mr-2 text-green-600" />
+                  Quêtes Quotidiennes
+                </h3>
+
+                <div className="space-y-3">
+                  {dailyQuests.map((quest) => (
+                    <div key={quest.id} className="bg-white/70 rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg">{quest.icon}</span>
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {quest.title}
+                            </p>
+                            <p className="text-xs text-gray-600">
+                              {quest.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          {quest.completed ? (
+                            <Badge className="bg-green-100 text-green-700">
+                              ✓ Terminé
+                            </Badge>
+                          ) : (
+                            <div className="text-xs text-gray-500">
+                              {quest.current}/{quest.target}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
+                        <div
+                          className="bg-green-500 h-1.5 rounded-full transition-all duration-500"
+                          style={{
+                            width: `${(quest.current / quest.target) * 100}%`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            {/* Achievements récents */}
+            <Card className="p-4 sm:p-6 bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
+                  <Award className="h-5 w-5 mr-2 text-yellow-600" />
+                  Achievements Récents
+                </h3>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAchievementModal(true)}
+                  className="text-xs"
+                >
+                  Voir tout
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {achievements
+                  .filter((a) => a.unlockedAt)
+                  .slice(0, 3)
+                  .map((achievement) => (
+                    <div
+                      key={achievement.id}
+                      className="bg-white/70 rounded-lg p-3 text-center"
+                    >
+                      <div className="text-2xl mb-2">{achievement.icon}</div>
+                      <h4 className="font-medium text-sm text-gray-900">
+                        {achievement.name}
+                      </h4>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {achievement.description}
+                      </p>
+                      <Badge
+                        className={`mt-2 text-xs ${
+                          achievement.rarity === "legendary"
+                            ? "bg-purple-100 text-purple-700"
+                            : achievement.rarity === "epic"
+                              ? "bg-blue-100 text-blue-700"
+                              : achievement.rarity === "rare"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {achievement.rarity}
+                      </Badge>
+                    </div>
+                  ))}
+              </div>
+            </Card>
+
             {/* Actions rapides */}
             <Card className="p-4 sm:p-6">
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
