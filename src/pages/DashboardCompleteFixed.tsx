@@ -2338,7 +2338,7 @@ const DashboardCompleteFixed = () => {
                     <Calendar className="h-5 w-5 mr-2 text-orange-500" />
                     Planning et échéances
                   </h4>
-              <div className="bg-gradient-to-r from-violet-600 to-cyan-600 rounded-xl p-4 sm:p-6 text-white">
+                  <div className="bg-gradient-to-r from-violet-600 to-cyan-600 rounded-xl p-4 sm:p-6 text-white">
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div className="flex items-center space-x-2 sm:space-x-3">
                     <Wallet className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-200" />
