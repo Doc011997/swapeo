@@ -2263,6 +2263,8 @@ const DashboardCompleteFixed = () => {
           </div>
         </DialogContent>
       </Dialog>
+          </Tabs>
+        </motion.div>
     </div>
   );
 };
