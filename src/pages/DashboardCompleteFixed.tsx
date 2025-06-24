@@ -1286,19 +1286,20 @@ const DashboardCompleteFixed = () => {
                   </div>
 
                   {/* Mobile: Stack vertical, Desktop: Grid horizontal */}
-                  <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
+                  <div className="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-6">
                     <Button
                       onClick={() => setShowCreateSwap(true)}
-                      className="w-full bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 sm:hover:scale-105 group"
+                      className="w-full bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 focus:from-violet-600 focus:to-purple-700 focus:ring-4 focus:ring-violet-200 text-white p-5 sm:p-6 h-auto flex items-center sm:flex-col rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 sm:hover:scale-105 group touch-manipulation"
+                      aria-label="Créer un nouveau swap"
                     >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 transition-transform duration-300">
-                        <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/25 rounded-2xl flex items-center justify-center mr-4 sm:mr-0 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-md">
+                        <Plus className="h-6 w-6 sm:h-7 sm:w-7" />
                       </div>
                       <div className="text-left sm:text-center">
-                        <span className="text-sm font-semibold block">
+                        <span className="text-base font-bold block leading-tight">
                           Créer un Swap
                         </span>
-                        <span className="text-xs opacity-80 sm:mt-1 block">
+                        <span className="text-sm opacity-90 sm:mt-1 block">
                           Nouvelle proposition
                         </span>
                       </div>
@@ -1307,16 +1308,17 @@ const DashboardCompleteFixed = () => {
                     <Button
                       variant="outline"
                       onClick={() => (window.location.href = "/swap")}
-                      className="w-full border-2 border-green-200 hover:bg-green-50 hover:border-green-300 p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl transition-all duration-300 sm:hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                      className="w-full border-2 border-green-300 hover:bg-green-50 hover:border-green-400 focus:bg-green-50 focus:border-green-400 focus:ring-4 focus:ring-green-200 p-5 sm:p-6 h-auto flex items-center sm:flex-col rounded-2xl transition-all duration-300 sm:hover:scale-105 group bg-white/80 backdrop-blur-md shadow-lg touch-manipulation"
+                      aria-label="Accéder au marketplace"
                     >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
-                        <Search className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-100 rounded-2xl flex items-center justify-center mr-4 sm:mr-0 sm:mb-4 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300 shadow-md">
+                        <Search className="h-6 w-6 sm:h-7 sm:w-7 text-green-600" />
                       </div>
                       <div className="text-left sm:text-center">
-                        <span className="text-sm font-semibold text-gray-900 block">
+                        <span className="text-base font-bold text-gray-900 block leading-tight">
                           Marketplace
                         </span>
-                        <span className="text-xs text-gray-600 sm:mt-1 block">
+                        <span className="text-sm text-gray-700 sm:mt-1 block">
                           Chercher opportunités
                         </span>
                       </div>
@@ -1324,17 +1326,18 @@ const DashboardCompleteFixed = () => {
 
                     <Button
                       variant="outline"
-                      className="w-full border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 p-4 sm:p-6 h-auto flex items-center sm:flex-col rounded-xl transition-all duration-300 sm:hover:scale-105 group bg-white/50 backdrop-blur-sm"
+                      className="w-full border-2 border-blue-300 hover:bg-blue-50 hover:border-blue-400 focus:bg-blue-50 focus:border-blue-400 focus:ring-4 focus:ring-blue-200 p-5 sm:p-6 h-auto flex items-center sm:flex-col rounded-2xl transition-all duration-300 sm:hover:scale-105 group bg-white/80 backdrop-blur-md shadow-lg touch-manipulation"
                       onClick={() => setShowInviteDialog(true)}
+                      aria-label="Inviter de nouveaux contacts"
                     >
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-3 sm:mr-0 sm:mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
-                        <Mail className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-2xl flex items-center justify-center mr-4 sm:mr-0 sm:mb-4 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300 shadow-md">
+                        <Mail className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
                       </div>
                       <div className="text-left sm:text-center">
-                        <span className="text-sm font-semibold text-gray-900 block">
+                        <span className="text-base font-bold text-gray-900 block leading-tight">
                           Inviter
                         </span>
-                        <span className="text-xs text-gray-600 sm:mt-1 block">
+                        <span className="text-sm text-gray-700 sm:mt-1 block">
                           Nouveaux contacts
                         </span>
                       </div>
