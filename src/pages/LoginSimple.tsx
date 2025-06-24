@@ -135,19 +135,19 @@ const LoginSimple = () => {
       icon: Users,
       value: "2,847",
       label: "Utilisateurs actifs",
-      color: "text-blue-400",
+      color: "text-cyan-400",
     },
     {
       icon: Handshake,
       value: "1,253",
       label: "Swaps réalisés",
-      color: "text-emerald-400",
+      color: "text-lime-400",
     },
     {
       icon: TrendingUp,
       value: "94%",
       label: "Taux de succès",
-      color: "text-indigo-400",
+      color: "text-violet-400",
     },
   ];
 
@@ -167,18 +167,18 @@ const LoginSimple = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-zinc-900 via-violet-900 to-purple-900 relative overflow-hidden">
       {/* Background animated elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-blue-500/8 to-emerald-500/8 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-violet-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-full blur-3xl"></div>
 
         {/* Floating icons */}
         <motion.div
           animate={{ y: [0, -20, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-32 right-32 text-blue-400/20"
+          className="absolute top-32 right-32 text-cyan-400/25"
         >
           <ArrowUpDown className="h-8 w-8" />
         </motion.div>
@@ -190,14 +190,14 @@ const LoginSimple = () => {
             ease: "easeInOut",
             delay: 1,
           }}
-          className="absolute bottom-32 left-32 text-purple-400/20"
+          className="absolute bottom-32 left-32 text-violet-400/25"
         >
           <Wallet className="h-10 w-10" />
         </motion.div>
         <motion.div
           animate={{ rotate: [0, 360] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-1/4 left-1/4 text-green-400/20"
+          className="absolute top-1/4 left-1/4 text-lime-400/25"
         >
           <Globe className="h-6 w-6" />
         </motion.div>
@@ -214,7 +214,7 @@ const LoginSimple = () => {
             {/* Logo and brand */}
             <div className="mb-12">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg ring-2 ring-emerald-400/30">
+                <div className="w-12 h-12 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg ring-2 ring-violet-400/40">
                   <Handshake className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-bold text-3xl">SWAPEO</span>
@@ -222,7 +222,7 @@ const LoginSimple = () => {
 
               <h1 className="text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight">
                 Révolutionnez vos
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-blue-400 to-indigo-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-pink-400">
                   {" "}
                   échanges financiers
                 </span>
@@ -237,22 +237,22 @@ const LoginSimple = () => {
               {/* Key features */}
               <div className="space-y-4 mb-8">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center">
-                    <Zap className="h-4 w-4 text-emerald-400" />
+                  <div className="w-8 h-8 bg-lime-500/25 rounded-full flex items-center justify-center">
+                    <Zap className="h-4 w-4 text-lime-400" />
                   </div>
                   <span className="text-gray-300">Financement en 24-48h</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                    <Shield className="h-4 w-4 text-blue-400" />
+                  <div className="w-8 h-8 bg-cyan-500/25 rounded-full flex items-center justify-center">
+                    <Shield className="h-4 w-4 text-cyan-400" />
                   </div>
                   <span className="text-gray-300">
                     Sécurisé par la blockchain
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-indigo-500/20 rounded-full flex items-center justify-center">
-                    <TrendingUp className="h-4 w-4 text-indigo-400" />
+                  <div className="w-8 h-8 bg-pink-500/25 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-4 w-4 text-pink-400" />
                   </div>
                   <span className="text-gray-300">
                     Taux avantageux négociés
@@ -293,7 +293,7 @@ const LoginSimple = () => {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4"
                 >
                   <div className="flex items-center space-x-3 mb-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-pink-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                       {testimonial.avatar}
                     </div>
                     <div>
@@ -325,7 +325,7 @@ const LoginSimple = () => {
             {/* Mobile logo */}
             <div className="lg:hidden text-center mb-8">
               <div className="flex items-center justify-center space-x-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-lg">
                   <Handshake className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-white font-bold text-2xl">SWAPEO</span>
@@ -338,7 +338,7 @@ const LoginSimple = () => {
               </p>
             </div>
 
-            <Card className="bg-white/10 backdrop-blur-xl border-emerald-400/20 shadow-2xl p-8 ring-1 ring-emerald-400/10">
+            <Card className="bg-white/10 backdrop-blur-xl border-violet-400/30 shadow-2xl p-8 ring-1 ring-violet-400/20">
               <div className="hidden lg:block text-center mb-6">
                 <h2 className="text-2xl font-bold text-white mb-2">
                   Connexion
@@ -377,7 +377,7 @@ const LoginSimple = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    className="bg-white/10 border-white/30 text-white placeholder:text-gray-400 focus:border-blue-400 focus:bg-white/20 transition-all"
+                    className="bg-white/10 border-white/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:bg-white/20 transition-all"
                     required
                   />
                 </div>
@@ -421,7 +421,7 @@ const LoginSimple = () => {
                 {/* Login button */}
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white font-semibold h-12 shadow-xl transition-all duration-300 transform hover:scale-105 ring-2 ring-emerald-400/20"
+                  className="w-full bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600 text-white font-semibold h-12 shadow-xl transition-all duration-300 transform hover:scale-105 ring-2 ring-violet-400/30"
                   disabled={loading}
                 >
                   {loading ? (
@@ -458,7 +458,7 @@ const LoginSimple = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="border-blue-500/50 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 hover:text-blue-200 transition-all"
+                      className="border-cyan-500/50 bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 hover:text-cyan-200 transition-all"
                       onClick={() =>
                         handleQuickLogin(
                           "john@example.com",
@@ -474,7 +474,7 @@ const LoginSimple = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="border-emerald-400/60 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 transition-all ring-1 ring-emerald-400/20"
+                      className="border-lime-400/60 bg-lime-500/15 hover:bg-lime-500/25 text-lime-300 hover:text-lime-200 transition-all ring-1 ring-lime-400/20"
                       onClick={() =>
                         handleQuickLogin(
                           "sarah@example.com",
@@ -496,7 +496,7 @@ const LoginSimple = () => {
                   Nouveau sur Swapeo ?{" "}
                   <Link
                     to="/register"
-                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                    className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors"
                   >
                     Créez votre compte gratuitement
                   </Link>
@@ -506,7 +506,7 @@ const LoginSimple = () => {
                 <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Shield className="h-3 w-3" />
-                    <span>S��curisé SSL</span>
+                    <span>Sécurisé SSL</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <CheckCircle className="h-3 w-3" />
