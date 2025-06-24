@@ -809,13 +809,30 @@ const DashboardCompleteFixed = () => {
       <AnimatePresence>
         {message && (
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
             className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50"
           >
-            <div className="bg-green-50 border border-green-200 text-green-800 px-6 py-3 rounded-lg shadow-lg">
-              {message}
+            <div
+              className={`${
+                message.includes("SUCCÈS") || message.includes("✅")
+                  ? "bg-gradient-to-r from-green-50 to-blue-50 border-2 border-green-300 text-green-800 shadow-xl"
+                  : message.includes("❌")
+                    ? "bg-red-50 border border-red-200 text-red-800 shadow-lg"
+                    : "bg-blue-50 border border-blue-200 text-blue-800 shadow-lg"
+              } px-8 py-4 rounded-xl max-w-lg`}
+            >
+              <div className="flex items-center space-x-2">
+                {message.includes("SUCCÈS") || message.includes("✅") ? (
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                ) : message.includes("❌") ? (
+                  <AlertCircle className="h-6 w-6 text-red-600" />
+                ) : (
+                  <Info className="h-6 w-6 text-blue-600" />
+                )}
+                <span className="font-medium text-sm">{message}</span>
+              </div>
             </div>
           </motion.div>
         )}
