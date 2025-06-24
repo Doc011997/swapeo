@@ -678,6 +678,37 @@ const DashboardComplete = () => {
       };
       setTransactions([demoTransaction, ...transactions]);
 
+      // Simulate interest calculation
+      if (Math.random() > 0.7) {
+        setTimeout(() => {
+          const interest = Math.floor(
+            netAmount * 0.001 * (Math.random() * 5 + 1),
+          );
+          const interestTransaction: Transaction = {
+            id: `tx-${Date.now()}-int`,
+            type: "interest",
+            amount: interest,
+            description: `Intérêts générés (+${((interest / netAmount) * 100).toFixed(2)}%)`,
+            date: new Date().toISOString(),
+            status: "completed",
+          };
+          setTransactions((prev) => [interestTransaction, ...prev]);
+
+          const userWithInterest = {
+            ...user,
+            wallet: {
+              ...user.wallet,
+              balance: user.wallet.balance + interest,
+            },
+          };
+          setUser(userWithInterest);
+          localStorage.setItem("swapeo_user", JSON.stringify(userWithInterest));
+
+          setMessage(`💰 Intérêts de ${interest}€ générés automatiquement !`);
+          setTimeout(() => setMessage(""), 3000);
+        }, 2000);
+      }
+
       setMessage(`✅ Dépôt DEMO de ${netAmount}€ effectué !`);
     }
 
