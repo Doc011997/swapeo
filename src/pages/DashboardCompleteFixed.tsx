@@ -881,7 +881,157 @@ const DashboardCompleteFixed = () => {
                 <LogOut className="h-5 w-5" />
               </Button>
             </div>
+
+            {/* Mobile Navigation */}
+            <div className="sm:hidden flex items-center space-x-2">
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative h-10 w-10 hover:bg-violet-50"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                >
+                  <Bell className="h-5 w-5 text-gray-600" />
+                  {notifications.filter((n) => !n.read).length > 0 && (
+                    <motion.span
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg"
+                    >
+                      {notifications.filter((n) => !n.read).length}
+                    </motion.span>
+                  )}
+                </Button>
+
+                <AnimatePresence>
+                  {showNotifications && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      className="absolute right-0 top-12 w-80 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 z-50"
+                    >
+                      <div className="p-4 border-b border-gray-100">
+                        <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                          <Bell className="h-5 w-5 mr-2 text-violet-500" />
+                          Notifications
+                        </h3>
+                      </div>
+                      <div className="max-h-80 overflow-y-auto">
+                        {notifications.map((notification) => (
+                          <motion.div
+                            key={notification.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className={`p-4 border-b border-gray-50 hover:bg-violet-50/50 cursor-pointer transition-colors duration-200 ${
+                              !notification.read ? "bg-blue-50/50" : ""
+                            }`}
+                          >
+                            <div className="flex items-start space-x-3">
+                              <div
+                                className={`w-3 h-3 rounded-full mt-2 ${
+                                  notification.type === "swap"
+                                    ? "bg-violet-500"
+                                    : notification.type === "payment"
+                                      ? "bg-green-500"
+                                      : "bg-blue-500"
+                                } shadow-sm`}
+                              ></div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                  {notification.title}
+                                </p>
+                                <p className="text-sm text-gray-600 line-clamp-2">
+                                  {notification.description}
+                                </p>
+                                <p className="text-xs text-gray-400 mt-1">
+                                  {notification.time}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-violet-50"
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+              >
+                <Menu className="h-5 w-5 text-gray-600" />
+              </Button>
+            </div>
           </div>
+
+          {/* Mobile Menu Dropdown */}
+          <AnimatePresence>
+            {showMobileMenu && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="sm:hidden border-t border-gray-200/50 bg-white/95 backdrop-blur-xl"
+              >
+                <div className="p-4 space-y-4">
+                  {/* User Profile Mobile */}
+                  <div className="flex items-center space-x-3 p-3 bg-violet-50/50 rounded-xl">
+                    <Avatar className="h-12 w-12 ring-2 ring-violet-200">
+                      <AvatarImage
+                        src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${user.firstName}`}
+                      />
+                      <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-500 text-white font-bold">
+                        {user.firstName?.[0]}
+                        {user.lastName?.[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">
+                        {user.firstName} {user.lastName}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {user.company}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions Mobile */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button
+                      onClick={() => setShowCreateSwap(true)}
+                      className="bg-gradient-to-br from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white h-14 flex-col rounded-xl shadow-lg"
+                    >
+                      <Plus className="h-5 w-5 mb-1" />
+                      <span className="text-xs font-semibold">Créer Swap</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => (window.location.href = "/swap")}
+                      className="border-2 border-green-200 hover:bg-green-50 h-14 flex-col rounded-xl"
+                    >
+                      <Search className="h-5 w-5 mb-1 text-green-600" />
+                      <span className="text-xs font-semibold text-gray-900">
+                        Marketplace
+                      </span>
+                    </Button>
+                  </div>
+
+                  {/* Logout Mobile */}
+                  <Button
+                    variant="outline"
+                    className="w-full border-red-200 text-red-600 hover:bg-red-50 h-12 rounded-xl"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Se déconnecter
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </header>
 
