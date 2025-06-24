@@ -2771,18 +2771,18 @@ const DashboardCompleteFixed = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="flex flex-col space-y-3 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200"
+                className="flex flex-col space-y-2 sm:space-y-3 md:flex-row md:justify-end md:space-y-0 md:space-x-3 pt-3 sm:pt-4 border-t border-gray-200"
               >
                 <Button
                   variant="outline"
                   onClick={() => setShowSwapDetails(false)}
-                  className="w-full sm:w-auto"
+                  className="w-full md:w-auto h-10 sm:h-auto text-sm"
                 >
-                  <X className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Fermer</span>
+                  <X className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  Fermer
                 </Button>
                 <Button
-                  className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 w-full sm:w-auto"
+                  className="bg-gradient-to-r from-violet-600 to-cyan-600 hover:from-violet-700 hover:to-cyan-700 w-full md:w-auto h-10 sm:h-auto text-sm"
                   onClick={() => {
                     const contact = contacts.find(
                       (c) => c.company === selectedSwap.counterparty,
@@ -2796,7 +2796,7 @@ const DashboardCompleteFixed = () => {
                     }
                   }}
                 >
-                  <MessageCircle className="h-4 w-4 sm:mr-2" />
+                  <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                   <span className="hidden sm:inline">
                     Contacter le partenaire
                   </span>
