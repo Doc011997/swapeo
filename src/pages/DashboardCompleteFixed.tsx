@@ -1198,7 +1198,7 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <h3 className="font-semibold text-gray-900">
                             {swap.counterparty === "Recherche en cours..."
-                              ? `Créé par ${swap.createdBy || user?.firstName + " " + user?.lastName}`
+                              ? `Cr��é par ${swap.createdBy || user?.firstName + " " + user?.lastName}`
                               : swap.counterparty}
                           </h3>
                           {swap.counterparty === "Recherche en cours..." && (
@@ -1696,6 +1696,7 @@ const DashboardCompleteFixed = () => {
                         size="sm"
                         variant="outline"
                         className="text-xs px-2 py-1"
+                        onClick={() => openChatWithContact(contact)}
                       >
                         <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                         <span className="hidden sm:inline">Message</span>
