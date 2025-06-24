@@ -61,6 +61,7 @@ import {
   ArrowRight,
   ChevronRight,
   X,
+  MapPin,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
