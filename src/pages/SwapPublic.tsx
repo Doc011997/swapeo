@@ -148,6 +148,8 @@ const SwapPublic = () => {
     rate: 5.5,
   });
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showSwapDetails, setShowSwapDetails] = useState(false);
+  const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
   const navigate = useNavigate();
 
   // Vérification de l'authentification au chargement
