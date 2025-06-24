@@ -667,77 +667,179 @@ const Index = () => {
       </section>
 
       {/* Revolutionary Footer */}
-      <footer className="border-t border-swapeo-slate/20 py-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-swapeo-navy-dark to-transparent" />
+      <footer className="border-t border-gray-700/30 py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/95 to-transparent" />
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-48 h-48 bg-violet-500/5 rounded-full blur-2xl" />
+          <div className="absolute bottom-10 right-10 w-64 h-64 bg-cyan-500/5 rounded-full blur-3xl" />
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Brand */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            {/* Enhanced Brand Section */}
             <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-swapeo-primary to-blue-500 rounded-lg flex items-center justify-center neon-border">
-                  <span className="text-white font-bold text-lg">S</span>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="flex items-center space-x-4 mb-8"
+              >
+                <div className="w-16 h-16 bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <span className="text-white font-bold text-2xl">S</span>
                 </div>
-                <span className="text-white font-bold text-2xl animate-text-glow">
-                  SWAPEO
-                </span>
-              </div>
-              <p className="text-gray-400 max-w-md text-lg leading-relaxed">
-                La plateforme de swap de trésorerie{" "}
-                <span className="text-swapeo-primary font-semibold">
-                  nouvelle génération
-                </span>{" "}
-                pour auto-entrepreneurs.
-              </p>
+                <div>
+                  <span className="text-white font-bold text-3xl bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                    SWAPEO
+                  </span>
+                  <div className="text-gray-400 text-sm font-medium">
+                    Financement collaboratif
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <p className="text-gray-300 max-w-md text-lg leading-relaxed mb-8">
+                  La plateforme de{" "}
+                  <span className="text-violet-400 font-semibold">
+                    swap de trésorerie
+                  </span>{" "}
+                  qui révolutionne le financement entre entrepreneurs.
+                </p>
+
+                {/* Trust indicators */}
+                <div className="flex items-center gap-6 mb-6">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-green-400" />
+                    <span className="text-sm text-gray-400">Sécurisé</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="h-5 w-5 text-blue-400" />
+                    <span className="text-sm text-gray-400">
+                      10k+ utilisateurs
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-violet-400" />
+                    <span className="text-sm text-gray-400">24h/24</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
 
-            {/* Links */}
-            <div>
-              <h4 className="text-white font-semibold mb-4 text-lg">Légal</h4>
-              <div className="space-y-3">
+            {/* Enhanced Links Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-white font-semibold mb-6 text-lg flex items-center">
+                <div className="w-6 h-6 bg-blue-500/20 rounded-lg flex items-center justify-center mr-2">
+                  <Shield className="h-3 w-3 text-blue-400" />
+                </div>
+                Légal & Sécurité
+              </h4>
+              <div className="space-y-4">
                 {[
                   "Mentions légales",
-                  "CGU",
+                  "Conditions générales",
                   "Politique de confidentialité",
+                  "Sécurité des données",
                 ].map((link, index) => (
                   <a
                     key={index}
                     href="#"
-                    className="block text-gray-400 hover:text-swapeo-primary transition-all duration-300 hover-lift"
+                    className="block text-gray-400 hover:text-violet-400 transition-all duration-300 hover:translate-x-1 text-sm"
                   >
                     {link}
                   </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
-            {/* Contact */}
-            <div>
-              <h4 className="text-white font-semibold mb-4 text-lg">Contact</h4>
-              <div className="space-y-3">
+            {/* Enhanced Contact Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <h4 className="text-white font-semibold mb-6 text-lg flex items-center">
+                <div className="w-6 h-6 bg-violet-500/20 rounded-lg flex items-center justify-center mr-2">
+                  <Phone className="h-3 w-3 text-violet-400" />
+                </div>
+                Nous contacter
+              </h4>
+              <div className="space-y-4">
                 {[
-                  { icon: Mail, text: "contact@swapeo.com" },
-                  { icon: Phone, text: "+33 1 76 40 05 32" },
-                  { icon: MapPin, text: "Paris, France" },
+                  { icon: Mail, text: "contact@swapeo.com", label: "Email" },
+                  {
+                    icon: Phone,
+                    text: "+33 1 76 40 05 32",
+                    label: "Téléphone",
+                  },
+                  { icon: MapPin, text: "Paris, France", label: "Adresse" },
                 ].map((contact, index) => (
                   <div
                     key={index}
-                    className="flex items-center space-x-3 text-gray-400 text-sm group hover:text-swapeo-primary transition-colors duration-300"
+                    className="group hover:bg-gray-800/30 rounded-lg p-2 -m-2 transition-all duration-300 cursor-pointer"
                   >
-                    <contact.icon className="h-4 w-4 group-hover:animate-pulse" />
-                    <span>{contact.text}</span>
+                    <div className="flex items-center space-x-3 text-gray-400 group-hover:text-violet-400 transition-colors duration-300">
+                      <div className="w-8 h-8 bg-gray-800/50 rounded-lg flex items-center justify-center group-hover:bg-violet-500/20 transition-colors duration-300">
+                        <contact.icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 group-hover:text-gray-400">
+                          {contact.label}
+                        </div>
+                        <div className="text-sm font-medium">
+                          {contact.text}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="border-t border-swapeo-slate/20 mt-8 pt-8 text-center">
-            <p className="text-gray-400 text-sm flex items-center justify-center">
-              © 2024 Swapeo. Tous droits réservés.
-              <Sparkles className="ml-2 h-4 w-4 text-swapeo-primary animate-pulse" />
-            </p>
-          </div>
+          {/* Enhanced Footer Bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="border-t border-gray-700/30 mt-12 pt-8"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center text-gray-400 text-sm">
+                <span>© 2024 Swapeo. Tous droits réservés.</span>
+                <div className="w-2 h-2 bg-violet-500 rounded-full mx-3 animate-pulse" />
+                <span>Fait avec ❤️ en France</span>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  Service opérationnel
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-gray-600 text-gray-400 hover:text-white hover:border-violet-500 text-xs"
+                >
+                  <TrendingUp className="h-3 w-3 mr-1" />
+                  Statut
+                </Button>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </footer>
     </div>
