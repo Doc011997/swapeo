@@ -1382,36 +1382,38 @@ const DashboardCompleteFixed = () => {
                         transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
                         className="group"
                       >
-                        <div className="p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
+                        <div className="p-4 sm:p-5 bg-gradient-to-r from-white/90 to-gray-50/90 rounded-2xl hover:from-violet-50/90 hover:to-cyan-50/90 transition-all duration-300 hover:shadow-lg border-2 border-gray-200/50 hover:border-violet-300/50 backdrop-blur-md">
                           {/* Mobile: Stack vertical, Desktop: Side by side */}
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-                            <div className="flex items-center space-x-3 sm:space-x-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+                            <div className="flex items-center space-x-4 sm:space-x-5">
                               <div className="relative flex-shrink-0">
                                 <div
-                                  className={`w-4 h-4 rounded-full ${
+                                  className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full shadow-lg ${
                                     swap.status === "active"
-                                      ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                      ? "bg-green-500 shadow-green-500/40"
                                       : swap.status === "pending"
-                                        ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
-                                        : "bg-gray-400"
+                                        ? "bg-yellow-500 shadow-yellow-500/40"
+                                        : "bg-gray-400 shadow-gray-400/40"
                                   } ${swap.status === "active" ? "animate-pulse" : ""}`}
                                 ></div>
                                 {swap.status === "active" && (
-                                  <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
+                                  <div className="absolute inset-0 w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full animate-ping opacity-30"></div>
                                 )}
                               </div>
                               <div className="min-w-0 flex-1">
-                                <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300 text-sm sm:text-base truncate">
+                                <p className="font-bold text-gray-900 group-hover:text-violet-700 transition-colors duration-300 text-base sm:text-lg leading-tight">
                                   {swap.type === "offre"
                                     ? "💼 Offre de"
                                     : "🎯 Demande de"}{" "}
-                                  {formatCurrency(swap.amount)}
+                                  <span className="text-violet-600">
+                                    {formatCurrency(swap.amount)}
+                                  </span>
                                 </p>
-                                <p className="text-xs sm:text-sm text-gray-600 group-hover:text-gray-700 truncate">
+                                <p className="text-sm sm:text-base text-gray-700 group-hover:text-gray-800 font-medium mt-1">
                                   {swap.counterparty} • {swap.interestRate}%
                                 </p>
-                                <p className="text-xs text-gray-500 sm:hidden">
-                                  {swap.duration} mois
+                                <p className="text-xs sm:text-sm text-gray-500 sm:hidden mt-1">
+                                  Durée: {swap.duration} mois
                                 </p>
                               </div>
                             </div>
