@@ -1454,9 +1454,9 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div>
-              <Label>Description</Label>
+              <Label>Description du projet</Label>
               <Textarea
-                placeholder="Décrivez votre projet..."
+                placeholder="Décrivez votre projet en détail..."
                 value={newSwap.description}
                 onChange={(e) =>
                   setNewSwap({ ...newSwap, description: e.target.value })
@@ -1465,9 +1465,126 @@ const DashboardCompleteFixed = () => {
               />
             </div>
 
+            <div>
+              <Label>Objectif des fonds</Label>
+              <Input
+                type="text"
+                placeholder="Ex: Achat d'équipement, Stock, Développement..."
+                value={newSwap.purpose}
+                onChange={(e) =>
+                  setNewSwap({ ...newSwap, purpose: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label>Garanties proposées</Label>
+              <Input
+                type="text"
+                placeholder="Ex: Caution personnelle, Stock en garantie..."
+                value={newSwap.guarantees}
+                onChange={(e) =>
+                  setNewSwap({ ...newSwap, guarantees: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Remboursement</Label>
+                <Select
+                  value={newSwap.repaymentSchedule}
+                  onValueChange={(value) =>
+                    setNewSwap({ ...newSwap, repaymentSchedule: value })
+                  }
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Mensuel</SelectItem>
+                    <SelectItem value="quarterly">Trimestriel</SelectItem>
+                    <SelectItem value="end">En fin de période</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-3 pt-6">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="earlyRepayment"
+                    checked={newSwap.earlyRepayment}
+                    onChange={(e) =>
+                      setNewSwap({
+                        ...newSwap,
+                        earlyRepayment: e.target.checked,
+                      })
+                    }
+                    className="rounded"
+                  />
+                  <Label htmlFor="earlyRepayment" className="text-sm">
+                    Remboursement anticipé autorisé
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="insurance"
+                    checked={newSwap.insurance}
+                    onChange={(e) =>
+                      setNewSwap({ ...newSwap, insurance: e.target.checked })
+                    }
+                    className="rounded"
+                  />
+                  <Label htmlFor="insurance" className="text-sm">
+                    Assurance emprunt incluse
+                  </Label>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-medium text-blue-900 mb-2">
+                📊 Estimation automatique
+              </h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-blue-700">Taux estimé:</span>
+                  <span className="font-medium text-blue-900 ml-2">
+                    {newSwap.type === "demande" ? "3.5%" : "3.0%"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Intérêts totaux:</span>
+                  <span className="font-medium text-blue-900 ml-2">
+                    {newSwap.amount && newSwap.duration
+                      ? `~${Math.round((parseInt(newSwap.amount) * 3.2 * parseInt(newSwap.duration)) / (100 * 12))}€`
+                      : "0€"}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Matching estimé:</span>
+                  <span className="font-medium text-blue-900 ml-2">85-95%</span>
+                </div>
+                <div>
+                  <span className="text-blue-700">Délai moyen:</span>
+                  <span className="font-medium text-blue-900 ml-2">
+                    2-4 jours
+                  </span>
+                </div>
+              </div>
+            </div>
+
             <Button
               onClick={handleCreateSwap}
-              disabled={!newSwap.type || !newSwap.amount || !newSwap.duration}
+              disabled={
+                !newSwap.type ||
+                !newSwap.amount ||
+                !newSwap.duration ||
+                !newSwap.description
+              }
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
               <Plus className="mr-2 h-4 w-4" />
