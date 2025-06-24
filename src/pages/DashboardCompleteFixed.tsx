@@ -1624,11 +1624,7 @@ const DashboardCompleteFixed = () => {
             )}
 
             <Button
-              onClick={() => {
-                console.log("🖱️ Bouton cliqué !");
-                console.log("📝 newSwap au clic:", newSwap);
-                handleCreateSwap();
-              }}
+              onClick={handleCreateSwap}
               className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium transition-all duration-200"
             >
               <Plus className="mr-2 h-5 w-5" />
