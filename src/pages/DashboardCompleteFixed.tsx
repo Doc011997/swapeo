@@ -1275,7 +1275,23 @@ const DashboardCompleteFixed = () => {
                         <Info className="h-4 w-4 mr-1" />
                         Voir détails
                       </Button>
-                      <Button variant="outline">
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          openChatWithContact({
+                            name:
+                              swap.counterparty !== "Recherche en cours..."
+                                ? swap.counterparty
+                                : swap.createdBy || "Contact Swap",
+                            company:
+                              swap.counterparty !== "Recherche en cours..."
+                                ? "Partenaire Swapeo"
+                                : swap.createdByCompany || "Entreprise",
+                            trustScore: swap.createdByTrustScore || 85,
+                            swapId: swap.id,
+                          })
+                        }
+                      >
                         <MessageCircle className="h-4 w-4 mr-1" />
                         Contacter
                       </Button>
@@ -1664,7 +1680,7 @@ const DashboardCompleteFixed = () => {
                         </p>
                         {contact.email && (
                           <p className="text-xs text-blue-600 truncate">
-                            ✉�� {contact.email}
+                            ✉️ {contact.email}
                           </p>
                         )}
                         {contact.phone && (
