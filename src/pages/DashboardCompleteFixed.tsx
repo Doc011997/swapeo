@@ -1696,49 +1696,49 @@ const DashboardCompleteFixed = () => {
                 </Card>
 
                 {/* Stats rapides */}
-                <div className="space-y-4">
-                  <Card className="p-6">
+                <div className="space-y-3 sm:space-y-4">
+                  <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <TrendingUp className="h-6 w-6 text-green-600" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600">
                           Total Déposé
                         </p>
-                        <p className="text-xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-xl font-bold text-gray-900">
                           {formatCurrency(walletData.totalDeposited)}
                         </p>
                       </div>
                     </div>
                   </Card>
 
-                  <Card className="p-6">
+                  <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                        <TrendingDown className="h-6 w-6 text-red-600" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-red-400 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <TrendingDown className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600">
                           Total Retiré
                         </p>
-                        <p className="text-xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-xl font-bold text-gray-900">
                           {formatCurrency(walletData.totalWithdrawn)}
                         </p>
                       </div>
                     </div>
                   </Card>
 
-                  <Card className="p-6">
+                  <Card className="p-4 sm:p-6 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
                     <div className="flex items-center">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Euro className="h-6 w-6 text-blue-600" />
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg">
+                        <Euro className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                       </div>
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-600">
+                      <div className="ml-3 sm:ml-4">
+                        <p className="text-xs sm:text-sm font-medium text-gray-600">
                           Gains Totaux
                         </p>
-                        <p className="text-xl font-bold text-gray-900">
+                        <p className="text-lg sm:text-xl font-bold text-gray-900">
                           {formatCurrency(user.stats?.totalEarnings || 3847)}
                         </p>
                       </div>
