@@ -650,18 +650,6 @@ const DashboardCompleteFixed = () => {
     setHighlightedSwapId(newSwap.id);
     setActiveSection("swaps");
 
-    // Gamification
-    addXP(100, "création de swap");
-    completeQuest("check-swaps");
-
-    // Vérifier achievements
-    const userSwaps = swaps.filter((s) =>
-      s.createdBy?.includes(user.firstName),
-    );
-    if (userSwaps.length === 0) {
-      unlockAchievement("first-swap");
-    }
-
     // Supprimer le highlight après 8 secondes
     setTimeout(() => {
       setHighlightedSwapId(null);
