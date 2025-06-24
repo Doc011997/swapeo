@@ -95,6 +95,7 @@ import {
   Flag,
   Minus,
   Handshake,
+  Calculator,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
