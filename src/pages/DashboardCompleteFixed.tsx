@@ -520,7 +520,7 @@ const DashboardCompleteFixed = () => {
         id: "network-builder",
         name: "Bâtisseur de Réseau",
         description: "Ajoutez 5 contacts à votre réseau",
-        icon: "����",
+        icon: "🤝",
         category: "network",
         rarity: "common",
         unlockedAt: "2024-01-20",
@@ -812,7 +812,7 @@ const DashboardCompleteFixed = () => {
 
     // Message de confirmation avec détails
     setMessage(
-      `✅ Swap créé avec succès ! Montant: ${parseInt(newSwapForm.amount).toLocaleString()}€ - ID: ${newSwap.id}`,
+      `✅ Swap créé avec succès ! ID: ${newSwap.id} - En cours d'analyse par notre algorithme pour apparaître dans le marketplace...`,
     );
 
     // Highlight du nouveau swap et redirection vers l'onglet Swaps
