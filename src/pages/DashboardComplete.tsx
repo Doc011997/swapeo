@@ -328,7 +328,27 @@ const DashboardComplete = () => {
     updateUserStats(demoSwaps);
   };
 
-  const loadTransactions = () => {
+  const loadTransactions = async () => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/wallet/transactions",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setTransactions(data.transactions || []);
+        return;
+      }
+    } catch (error) {
+      console.log("API indisponible, chargement des données demo");
+    }
+
+    // Fallback to demo data
     const demoTransactions: Transaction[] = [
       {
         id: "TX-001",
