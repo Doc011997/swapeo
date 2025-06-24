@@ -1761,18 +1761,18 @@ const DashboardCompleteFixed = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Modal Détails du Swap - Version Améliorée */}
+      {/* Modal Détails du Swap - Version Mobile Optimisée */}
       <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
-        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader className="pb-4 border-b border-gray-100">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+        <DialogContent className="max-w-[95vw] sm:max-w-2xl lg:max-w-4xl max-h-[95vh] overflow-y-auto p-4 sm:p-6">
+          <DialogHeader className="pb-3 sm:pb-4 border-b border-gray-100">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+              <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
                 {selectedSwap && getStatusIcon(selectedSwap.status)}
-                <div>
-                  <DialogTitle className="text-xl font-bold text-gray-900">
+                <div className="min-w-0 flex-1">
+                  <DialogTitle className="text-lg sm:text-xl font-bold text-gray-900 truncate">
                     Swap {selectedSwap?.id}
                   </DialogTitle>
-                  <DialogDescription className="text-sm text-gray-600 mt-1">
+                  <DialogDescription className="text-xs sm:text-sm text-gray-600 mt-1 line-clamp-2">
                     {selectedSwap?.description}
                   </DialogDescription>
                 </div>
@@ -1782,9 +1782,14 @@ const DashboardCompleteFixed = () => {
                   selectedSwap?.type === "demande"
                     ? "bg-orange-100 text-orange-700 border-orange-200"
                     : "bg-green-100 text-green-700 border-green-200"
-                } text-sm font-medium`}
+                } text-xs sm:text-sm font-medium flex-shrink-0 self-start sm:self-center`}
               >
-                {selectedSwap?.type === "demande" ? "💰 Demande" : "🏦 Offre"}
+                <span className="sm:hidden">
+                  {selectedSwap?.type === "demande" ? "💰" : "🏦"}
+                </span>
+                <span className="hidden sm:inline">
+                  {selectedSwap?.type === "demande" ? "💰 Demande" : "🏦 Offre"}
+                </span>
               </Badge>
             </div>
           </DialogHeader>
@@ -1962,7 +1967,7 @@ const DashboardCompleteFixed = () => {
                       Créateur du swap
                     </h4>
 
-                    {/* Profil du créateur */}
+                    {/* Profil du cr��ateur */}
                     <div className="bg-white p-4 rounded-lg border border-gray-100 mb-4">
                       <div className="flex items-center space-x-4 mb-4">
                         <Avatar className="h-16 w-16 border-2 border-green-200">
