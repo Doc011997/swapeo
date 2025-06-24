@@ -1264,10 +1264,6 @@ const DashboardCompleteFixed = () => {
             </div>
 
 
-                        Jours d'affilée
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </Card>
 
