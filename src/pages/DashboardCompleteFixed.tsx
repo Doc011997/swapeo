@@ -1198,7 +1198,7 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <h3 className="font-semibold text-gray-900">
                             {swap.counterparty === "Recherche en cours..."
-                              ? `Cr��é par ${swap.createdBy || user?.firstName + " " + user?.lastName}`
+                              ? `Créé par ${swap.createdBy || user?.firstName + " " + user?.lastName}`
                               : swap.counterparty}
                           </h3>
                           {swap.counterparty === "Recherche en cours..." && (
@@ -2548,6 +2548,13 @@ const DashboardCompleteFixed = () => {
                     variant="outline"
                     size="sm"
                     className="text-xs sm:text-sm"
+                    onClick={() =>
+                      openChatWithContact({
+                        name: selectedSwap.createdBy || "Contact",
+                        company: selectedSwap.createdByCompany || "Entreprise",
+                        trustScore: selectedSwap.createdByTrustScore || 85,
+                      })
+                    }
                   >
                     <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
                     <span className="hidden sm:inline">Contacter</span>
