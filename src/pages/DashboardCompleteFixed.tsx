@@ -2079,59 +2079,82 @@ const DashboardCompleteFixed = () => {
               </motion.div>
 
               {/* Conditions financières */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="p-6">
-                  <h4 className="text-lg font-semibold mb-4 flex items-center">
-                    <Calculator className="h-5 w-5 mr-2 text-green-500" />
-                    Conditions financières
-                  </h4>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Remboursement:</span>
-                      <span className="font-medium">
-                        {getRepaymentScheduleText(
-                          selectedSwap.repaymentSchedule || "monthly",
-                        )}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        Remboursement anticipé:
-                      </span>
-                      <span
-                        className={`font-medium ${selectedSwap.earlyRepayment ? "text-green-600" : "text-red-600"}`}
-                      >
-                        {selectedSwap.earlyRepayment
-                          ? "Autorisé"
-                          : "Non autorisé"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Assurance:</span>
-                      <span
-                        className={`font-medium ${selectedSwap.insurance ? "text-green-600" : "text-gray-600"}`}
-                      >
-                        {selectedSwap.insurance ? "Incluse" : "Non incluse"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">
-                        Intérêts totaux estimés:
-                      </span>
-                      <span className="font-medium text-blue-600">
-                        {formatCurrency(selectedSwap.totalInterest || 0)}
-                      </span>
-                    </div>
-                    {selectedSwap.monthlyPayment && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Mensualité:</span>
-                        <span className="font-medium text-purple-600">
-                          {formatCurrency(selectedSwap.monthlyPayment)}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <Card className="p-6 bg-gradient-to-br from-emerald-50 to-white border-emerald-100">
+                    <h4 className="text-lg font-semibold mb-6 flex items-center">
+                      <div className="p-2 bg-emerald-100 rounded-lg mr-3">
+                        <Calculator className="h-5 w-5 text-emerald-600" />
+                      </div>
+                      Conditions financières
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Remboursement:
+                        </span>
+                        <Badge className="bg-blue-100 text-blue-700 border-blue-200">
+                          {selectedSwap.repaymentSchedule === "monthly"
+                            ? "📅 Mensuel"
+                            : selectedSwap.repaymentSchedule === "quarterly"
+                              ? "📅 Trimestriel"
+                              : "📅 En fin de période"}
+                        </Badge>
+                      </div>
+
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Remboursement anticipé:
+                        </span>
+                        <span
+                          className={`font-medium ${selectedSwap.earlyRepayment ? "text-green-600" : "text-red-600"}`}
+                        >
+                          {selectedSwap.earlyRepayment
+                            ? "✅ Autorisé"
+                            : "❌ Non autorisé"}
                         </span>
                       </div>
-                    )}
-                  </div>
-                </Card>
+
+                      <div className="flex justify-between items-center p-3 bg-white rounded-lg border border-gray-100">
+                        <span className="text-gray-600 font-medium">
+                          Assurance:
+                        </span>
+                        <span
+                          className={`font-medium ${selectedSwap.insurance ? "text-green-600" : "text-gray-600"}`}
+                        >
+                          {selectedSwap.insurance
+                            ? "🛡️ Incluse"
+                            : "➖ Non incluse"}
+                        </span>
+                      </div>
+
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border border-blue-100">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-gray-700 font-medium">
+                            Intérêts totaux estimés:
+                          </span>
+                          <span className="font-bold text-blue-600 text-lg">
+                            {formatCurrency(selectedSwap.totalInterest || 0)}
+                          </span>
+                        </div>
+                        {selectedSwap.monthlyPayment && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-700 font-medium">
+                              Mensualité:
+                            </span>
+                            <span className="font-bold text-purple-600 text-lg">
+                              {formatCurrency(selectedSwap.monthlyPayment)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
 
                 <Card className="p-6">
                   <h4 className="text-lg font-semibold mb-4 flex items-center">
