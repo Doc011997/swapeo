@@ -1224,13 +1224,15 @@ const DashboardCompleteFixed = () => {
           </TabsContent>
 
           {/* Section Portefeuille */}
-          <TabsContent value="wallet" className="space-y-6">
-            <div className="flex items-center justify-between">
+          <TabsContent value="wallet" className="space-y-4 sm:space-y-6">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                   Portefeuille
                 </h2>
-                <p className="text-gray-600">Gérez vos fonds et transactions</p>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Gérez vos fonds et transactions
+                </p>
               </div>
             </div>
 
