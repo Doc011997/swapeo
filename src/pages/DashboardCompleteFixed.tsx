@@ -997,9 +997,19 @@ const DashboardCompleteFixed = () => {
                     <Progress value={swap.progress} className="h-2" />
                   </div>
 
-                  <Button variant="outline" className="w-full">
-                    Voir détails
-                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={() => viewSwapDetails(swap)}
+                    >
+                      <Info className="h-4 w-4 mr-1" />
+                      Voir détails
+                    </Button>
+                    <Button variant="outline">
+                      <MessageCircle className="h-4 w-4 mr-1" />
+                      Contacter
+                    </Button>
+                  </div>
                 </Card>
               ))}
             </div>
