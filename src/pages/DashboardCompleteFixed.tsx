@@ -2283,12 +2283,26 @@ const DashboardCompleteFixed = () => {
         open={showAddContactDialog}
         onOpenChange={setShowAddContactDialog}
       >
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Ajouter un contact</DialogTitle>
-            <DialogDescription>
-              Ajoutez un nouveau contact à votre réseau
-            </DialogDescription>
+        <DialogContent className="w-full max-w-md m-2 sm:m-auto max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle className="text-lg font-bold">
+                  Ajouter un contact
+                </DialogTitle>
+                <DialogDescription className="text-sm">
+                  Ajoutez un nouveau contact à votre réseau
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowAddContactDialog(false)}
+                className="sm:hidden h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogHeader>
 
           <div className="space-y-4">
