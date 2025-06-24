@@ -1761,41 +1761,104 @@ const DashboardCompleteFixed = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Modal Détails du Swap */}
+      {/* Modal Détails du Swap - Version Améliorée */}
       <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex items-center space-x-2">
-              {selectedSwap && getStatusIcon(selectedSwap.status)}
-              <span>Détails du Swap {selectedSwap?.id}</span>
-            </DialogTitle>
-            <DialogDescription>
-              Informations complètes sur ce swap financier
-            </DialogDescription>
+        <DialogContent className="max-w-4xl max-h-[95vh] overflow-y-auto">
+          <DialogHeader className="pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {selectedSwap && getStatusIcon(selectedSwap.status)}
+                <div>
+                  <DialogTitle className="text-xl font-bold text-gray-900">
+                    Swap {selectedSwap?.id}
+                  </DialogTitle>
+                  <DialogDescription className="text-sm text-gray-600 mt-1">
+                    {selectedSwap?.description}
+                  </DialogDescription>
+                </div>
+              </div>
+              <Badge
+                className={`${
+                  selectedSwap?.type === "demande"
+                    ? "bg-orange-100 text-orange-700 border-orange-200"
+                    : "bg-green-100 text-green-700 border-green-200"
+                } text-sm font-medium`}
+              >
+                {selectedSwap?.type === "demande" ? "💰 Demande" : "🏦 Offre"}
+              </Badge>
+            </div>
           </DialogHeader>
 
           {selectedSwap && (
-            <div className="space-y-6">
-              {/* En-tête du swap */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-gray-900">
-                      {formatCurrency(selectedSwap.amount)}
-                    </h3>
-                    <p className="text-gray-600">Montant</p>
+            <div className="space-y-6 pt-6">
+              {/* En-tête du swap amélioré */}
+              <div className="bg-gradient-to-br from-blue-50 via-purple-50 to-green-50 p-6 rounded-xl border border-blue-100">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-center p-4 bg-white/60 rounded-lg backdrop-blur-sm"
+                  >
+                    <div className="flex items-center justify-center mb-2">
+                      <Euro className="h-6 w-6 text-blue-600 mr-2" />
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                        {formatCurrency(selectedSwap.amount)}
+                      </h3>
+                    </div>
+                    <p className="text-gray-600 text-sm">Montant</p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-center p-4 bg-white/60 rounded-lg backdrop-blur-sm"
+                  >
+                    <div className="flex items-center justify-center mb-2">
+                      <Percent className="h-6 w-6 text-green-600 mr-2" />
+                      <h3 className="text-xl sm:text-2xl font-bold text-green-600">
+                        {selectedSwap.interestRate}%
+                      </h3>
+                    </div>
+                    <p className="text-gray-600 text-sm">Taux d'intérêt</p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="text-center p-4 bg-white/60 rounded-lg backdrop-blur-sm"
+                  >
+                    <div className="flex items-center justify-center mb-2">
+                      <Calendar className="h-6 w-6 text-purple-600 mr-2" />
+                      <h3 className="text-xl sm:text-2xl font-bold text-purple-600">
+                        {selectedSwap.duration} mois
+                      </h3>
+                    </div>
+                    <p className="text-gray-600 text-sm">Durée</p>
+                  </motion.div>
+                </div>
+
+                {/* Barre de progression globale */}
+                <div className="mt-6 p-4 bg-white/80 rounded-lg">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">
+                      Progression globale
+                    </span>
+                    <span className="text-sm font-bold text-blue-600">
+                      {selectedSwap.progress}%
+                    </span>
                   </div>
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-blue-600">
-                      {selectedSwap.interestRate}%
-                    </h3>
-                    <p className="text-gray-600">Taux d'intérêt</p>
-                  </div>
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-purple-600">
-                      {selectedSwap.duration} mois
-                    </h3>
-                    <p className="text-gray-600">Durée</p>
+                  <Progress
+                    value={selectedSwap.progress}
+                    className="h-3 bg-gray-200"
+                  />
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>Début</span>
+                    <span>
+                      {selectedSwap.daysRemaining || 0} jours restants
+                    </span>
                   </div>
                 </div>
               </div>
