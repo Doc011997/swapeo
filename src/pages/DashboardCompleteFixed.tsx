@@ -872,17 +872,17 @@ const DashboardCompleteFixed = () => {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-1 sm:space-x-4">
               <div className="relative">
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative"
+                  className="relative h-8 w-8 sm:h-10 sm:w-10"
                   onClick={() => setShowNotifications(!showNotifications)}
                 >
-                  <Bell className="h-5 w-5" />
+                  <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
                   {notifications.filter((n) => !n.read).length > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
                       {notifications.filter((n) => !n.read).length}
                     </span>
                   )}
@@ -968,9 +968,9 @@ const DashboardCompleteFixed = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-                  <AvatarFallback className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-sm sm:text-base">
+              <div className="flex items-center space-x-1 sm:space-x-3">
+                <Avatar className="w-7 h-7 sm:w-10 sm:h-10">
+                  <AvatarFallback className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold text-xs sm:text-base">
                     {user?.firstName?.[0]}
                     {user?.lastName?.[0]}
                   </AvatarFallback>
@@ -988,8 +988,13 @@ const DashboardCompleteFixed = () => {
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon" onClick={handleLogout}>
-                  <LogOut className="h-5 w-5" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleLogout}
+                  className="h-8 w-8 sm:h-10 sm:w-10"
+                >
+                  <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </div>
             </div>
@@ -1015,10 +1020,38 @@ const DashboardCompleteFixed = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeSection} onValueChange={setActiveSection}>
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">Vue d'ensemble</TabsTrigger>
-            <TabsTrigger value="swaps">Mes Swaps</TabsTrigger>
-            <TabsTrigger value="wallet">Portefeuille</TabsTrigger>
-            <TabsTrigger value="network">Réseau</TabsTrigger>
+            <TabsTrigger
+              value="overview"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Vue d'ensemble</span>
+              <span className="sm:hidden text-xs">Accueil</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="swaps"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
+              <Handshake className="h-4 w-4" />
+              <span className="hidden sm:inline">Mes Swaps</span>
+              <span className="sm:hidden text-xs">Swaps</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="wallet"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
+              <Wallet className="h-4 w-4" />
+              <span className="hidden sm:inline">Portefeuille</span>
+              <span className="sm:hidden text-xs">Wallet</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="network"
+              className="flex items-center space-x-1 sm:space-x-2"
+            >
+              <Users className="h-4 w-4" />
+              <span className="hidden sm:inline">Réseau</span>
+              <span className="sm:hidden text-xs">Réseau</span>
+            </TabsTrigger>
           </TabsList>
 
           {/* Vue d'ensemble */}
@@ -1088,32 +1121,37 @@ const DashboardCompleteFixed = () => {
             </div>
 
             {/* Actions rapides */}
-            <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <Card className="p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
                 Actions Rapides
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-4">
                 <Button
                   onClick={() => setShowCreateSwap(true)}
-                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white p-4 h-auto flex-col"
+                  className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white p-3 sm:p-4 h-auto flex-col"
                 >
-                  <Plus className="h-6 w-6 mb-2" />
-                  <span>Créer un Swap</span>
+                  <Plus className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2" />
+                  <span className="text-xs sm:text-sm">Créer</span>
+                  <span className="hidden lg:inline sm:text-sm">un Swap</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-green-200 hover:bg-green-50 p-4 h-auto flex-col"
+                  className="border-green-200 hover:bg-green-50 p-3 sm:p-4 h-auto flex-col"
                 >
-                  <Search className="h-6 w-6 mb-2 text-green-600" />
-                  <span>Rechercher des Opportunités</span>
+                  <Search className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-green-600" />
+                  <span className="text-xs sm:text-sm">Chercher</span>
+                  <span className="hidden lg:inline sm:text-sm">
+                    Opportunités
+                  </span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="border-purple-200 hover:bg-purple-50 p-4 h-auto flex-col"
+                  className="border-purple-200 hover:bg-purple-50 p-3 sm:p-4 h-auto flex-col"
                   onClick={() => setShowInviteDialog(true)}
                 >
-                  <Users className="h-6 w-6 mb-2 text-purple-600" />
-                  <span>Inviter des Contacts</span>
+                  <Mail className="h-5 w-5 sm:h-6 sm:w-6 mb-1 sm:mb-2 text-purple-600" />
+                  <span className="text-xs sm:text-sm">Inviter</span>
+                  <span className="hidden lg:inline sm:text-sm">Contacts</span>
                 </Button>
               </div>
             </Card>
@@ -1328,11 +1366,10 @@ const DashboardCompleteFixed = () => {
                             setSelectedSwap(swap);
                             setShowSwapDetails(true);
                           }}
-                          className="text-xs sm:text-sm"
+                          className="text-xs sm:text-sm px-2 sm:px-3"
                         >
-                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                          <Eye className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
                           <span className="hidden sm:inline">Voir détails</span>
-                          <span className="sm:hidden">Détails</span>
                         </Button>
                         <Button
                           size="sm"
@@ -1349,11 +1386,10 @@ const DashboardCompleteFixed = () => {
                               setTimeout(() => setMessage(""), 3000);
                             }
                           }}
-                          className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm"
+                          className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm px-2 sm:px-3"
                         >
-                          <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                          <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
                           <span className="hidden sm:inline">Contacter</span>
-                          <span className="sm:hidden">Chat</span>
                         </Button>
                       </div>
                     </div>
@@ -1422,9 +1458,8 @@ const DashboardCompleteFixed = () => {
                     className="bg-white/20 hover:bg-white/30 text-white border-0 text-xs sm:text-sm px-2 sm:px-4"
                     onClick={() => handleWalletDeposit(500)}
                   >
-                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <Plus className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
                     <span className="hidden sm:inline">Ajouter des fonds</span>
-                    <span className="sm:hidden">Ajouter</span>
                   </Button>
                   <Button
                     variant="outline"
@@ -1432,9 +1467,8 @@ const DashboardCompleteFixed = () => {
                     className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-xs sm:text-sm px-2 sm:px-4"
                     onClick={() => handleWalletWithdraw(100)}
                   >
-                    <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                    <ArrowUpRight className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
                     <span className="hidden sm:inline">Retirer</span>
-                    <span className="sm:hidden">Retrait</span>
                   </Button>
                 </div>
               </div>
@@ -1484,11 +1518,10 @@ const DashboardCompleteFixed = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-xs sm:text-sm"
+                  className="text-xs sm:text-sm px-2 sm:px-4"
                 >
-                  <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <Download className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Exporter</span>
-                  <span className="sm:hidden">Export</span>
                 </Button>
               </div>
               <div className="space-y-3 sm:space-y-4">
@@ -1544,12 +1577,12 @@ const DashboardCompleteFixed = () => {
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-6 px-2 text-xs"
+                            className="h-6 w-6 sm:w-auto sm:px-2 text-xs p-0 sm:p-1"
                             onClick={() => generateInvoicePDF(transaction)}
                             disabled={generatingPDF}
                           >
-                            <Download className="h-3 w-3 mr-1" />
-                            PDF
+                            <Download className="h-3 w-3 sm:mr-1" />
+                            <span className="hidden sm:inline">PDF</span>
                           </Button>
                         )}
                       </div>
@@ -1571,32 +1604,29 @@ const DashboardCompleteFixed = () => {
                   Vos partenaires de confiance
                 </p>
               </div>
-              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
+              <div className="flex space-x-2 sm:space-x-3">
                 <Button
                   onClick={() => setShowAddContactDialog(true)}
-                  className="text-sm"
+                  className="text-sm px-2 sm:px-4"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Ajouter un contact</span>
-                  <span className="sm:hidden">Ajouter contact</span>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={addFictiveContact}
-                  className="text-sm"
+                  className="text-sm px-2 sm:px-4"
                 >
-                  <Users className="h-4 w-4 mr-2" />
+                  <Users className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Contact aléatoire</span>
-                  <span className="sm:hidden">Aléatoire</span>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowInviteDialog(true)}
-                  className="text-sm"
+                  className="text-sm px-2 sm:px-4"
                 >
-                  <Mail className="h-4 w-4 mr-2" />
+                  <Mail className="h-4 w-4 sm:mr-2" />
                   <span className="hidden sm:inline">Inviter par email</span>
-                  <span className="sm:hidden">Inviter</span>
                 </Button>
               </div>
             </div>
@@ -1703,11 +1733,10 @@ const DashboardCompleteFixed = () => {
                         variant="outline"
                         size="sm"
                         onClick={() => openChatWithContact(contact)}
-                        className="text-xs sm:text-sm"
+                        className="text-xs sm:text-sm px-2 sm:px-3"
                       >
-                        <MessageCircle className="h-4 w-4 mr-1" />
+                        <MessageCircle className="h-4 w-4 sm:mr-1" />
                         <span className="hidden sm:inline">Contacter</span>
-                        <span className="sm:hidden">Chat</span>
                       </Button>
                     </div>
                   </div>
@@ -2179,8 +2208,8 @@ const DashboardCompleteFixed = () => {
                   onClick={() => setShowSwapDetails(false)}
                   className="w-full sm:w-auto"
                 >
-                  <X className="h-4 w-4 mr-2" />
-                  Fermer
+                  <X className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Fermer</span>
                 </Button>
                 <Button
                   className="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 w-full sm:w-auto"
@@ -2197,8 +2226,11 @@ const DashboardCompleteFixed = () => {
                     }
                   }}
                 >
-                  <MessageCircle className="h-4 w-4 mr-2" />
-                  Contacter le partenaire
+                  <MessageCircle className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">
+                    Contacter le partenaire
+                  </span>
+                  <span className="sm:hidden">Contacter</span>
                 </Button>
               </motion.div>
             </motion.div>
