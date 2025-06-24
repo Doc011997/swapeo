@@ -119,33 +119,40 @@ const Index = () => {
       <HowItWorksSection />
 
       {/* Revolutionary Testimonials Section */}
-      <section id="temoignages" className="py-20 relative overflow-hidden">
-        {/* Background effects */}
+      <section id="temoignages" className="py-24 relative overflow-hidden">
+        {/* Enhanced Background effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 right-10 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-10 left-10 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse-glow" />
+          <div className="absolute top-20 right-20 w-80 h-80 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-20 left-20 w-72 h-72 bg-gradient-to-r from-rose-500/10 to-purple-500/10 rounded-full blur-2xl animate-pulse-glow" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 rounded-full blur-3xl" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div
-            className={`
-            text-center mb-16 transition-all duration-1000
-            ${isVisible.temoignages ? "animate-slide-in-from-top" : "opacity-0 translate-y-10"}
-          `}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Témoignages{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-swapeo-primary via-blue-500 to-purple-500 animate-text-glow">
-                Clients
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-violet-500/10 to-cyan-500/10 border border-violet-500/20 rounded-full px-6 py-3 mb-6">
+              <Award className="h-5 w-5 text-violet-400" />
+              <span className="text-violet-300 font-medium">
+                Témoignages clients
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+              Ils nous font{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-cyan-400 to-rose-400 animate-text-glow">
+                confiance
               </span>
             </h2>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-              Découvrez ce que pensent nos{" "}
-              <span className="text-swapeo-primary font-semibold animate-pulse">
-                utilisateurs
-              </span>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              Découvrez pourquoi plus de{" "}
+              <span className="text-violet-400 font-bold">10,000+</span>{" "}
+              entrepreneurs font confiance à Swapeo
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
