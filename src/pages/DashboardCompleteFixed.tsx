@@ -2685,66 +2685,78 @@ const DashboardCompleteFixed = () => {
                   selectedSwap.purpose ||
                   selectedSwap.repaymentSchedule) && (
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                      <Shield className="h-4 w-4 mr-2 text-blue-600" />
-                      Conditions et garanties
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                      <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-blue-600 flex-shrink-0" />
+                      <span className="hidden sm:inline">
+                        Conditions et garanties
+                      </span>
+                      <span className="sm:hidden">Garanties</span>
                     </h3>
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+                    <div className="bg-gray-50 p-2 sm:p-4 rounded-lg space-y-2 sm:space-y-3">
                       {selectedSwap.purpose && (
                         <div>
-                          <span className="text-gray-600 text-sm">
+                          <span className="text-gray-600 text-xs sm:text-sm font-medium">
                             Objectif :
                           </span>
-                          <p className="text-gray-900 mt-1">
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">
                             {selectedSwap.purpose}
                           </p>
                         </div>
                       )}
                       {selectedSwap.guarantees && (
                         <div>
-                          <span className="text-gray-600 text-sm">
+                          <span className="text-gray-600 text-xs sm:text-sm font-medium">
                             Garanties :
                           </span>
-                          <p className="text-gray-900 mt-1">
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1 leading-relaxed">
                             {selectedSwap.guarantees}
                           </p>
                         </div>
                       )}
                       {selectedSwap.repaymentSchedule && (
                         <div>
-                          <span className="text-gray-600 text-sm">
-                            Calendrier de remboursement :
+                          <span className="text-gray-600 text-xs sm:text-sm font-medium">
+                            <span className="hidden sm:inline">
+                              Calendrier de remboursement :
+                            </span>
+                            <span className="sm:hidden">Calendrier :</span>
                           </span>
-                          <p className="text-gray-900 mt-1">
+                          <p className="text-gray-900 text-xs sm:text-sm mt-0.5 sm:mt-1">
                             {selectedSwap.repaymentSchedule}
                           </p>
                         </div>
                       )}
-                      <div className="flex flex-wrap gap-2 mt-3">
+                      <div className="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
                         {selectedSwap.earlyRepayment && (
                           <Badge
                             variant="outline"
-                            className="text-xs border-green-300 text-green-700"
+                            className="text-xs border-green-300 text-green-700 px-1.5 py-0.5"
                           >
-                            <CheckCircle className="h-3 w-3 mr-1" />
-                            Remboursement anticipé autorisé
+                            <CheckCircle className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                            <span className="hidden sm:inline">
+                              Remboursement anticipé autorisé
+                            </span>
+                            <span className="sm:hidden">Anticipé OK</span>
                           </Badge>
                         )}
                         {selectedSwap.insurance && (
                           <Badge
                             variant="outline"
-                            className="text-xs border-blue-300 text-blue-700"
+                            className="text-xs border-blue-300 text-blue-700 px-1.5 py-0.5"
                           >
-                            <Shield className="h-3 w-3 mr-1" />
-                            Assurance incluse
+                            <Shield className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
+                            <span className="hidden sm:inline">
+                              Assurance incluse
+                            </span>
+                            <span className="sm:hidden">Assuré</span>
                           </Badge>
                         )}
                         {selectedSwap.verified && (
                           <Badge
                             variant="outline"
-                            className="text-xs border-violet-300 text-violet-700"
+                            className="text-xs border-violet-300 text-violet-700 px-1.5 py-0.5"
                           >
-                            <CheckCircle className="h-3 w-3 mr-1" />
+                            <CheckCircle className="h-2 w-2 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />
                             Vérifié
                           </Badge>
                         )}
