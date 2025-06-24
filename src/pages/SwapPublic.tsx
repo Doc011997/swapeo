@@ -136,7 +136,7 @@ const SwapPublic = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [swaps, setSwaps] = useState<Swap[]>([]);
+  const [swaps, setSwaps] = useState<MarketplaceSwap[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [activeTab, setActiveTab] = useState("marketplace");
   const [searchTerm, setSearchTerm] = useState("");
@@ -150,7 +150,12 @@ const SwapPublic = () => {
   });
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
-  const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
+  const [selectedSwap, setSelectedSwap] = useState<MarketplaceSwap | null>(
+    null,
+  );
+  const [matchingInProgress, setMatchingInProgress] = useState<string | null>(
+    null,
+  );
   const navigate = useNavigate();
 
   // Vérification de l'authentification au chargement
@@ -650,7 +655,7 @@ const SwapPublic = () => {
                     Calculateur Avancé
                   </h3>
                   <p className="text-gray-400">
-                    Simulez vos investissements et financements avec pr��cision
+                    Simulez vos investissements et financements avec précision
                   </p>
                 </div>
               </Card>
