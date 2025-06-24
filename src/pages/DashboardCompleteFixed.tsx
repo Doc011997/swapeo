@@ -479,8 +479,16 @@ const DashboardCompleteFixed = () => {
         lastUpdated: currentDate.toISOString(),
       };
 
+      console.log("💾 Création du swap:", demoSwap);
+
       // Mise à jour immédiate avec animation
       const updatedSwaps = [demoSwap, ...swaps];
+      console.log(
+        "📊 Swaps avant:",
+        swaps.length,
+        "après:",
+        updatedSwaps.length,
+      );
       setSwaps(updatedSwaps);
       updateUserStats(updatedSwaps);
 
@@ -494,12 +502,13 @@ const DashboardCompleteFixed = () => {
       });
 
       // Confirmation immédiate détaillée
-      setMessage(
-        `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`,
-      );
+      const successMessage = `✅ SUCCÈS ! Votre swap "${demoSwap.description}" de ${formatCurrency(amount)} sur ${duration} mois a été créé avec l'ID: ${demoSwap.id}`;
+      console.log("📢 Message:", successMessage);
+      setMessage(successMessage);
       setTimeout(() => setMessage(""), 8000);
 
       // Redirection immédiate vers l'onglet swaps pour voir le nouveau swap
+      console.log("🔄 Redirection vers onglet swaps");
       setActiveSection("swaps");
 
       // Marquer le nouveau swap pour le mettre en évidence
@@ -507,6 +516,8 @@ const DashboardCompleteFixed = () => {
       setTimeout(() => {
         setNewSwapId(null);
       }, 8000);
+
+      console.log("🎉 Création terminée avec succès !");
     } catch (error) {
       console.error("Erreur création swap:", error);
       setMessage("❌ Erreur. Veuillez réessayer.");
