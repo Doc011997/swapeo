@@ -573,7 +573,7 @@ const DashboardCompleteFixed = () => {
     };
     setTransactions([demoTransaction, ...transactions]);
 
-    setMessage(`✅ Dépôt de ${amount}��� effectué avec succès !`);
+    setMessage(`✅ Dépôt de ${amount}€ effectué avec succès !`);
     setTimeout(() => setMessage(""), 4000);
   };
 
@@ -887,7 +887,7 @@ const DashboardCompleteFixed = () => {
               <div className="flex items-center space-x-2">
                 {message.includes("SUCCÈS") || message.includes("✅") ? (
                   <CheckCircle className="h-6 w-6 text-green-600" />
-                ) : message.includes("��") ? (
+                ) : message.includes("❌") ? (
                   <AlertCircle className="h-6 w-6 text-red-600" />
                 ) : (
                   <Info className="h-6 w-6 text-blue-600" />
@@ -1371,9 +1371,9 @@ const DashboardCompleteFixed = () => {
             </Card>
 
             {/* Historique des transactions */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-semibold text-gray-900">
+            <Card className="p-4 sm:p-6">
+              <div className="flex flex-col space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-4 sm:mb-6">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                   Historique des transactions
                 </h3>
                 <Button
@@ -1397,9 +1397,13 @@ const DashboardCompleteFixed = () => {
                     setTimeout(() => setMessage(""), 3000);
                   }}
                   disabled={generatingPDF}
+                  className="text-xs sm:text-sm"
                 >
-                  <Download className="h-4 w-4 mr-1" />
-                  {generatingPDF ? "Génération..." : "Export PDF"}
+                  <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
+                  <span className="hidden sm:inline">
+                    {generatingPDF ? "Génération..." : "Export PDF"}
+                  </span>
+                  <span className="sm:hidden">PDF</span>
                 </Button>
               </div>
 
