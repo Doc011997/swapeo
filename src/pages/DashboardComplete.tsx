@@ -1934,10 +1934,16 @@ const DashboardComplete = () => {
                 <h2 className="text-2xl font-bold text-gray-900">Mon Réseau</h2>
                 <p className="text-gray-600">Vos partenaires de confiance</p>
               </div>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Inviter un contact
-              </Button>
+              <div className="flex space-x-3">
+                <Button onClick={addFictiveContact}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Ajouter contact fictif
+                </Button>
+                <Button variant="outline">
+                  <Mail className="h-4 w-4 mr-2" />
+                  Inviter par email
+                </Button>
+              </div>
             </div>
 
             {/* Stats réseau */}
