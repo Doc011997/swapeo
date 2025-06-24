@@ -2435,29 +2435,38 @@ const DashboardCompleteFixed = () => {
               className="space-y-4 sm:space-y-6"
             >
               {/* Informations principales */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-4 rounded-xl border border-violet-200">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-2 sm:p-4 rounded-lg sm:rounded-xl border border-violet-200">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-violet-700 mb-1">
-                      {selectedSwap.amount.toLocaleString()}€
+                    <div className="text-lg sm:text-2xl font-bold text-violet-700 mb-0.5 sm:mb-1 leading-tight">
+                      {selectedSwap.amount > 999999
+                        ? `${(selectedSwap.amount / 1000000).toFixed(1)}M€`
+                        : selectedSwap.amount > 999
+                          ? `${(selectedSwap.amount / 1000).toFixed(0)}k€`
+                          : `${selectedSwap.amount.toLocaleString()}€`}
                     </div>
-                    <p className="text-sm text-violet-600">Montant</p>
+                    <p className="text-xs sm:text-sm text-violet-600">
+                      Montant
+                    </p>
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-4 rounded-xl border border-cyan-200">
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-2 sm:p-4 rounded-lg sm:rounded-xl border border-cyan-200">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-cyan-700 mb-1">
+                    <div className="text-lg sm:text-2xl font-bold text-cyan-700 mb-0.5 sm:mb-1 leading-tight">
                       {selectedSwap.interestRate}%
                     </div>
-                    <p className="text-sm text-cyan-600">Taux d'intérêt</p>
+                    <p className="text-xs sm:text-sm text-cyan-600">
+                      <span className="hidden sm:inline">Taux d'intérêt</span>
+                      <span className="sm:hidden">Taux</span>
+                    </p>
                   </div>
                 </div>
-                <div className="bg-gradient-to-br from-lime-50 to-green-50 p-4 rounded-xl border border-lime-200">
+                <div className="bg-gradient-to-br from-lime-50 to-green-50 p-2 sm:p-4 rounded-lg sm:rounded-xl border border-lime-200">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-lime-700 mb-1">
+                    <div className="text-lg sm:text-2xl font-bold text-lime-700 mb-0.5 sm:mb-1 leading-tight">
                       {selectedSwap.duration}
                     </div>
-                    <p className="text-sm text-lime-600">Mois</p>
+                    <p className="text-xs sm:text-sm text-lime-600">Mois</p>
                   </div>
                 </div>
               </div>
@@ -2905,7 +2914,7 @@ const DashboardCompleteFixed = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="inviteMessage">Message personnalis��</Label>
+              <Label htmlFor="inviteMessage">Message personnalisé</Label>
               <Textarea
                 id="inviteMessage"
                 placeholder="Ajoutez un message personnel..."
