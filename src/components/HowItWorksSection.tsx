@@ -46,60 +46,28 @@ const HowItWorksSection = () => {
         </div>
 
         {/* Steps */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           {steps.map((step, index) => (
             <div key={index} className="relative">
-              {step.title === "Matching" ? (
-                <Link to="/swap" className="block">
-                  <Card className="swapeo-card p-6 text-center h-full group hover:scale-105 transition-all duration-300 cursor-pointer hover:bg-swapeo-primary/5 border-swapeo-primary/30 hover:border-swapeo-primary/60">
-                    {/* Step number */}
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-swapeo-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
-                      {step.number}
-                    </div>
+              <Card className="swapeo-card p-6 text-center h-full group hover:scale-105 transition-all duration-300">
+                {/* Step number */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-swapeo-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  {step.number}
+                </div>
 
-                    {/* Icon */}
-                    <div className="w-16 h-16 bg-swapeo-primary/20 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4 group-hover:bg-swapeo-primary/40 transition-colors">
-                      <step.icon className="h-8 w-8 text-swapeo-primary group-hover:animate-pulse" />
-                    </div>
+                {/* Icon */}
+                <div className="w-16 h-16 bg-swapeo-primary/20 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4 group-hover:bg-swapeo-primary/30 transition-colors">
+                  <step.icon className="h-8 w-8 text-swapeo-primary" />
+                </div>
 
-                    {/* Content */}
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-swapeo-primary">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-300 text-sm leading-relaxed group-hover:text-white">
-                      {step.description}
-                    </p>
-
-                    {/* Call to action pour Matching */}
-                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="inline-flex items-center text-swapeo-primary text-sm font-medium">
-                        Accéder au Marketplace
-                        <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              ) : (
-                <Card className="swapeo-card p-6 text-center h-full group hover:scale-105 transition-all duration-300">
-                  {/* Step number */}
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-8 h-8 bg-swapeo-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {step.number}
-                  </div>
-
-                  {/* Icon */}
-                  <div className="w-16 h-16 bg-swapeo-primary/20 rounded-xl flex items-center justify-center mx-auto mb-6 mt-4 group-hover:bg-swapeo-primary/30 transition-colors">
-                    <step.icon className="h-8 w-8 text-swapeo-primary" />
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-xl font-bold text-white mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {step.description}
-                  </p>
-                </Card>
-              )}
+                {/* Content */}
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </Card>
 
               {/* Connector line for desktop */}
               {index < steps.length - 1 && (
@@ -107,24 +75,6 @@ const HowItWorksSection = () => {
               )}
             </div>
           ))}
-        </div>
-
-        {/* Bouton principal pour accéder au marketplace */}
-        <div className="text-center mb-20">
-          <Link to="/swap">
-            <Button className="swapeo-button text-lg px-8 py-4 h-auto group relative overflow-hidden hover:scale-105 transition-all duration-300">
-              <span className="relative z-10 flex items-center">
-                <Search className="mr-3 h-6 w-6 group-hover:animate-pulse" />
-                Rechercher des opportunités
-                <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light via-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Button>
-          </Link>
-          <p className="text-gray-400 text-sm mt-3">
-            ✨ Accédez à notre marketplace et découvrez des opportunités de
-            financement adaptées à vos besoins
-          </p>
         </div>
 
         {/* Network visualization */}
@@ -255,7 +205,7 @@ const HowItWorksSection = () => {
                 { value: "125", label: "Utilisateurs connectés" },
                 { value: "2.4M€", label: "Volume échangé" },
                 { value: "98.7%", label: "Taux de réussite" },
-                { value: "18h", label: "Délai moyen" },
+                { value: "18h", label: "D��lai moyen" },
               ].map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-2xl font-bold text-white">
