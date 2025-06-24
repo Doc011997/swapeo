@@ -63,6 +63,8 @@ import {
   X,
   MapPin,
   Handshake,
+  User,
+  Loader2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -82,44 +84,6 @@ interface User {
   trustScore?: number;
   level?: number;
   xp?: number;
-}
-
-interface Swap {
-  id: string;
-  type: "demande" | "offre";
-  amount: number;
-  duration: number;
-  interestRate: number;
-  counterparty: string;
-  status: string;
-  progress: number;
-  createdAt: string;
-  description?: string;
-  daysRemaining?: number;
-  matchingScore?: number;
-  category?: string;
-  riskLevel?: "low" | "medium" | "high";
-  verified?: boolean;
-  purpose?: string;
-  guarantees?: string;
-  repaymentSchedule?: string;
-  earlyRepayment?: boolean;
-  insurance?: boolean;
-  createdBy?: string;
-  createdByCompany?: string;
-  createdByTrustScore?: number;
-  estimatedReturn?: number;
-  totalInterest?: number;
-  monthlyPayment?: number;
-  nextPaymentDate?: string | null;
-  lastUpdated?: string;
-  features?: string[];
-  location?: string;
-  minInvestment?: number;
-  maxInvestment?: number;
-  rating?: number;
-  reviews?: number;
-  tags?: string[];
 }
 
 interface Notification {
@@ -150,8 +114,12 @@ const SwapPublic = () => {
   });
   const [showNotifications, setShowNotifications] = useState(false);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
-  const [selectedSwap, setSelectedSwap] = useState<MarketplaceSwap | null>(null);
-  const [matchingInProgress, setMatchingInProgress] = useState<string | null>(null);
+  const [selectedSwap, setSelectedSwap] = useState<MarketplaceSwap | null>(
+    null,
+  );
+  const [matchingInProgress, setMatchingInProgress] = useState<string | null>(
+    null,
+  );
   const navigate = useNavigate();
 
   // Vérification de l'authentification au chargement
@@ -174,6 +142,8 @@ const SwapPublic = () => {
           localStorage.removeItem("swapeo_user");
           localStorage.removeItem("swapeo_token");
         }
+      } else {
+        loadPublicSwaps();
       }
       setLoading(false);
     };
@@ -237,27 +207,32 @@ const SwapPublic = () => {
 
     try {
       // Simuler un délai de traitement
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Supprimer le swap du marketplace
       const success = SwapService.acceptSwap(swapId, user.id);
 
       if (success) {
         // Mettre à jour la liste locale
-        setSwaps(prevSwaps => prevSwaps.filter(swap => swap.id !== swapId));
+        setSwaps((prevSwaps) => prevSwaps.filter((swap) => swap.id !== swapId));
 
         // Afficher une notification de succès
-        setNotifications(prev => [{
-          id: `match-${Date.now()}`,
-          type: "swap",
-          title: "🎉 Match réalisé !",
-          description: `Vous avez accepté le swap ${swapId}. Le créateur va être notifié.`,
-          time: "À l'instant",
-          read: false,
-        }, ...prev]);
+        setNotifications((prev) => [
+          {
+            id: `match-${Date.now()}`,
+            type: "swap",
+            title: "🎉 Match réalisé !",
+            description: `Vous avez accepté le swap ${swapId}. Le créateur va être notifié.`,
+            time: "À l'instant",
+            read: false,
+          },
+          ...prev,
+        ]);
 
         // Afficher le message dans l'interface
-        alert(`✅ Swap ${swapId} accepté avec succès ! Le créateur sera contacté.`);
+        alert(
+          `✅ Swap ${swapId} accepté avec succès ! Le créateur sera contacté.`,
+        );
       } else {
         alert("❌ Erreur lors de l'acceptation du swap");
       }
@@ -278,173 +253,13 @@ const SwapPublic = () => {
     }
   };
 
-  // Chargement initial des swaps
-  useEffect(() => {
-    if (isAuthenticated) {
-      loadUserData();
-    } else {
-      loadPublicSwaps();
-    }
-  }, [isAuthenticated]);
-      {
-        id: "swap-1",
-        type: "offre",
-        amount: 25000,
-        duration: 18,
-        interestRate: 6.2,
-        counterparty: "TechStart Solutions",
-        status: "active",
-        progress: 75,
-        createdAt: "2024-01-15",
-        description: "Financement pour expansion internationale",
-        daysRemaining: 127,
-        matchingScore: 94,
-        category: "Technology",
-        riskLevel: "low",
-        verified: true,
-        purpose: "Expansion internationale",
-        guarantees: "Garantie bancaire + Assurance",
-        repaymentSchedule: "Mensuel",
-        earlyRepayment: true,
-        insurance: true,
-        createdBy: "Sarah Chen",
-        createdByCompany: "TechStart Solutions",
-        createdByTrustScore: 96,
-        estimatedReturn: 3875,
-        totalInterest: 3875,
-        monthlyPayment: 1597,
-        nextPaymentDate: "2024-02-15",
-        lastUpdated: "2024-01-20",
-        features: [
-          "Garantie bancaire",
-          "Assurance incluse",
-          "Remboursement anticipé",
-        ],
-        location: "Paris, France",
-        minInvestment: 1000,
-        maxInvestment: 25000,
-        rating: 4.8,
-        reviews: 124,
-        tags: ["Tech", "Croissance", "International"],
-      },
-      {
-        id: "swap-2",
-        type: "demande",
-        amount: 15000,
-        duration: 12,
-        interestRate: 5.8,
-        counterparty: "GreenEnergy Corp",
-        status: "pending",
-        progress: 45,
-        createdAt: "2024-01-18",
-        description: "Projet de panneaux solaires résidentiels",
-        daysRemaining: 95,
-        matchingScore: 87,
-        category: "Energy",
-        riskLevel: "medium",
-        verified: true,
-        purpose: "Énergies renouvelables",
-        guarantees: "Contrats clients confirmés",
-        repaymentSchedule: "Trimestriel",
-        earlyRepayment: false,
-        insurance: true,
-        createdBy: "Marc Dubois",
-        createdByCompany: "GreenEnergy Corp",
-        createdByTrustScore: 89,
-        estimatedReturn: 1740,
-        totalInterest: 1740,
-        monthlyPayment: 1395,
-        nextPaymentDate: "2024-04-18",
-        lastUpdated: "2024-01-19",
-        features: [
-          "Contrats confirmés",
-          "Secteur en croissance",
-          "Impact environnemental",
-        ],
-        location: "Lyon, France",
-        minInvestment: 500,
-        maxInvestment: 15000,
-        rating: 4.5,
-        reviews: 87,
-        tags: ["Vert", "Durable", "Innovation"],
-      },
-      {
-        id: "swap-3",
-        type: "offre",
-        amount: 50000,
-        duration: 24,
-        interestRate: 7.1,
-        counterparty: "RestaurantChain Plus",
-        status: "new",
-        progress: 12,
-        createdAt: "2024-01-20",
-        description: "Ouverture de 3 nouveaux restaurants",
-        daysRemaining: 180,
-        matchingScore: 91,
-        category: "Food & Beverage",
-        riskLevel: "medium",
-        verified: true,
-        purpose: "Expansion réseau restaurants",
-        guarantees: "Fonds propres + Caution dirigeant",
-        repaymentSchedule: "Mensuel",
-        earlyRepayment: true,
-        insurance: false,
-        createdBy: "Julie Martin",
-        createdByCompany: "RestaurantChain Plus",
-        createdByTrustScore: 92,
-        estimatedReturn: 8520,
-        totalInterest: 8520,
-        monthlyPayment: 2439,
-        nextPaymentDate: null,
-        lastUpdated: "2024-01-20",
-        features: [
-          "Marque établie",
-          "Emplacements premium",
-          "Équipe expérimentée",
-        ],
-        location: "Marseille, France",
-        minInvestment: 2000,
-        maxInvestment: 50000,
-        rating: 4.6,
-        reviews: 203,
-        tags: ["Restaurant", "Franchise", "Expansion"],
-      },
-    ];
-
-    const mockNotifications: Notification[] = [
-      {
-        id: "notif-1",
-        type: "swap",
-        title: "Nouveau match trouvé !",
-        description:
-          "TechStart Solutions correspond à vos critères d'investissement",
-        time: "Il y a 2h",
-        read: false,
-        actionUrl: "/swap/swap-1",
-      },
-      {
-        id: "notif-2",
-        type: "payment",
-        title: "Paiement reçu",
-        description: "1 597€ d'intérêts de GreenEnergy Corp",
-        time: "Hier",
-        read: false,
-      },
-      {
-        id: "notif-3",
-        type: "system",
-        title: "Nouvel utilisateur vérifié",
-        description: "RestaurantChain Plus a rejoint votre réseau",
-        time: "Il y a 2 jours",
-        read: true,
-      },
-    ];
-
-    setSwaps(mockSwaps);
-    setNotifications(mockNotifications);
-  };
-
-  const filteredSwaps = SwapService.filterSwaps(swaps, searchTerm, filterCategory, filterRisk);
+  // Filtrer les swaps avec le service
+  const filteredSwaps = SwapService.filterSwaps(
+    swaps,
+    searchTerm,
+    filterCategory,
+    filterRisk,
+  );
 
   const calculateReturn = (amount: number, rate: number, duration: number) => {
     const monthlyRate = rate / 100 / 12;
@@ -458,7 +273,7 @@ const SwapPublic = () => {
     navigate("/login");
   };
 
-  const openSwapDetails = (swap: Swap) => {
+  const openSwapDetails = (swap: MarketplaceSwap) => {
     setSelectedSwap(swap);
     setShowSwapDetails(true);
   };
@@ -687,6 +502,52 @@ const SwapPublic = () => {
                   </Button>
                 </div>
 
+                {/* Aperçu des swaps pour les visiteurs */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+                  {swaps.slice(0, 3).map((swap) => (
+                    <Card
+                      key={swap.id}
+                      className="bg-black/20 backdrop-blur-sm border-white/10 p-4 hover:bg-black/30 transition-all duration-300"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Badge
+                            className={
+                              swap.type === "offre"
+                                ? "bg-lime-500/10 text-lime-400"
+                                : "bg-cyan-500/10 text-cyan-400"
+                            }
+                          >
+                            {swap.type === "offre" ? "Offre" : "Demande"}
+                          </Badge>
+                          <Badge className="bg-violet-500/10 text-violet-400">
+                            {swap.interestRate}%
+                          </Badge>
+                        </div>
+
+                        <div>
+                          <h3 className="font-semibold text-white text-sm">
+                            {swap.counterparty}
+                          </h3>
+                          <p className="text-xs text-gray-400 mt-1">
+                            {swap.amount.toLocaleString()}€ - {swap.duration}{" "}
+                            mois
+                          </p>
+                        </div>
+
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setShowLoginModal(true)}
+                          className="w-full border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
+                        >
+                          Voir détails
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
                 {/* Statistiques publiques */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                   <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/10">
@@ -697,9 +558,9 @@ const SwapPublic = () => {
                   </div>
                   <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/10">
                     <div className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-pink-400 bg-clip-text text-transparent">
-                      1,250+
+                      {swaps.length}+
                     </div>
-                    <p className="text-gray-400 mt-2">Swaps réalisés</p>
+                    <p className="text-gray-400 mt-2">Swaps disponibles</p>
                   </div>
                   <div className="bg-black/20 backdrop-blur-sm rounded-xl p-6 border border-white/10">
                     <div className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-violet-400 bg-clip-text text-transparent">
@@ -714,85 +575,6 @@ const SwapPublic = () => {
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-500/20 to-transparent rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-cyan-500/20 to-transparent rounded-full blur-3xl" />
             </div>
-
-            {/* Fonctionnalités pour membres */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 hover:bg-black/30 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Store className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Marketplace
-                  </h3>
-                  <p className="text-gray-400">
-                    Explorez les opportunités de swaps entre entreprises avec
-                    matching intelligent
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 hover:bg-black/30 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Calculator className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Calculateur Avancé
-                  </h3>
-                  <p className="text-gray-400">
-                    Simulez vos investissements et financements avec précision
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 hover:bg-black/30 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Bell className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2">
-                    Notifications Smart
-                  </h3>
-                  <p className="text-gray-400">
-                    Recevez des alertes personnalisées sur les meilleures
-                    opportunités
-                  </p>
-                </div>
-              </Card>
-            </div>
-
-            {/* Call to action */}
-            <Card className="bg-gradient-to-r from-violet-600/10 via-cyan-600/10 to-pink-600/10 backdrop-blur-sm border-white/10 p-8">
-              <h2 className="text-2xl font-bold text-white mb-4">
-                Prêt à commencer ?
-              </h2>
-              <p className="text-gray-300 mb-6">
-                Rejoignez notre communauté d'entrepreneurs et investisseurs pour
-                découvrir de nouvelles opportunités.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
-                  onClick={() => setShowLoginModal(true)}
-                >
-                  <LogIn className="h-5 w-5 mr-2" />
-                  Se connecter
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
-                  className="border-pink-500/30 text-pink-400 hover:bg-pink-500/10"
-                >
-                  <Link to="/register">
-                    <Users className="h-5 w-5 mr-2" />
-                    Rejoindre la communauté
-                  </Link>
-                </Button>
-              </div>
-            </Card>
           </motion.div>
         ) : (
           /* Vue complète pour les utilisateurs connectés */
@@ -800,453 +582,242 @@ const SwapPublic = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {/* Tabs de navigation */}
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="space-y-6"
-            >
-              <TabsList className="grid w-full grid-cols-3 bg-black/20 backdrop-blur-sm border border-white/10">
-                <TabsTrigger
-                  value="marketplace"
-                  className="flex items-center space-x-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-cyan-500"
-                >
-                  <Store className="h-4 w-4" />
-                  <span className="hidden sm:inline">Marketplace</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="calculator"
-                  className="flex items-center space-x-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-500 data-[state=active]:to-pink-500"
-                >
-                  <Calculator className="h-4 w-4" />
-                  <span className="hidden sm:inline">Calculateur</span>
-                </TabsTrigger>
-                <TabsTrigger
-                  value="watchlist"
-                  className="flex items-center space-x-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-violet-500"
-                >
-                  <Heart className="h-4 w-4" />
-                  <span className="hidden sm:inline">Watchlist</span>
-                </TabsTrigger>
-              </TabsList>
+            {/* Header avec bouton de rafraîchissement */}
+            <div className="flex justify-between items-center mb-6">
+              <h1 className="text-2xl font-bold text-white">
+                Marketplace ({swaps.length} swaps disponibles)
+              </h1>
+              <Button
+                onClick={refreshSwaps}
+                variant="outline"
+                size="sm"
+                className="border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Actualiser
+              </Button>
+            </div>
 
-              {/* Marketplace Tab */}
-              <TabsContent value="marketplace" className="space-y-6">
-                {/* Filtres et recherche */}
-                <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                  <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                    <div className="relative flex-1">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      <Input
-                        placeholder="Rechercher des swaps..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-400"
-                      />
-                    </div>
-
-                    <div className="flex gap-3">
-                      <Select
-                        value={filterCategory}
-                        onValueChange={setFilterCategory}
-                      >
-                        <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
-                          <SelectValue placeholder="Catégorie" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-white/10">
-                          <SelectItem value="all">Toutes</SelectItem>
-                          <SelectItem value="technology">Technology</SelectItem>
-                          <SelectItem value="energy">Energy</SelectItem>
-                          <SelectItem value="food & beverage">
-                            Food & Beverage
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-
-                      <Select value={filterRisk} onValueChange={setFilterRisk}>
-                        <SelectTrigger className="w-32 bg-white/5 border-white/10 text-white">
-                          <SelectValue placeholder="Risque" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-white/10">
-                          <SelectItem value="all">Tous</SelectItem>
-                          <SelectItem value="low">Faible</SelectItem>
-                          <SelectItem value="medium">Moyen</SelectItem>
-                          <SelectItem value="high">Élevé</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Liste des swaps */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {filteredSwaps.map((swap) => (
-                    <motion.div
-                      key={swap.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      whileHover={{ scale: 1.02 }}
-                      className="group"
-                    >
-                      <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 hover:bg-black/30 transition-all duration-300 group-hover:border-violet-500/30">
-                        <div className="space-y-4">
-                          {/* Header du swap */}
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Badge
-                                  className={`${swap.type === "offre" ? "bg-lime-500/10 text-lime-400 border-lime-500/20" : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"}`}
-                                >
-                                  {swap.type === "offre" ? "Offre" : "Demande"}
-                                </Badge>
-                                <Badge
-                                  className={getRiskColor(
-                                    swap.riskLevel || "medium",
-                                  )}
-                                >
-                                  {swap.riskLevel === "low"
-                                    ? "Faible"
-                                    : swap.riskLevel === "medium"
-                                      ? "Moyen"
-                                      : "Élevé"}
-                                </Badge>
-                                {swap.verified && (
-                                  <CheckCircle className="h-4 w-4 text-lime-400" />
-                                )}
-                              </div>
-                              <h3 className="text-lg font-semibold text-white group-hover:text-violet-400 transition-colors">
-                                {swap.counterparty}
-                              </h3>
-                              <p className="text-sm text-gray-400 mt-1">
-                                {swap.description}
-                              </p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="p-2 text-gray-400 hover:text-pink-400"
-                              >
-                                <Heart className="h-4 w-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="p-2 text-gray-400 hover:text-cyan-400"
-                              >
-                                <Share2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                          </div>
-
-                          {/* Informations financières */}
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <p className="text-xs text-gray-400">Montant</p>
-                              <p className="text-lg font-bold text-white">
-                                {swap.amount.toLocaleString()}€
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-400">Taux</p>
-                              <p className="text-lg font-bold text-lime-400">
-                                {swap.interestRate}%
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-400">Durée</p>
-                              <p className="text-sm text-white">
-                                {swap.duration} mois
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-xs text-gray-400">Matching</p>
-                              <p className="text-sm text-cyan-400">
-                                {swap.matchingScore}%
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Tags et informations supplémentaires */}
-                          {swap.tags && (
-                            <div className="flex flex-wrap gap-2">
-                              {swap.tags.map((tag, index) => (
-                                <Badge
-                                  key={index}
-                                  variant="outline"
-                                  className="text-xs border-white/20 text-gray-300"
-                                >
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div>
-                          )}
-
-                          {/* Rating et actions */}
-                          <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                            <div className="flex items-center gap-4">
-                              {swap.rating && (
-                                <div className="flex items-center gap-1">
-                                  <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                                  <span className="text-sm text-white">
-                                    {swap.rating}
-                                  </span>
-                                  <span className="text-xs text-gray-400">
-                                    ({swap.reviews})
-                                  </span>
-                                </div>
-                              )}
-                              {swap.location && (
-                                <div className="flex items-center gap-1 text-xs text-gray-400">
-                                  <MapPin className="h-3 w-3" />
-                                  {swap.location}
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => openSwapDetails(swap)}
-                                className="border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
-                              >
-                                <Info className="h-4 w-4 mr-1" />
-                                Détails
-                              </Button>
-                              <Button
-                                size="sm"
-                                className="bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
-                              >
-                                <Handshake className="h-4 w-4 mr-1" />
-                                Matcher
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    </motion.div>
-                  ))}
+            {/* Filtres et recherche */}
+            <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 mb-6">
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Rechercher des swaps..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-gray-400"
+                  />
                 </div>
 
-                {filteredSwaps.length === 0 && (
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-12 text-center">
-                    <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-white mb-2">
-                      Aucun swap trouvé
-                    </h3>
-                    <p className="text-gray-400">
-                      Essayez de modifier vos critères de recherche
-                    </p>
-                  </Card>
-                )}
-              </TabsContent>
+                <div className="flex gap-3">
+                  <Select
+                    value={filterCategory}
+                    onValueChange={setFilterCategory}
+                  >
+                    <SelectTrigger className="w-40 bg-white/5 border-white/10 text-white">
+                      <SelectValue placeholder="Catégorie" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black border-white/10">
+                      <SelectItem value="all">Toutes</SelectItem>
+                      <SelectItem value="technology">Technology</SelectItem>
+                      <SelectItem value="energy">Energy</SelectItem>
+                      <SelectItem value="food & beverage">
+                        Food & Beverage
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
 
-              {/* Calculator Tab */}
-              <TabsContent value="calculator" className="space-y-6">
-                <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-                    <Calculator className="h-6 w-6 mr-3 text-cyan-400" />
-                    Calculateur de Swap
-                  </h2>
+                  <Select value={filterRisk} onValueChange={setFilterRisk}>
+                    <SelectTrigger className="w-32 bg-white/5 border-white/10 text-white">
+                      <SelectValue placeholder="Risque" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black border-white/10">
+                      <SelectItem value="all">Tous</SelectItem>
+                      <SelectItem value="low">Faible</SelectItem>
+                      <SelectItem value="medium">Moyen</SelectItem>
+                      <SelectItem value="high">Élevé</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </Card>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Paramètres */}
-                    <div className="space-y-6">
-                      <div>
-                        <Label className="text-white mb-2 block">
-                          Montant (€)
-                        </Label>
-                        <Input
-                          type="number"
-                          value={calculatorValues.amount}
-                          onChange={(e) =>
-                            setCalculatorValues({
-                              ...calculatorValues,
-                              amount: parseInt(e.target.value) || 0,
-                            })
-                          }
-                          className="bg-white/5 border-white/10 text-white"
-                        />
-                      </div>
-
-                      <div>
-                        <Label className="text-white mb-2 block">
-                          Durée (mois)
-                        </Label>
-                        <Input
-                          type="number"
-                          value={calculatorValues.duration}
-                          onChange={(e) =>
-                            setCalculatorValues({
-                              ...calculatorValues,
-                              duration: parseInt(e.target.value) || 0,
-                            })
-                          }
-                          className="bg-white/5 border-white/10 text-white"
-                        />
-                      </div>
-
-                      <div>
-                        <Label className="text-white mb-2 block">
-                          Taux d'intérêt (%)
-                        </Label>
-                        <Input
-                          type="number"
-                          step="0.1"
-                          value={calculatorValues.rate}
-                          onChange={(e) =>
-                            setCalculatorValues({
-                              ...calculatorValues,
-                              rate: parseFloat(e.target.value) || 0,
-                            })
-                          }
-                          className="bg-white/5 border-white/10 text-white"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Résultats */}
-                    <div className="space-y-6">
-                      <div className="bg-gradient-to-br from-violet-600/20 to-cyan-600/20 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                        <h3 className="text-lg font-semibold text-white mb-4">
-                          Résultats
-                        </h3>
-
-                        {(() => {
-                          const results = calculateReturn(
-                            calculatorValues.amount,
-                            calculatorValues.rate,
-                            calculatorValues.duration,
-                          );
-                          return (
-                            <div className="space-y-4">
-                              <div className="flex justify-between items-center">
-                                <span className="text-gray-300">
-                                  Intérêts totaux:
-                                </span>
-                                <span className="text-xl font-bold text-lime-400">
-                                  {results.totalReturn.toLocaleString()}€
-                                </span>
-                              </div>
-
-                              <div className="flex justify-between items-center">
-                                <span className="text-gray-300">
-                                  Paiement mensuel:
-                                </span>
-                                <span className="text-lg font-semibold text-cyan-400">
-                                  {results.monthlyPayment.toLocaleString()}€
-                                </span>
-                              </div>
-
-                              <div className="flex justify-between items-center">
-                                <span className="text-gray-300">
-                                  Total remboursé:
-                                </span>
-                                <span className="text-lg font-semibold text-white">
-                                  {(
-                                    calculatorValues.amount +
-                                    results.totalReturn
-                                  ).toLocaleString()}
-                                  €
-                                </span>
-                              </div>
-
-                              <div className="pt-4 border-t border-white/10">
-                                <p className="text-xs text-gray-400">
-                                  Rendement annuel:{" "}
-                                  {(
-                                    (results.totalReturn /
-                                      calculatorValues.amount) *
-                                    (12 / calculatorValues.duration) *
-                                    100
-                                  ).toFixed(2)}
-                                  %
-                                </p>
-                              </div>
-                            </div>
-                          );
-                        })()}
-                      </div>
-
-                      <Button className="w-full bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600">
-                        <Search className="h-4 w-4 mr-2" />
-                        Trouver des swaps compatibles
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
-              </TabsContent>
-
-              {/* Watchlist Tab */}
-              <TabsContent value="watchlist" className="space-y-6">
-                <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                  <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-                    <Heart className="h-6 w-6 mr-3 text-pink-400" />
-                    Mes swaps favoris
-                  </h2>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {swaps.slice(0, 2).map((swap) => (
-                      <Card
-                        key={swap.id}
-                        className="bg-black/10 backdrop-blur-sm border-white/5 p-4 hover:bg-black/20 transition-all"
-                      >
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
+            {/* Liste des swaps */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {filteredSwaps.map((swap) => (
+                <motion.div
+                  key={swap.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="group"
+                >
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6 hover:bg-black/30 transition-all duration-300 group-hover:border-violet-500/30">
+                    <div className="space-y-4">
+                      {/* Header du swap */}
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
                             <Badge
-                              className={
+                              className={`${
                                 swap.type === "offre"
-                                  ? "bg-lime-500/10 text-lime-400"
-                                  : "bg-cyan-500/10 text-cyan-400"
-                              }
+                                  ? "bg-lime-500/10 text-lime-400 border-lime-500/20"
+                                  : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+                              }`}
                             >
                               {swap.type === "offre" ? "Offre" : "Demande"}
                             </Badge>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-pink-400 hover:text-pink-300"
+                            <Badge
+                              className={getRiskColor(
+                                swap.riskLevel || "medium",
+                              )}
                             >
-                              <Heart className="h-4 w-4 fill-current" />
-                            </Button>
+                              {swap.riskLevel === "low"
+                                ? "Faible"
+                                : swap.riskLevel === "medium"
+                                  ? "Moyen"
+                                  : "Élevé"}
+                            </Badge>
+                            {swap.verified && (
+                              <CheckCircle className="h-4 w-4 text-lime-400" />
+                            )}
                           </div>
+                          <h3 className="text-lg font-semibold text-white group-hover:text-violet-400 transition-colors">
+                            {swap.counterparty}
+                          </h3>
+                          <p className="text-sm text-gray-400 mt-1">
+                            {swap.description}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-2 text-gray-400 hover:text-pink-400"
+                          >
+                            <Heart className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-2 text-gray-400 hover:text-cyan-400"
+                          >
+                            <Share2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
 
-                          <div>
-                            <h3 className="font-semibold text-white">
-                              {swap.counterparty}
-                            </h3>
-                            <p className="text-sm text-gray-400 mt-1">
-                              {swap.amount.toLocaleString()}€ -{" "}
-                              {swap.interestRate}%
-                            </p>
-                          </div>
+                      {/* Informations financières */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <p className="text-xs text-gray-400">Montant</p>
+                          <p className="text-lg font-bold text-white">
+                            {swap.amount.toLocaleString()}€
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400">Taux</p>
+                          <p className="text-lg font-bold text-lime-400">
+                            {swap.interestRate}%
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400">Durée</p>
+                          <p className="text-sm text-white">
+                            {swap.duration} mois
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-400">Matching</p>
+                          <p className="text-sm text-cyan-400">
+                            {swap.matchingScore}%
+                          </p>
+                        </div>
+                      </div>
 
+                      {/* Tags et informations supplémentaires */}
+                      {swap.tags && (
+                        <div className="flex flex-wrap gap-2">
+                          {swap.tags.map((tag, index) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="text-xs border-white/20 text-gray-300"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Rating et actions */}
+                      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                        <div className="flex items-center gap-4">
+                          {swap.rating && (
+                            <div className="flex items-center gap-1">
+                              <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                              <span className="text-sm text-white">
+                                {swap.rating.toFixed(1)}
+                              </span>
+                              <span className="text-xs text-gray-400">
+                                ({swap.reviews})
+                              </span>
+                            </div>
+                          )}
+                          {swap.location && (
+                            <div className="flex items-center gap-1 text-xs text-gray-400">
+                              <MapPin className="h-3 w-3" />
+                              {swap.location}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex gap-2">
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => openSwapDetails(swap)}
-                            className="w-full border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
+                            className="border-violet-500/30 text-violet-400 hover:bg-violet-500/10"
                           >
-                            Voir détails
+                            <Info className="h-4 w-4 mr-1" />
+                            Détails
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => handleMatchSwap(swap.id)}
+                            disabled={matchingInProgress === swap.id}
+                            className="bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
+                          >
+                            {matchingInProgress === swap.id ? (
+                              <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <Handshake className="h-4 w-4 mr-1" />
+                            )}
+                            {matchingInProgress === swap.id
+                              ? "En cours..."
+                              : "Matcher"}
                           </Button>
                         </div>
-                      </Card>
-                    ))}
-
-                    <Card className="bg-black/10 backdrop-blur-sm border-white/5 border-dashed p-4 flex items-center justify-center">
-                      <div className="text-center">
-                        <Heart className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-gray-400">Aucun favori</p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Ajoutez des swaps à votre watchlist
-                        </p>
                       </div>
-                    </Card>
-                  </div>
-                </Card>
-              </TabsContent>
-            </Tabs>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {filteredSwaps.length === 0 && (
+              <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-12 text-center">
+                <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  Aucun swap trouvé
+                </h3>
+                <p className="text-gray-400">
+                  Essayez de modifier vos critères de recherche
+                </p>
+              </Card>
+            )}
           </motion.div>
         )}
       </div>
@@ -1310,259 +881,21 @@ const SwapPublic = () => {
               </DialogHeader>
 
               <div className="space-y-6 mt-6">
-                {/* Badges et statut */}
-                <div className="flex flex-wrap gap-3">
-                  <Badge
-                    className={`${
-                      selectedSwap.type === "offre"
-                        ? "bg-lime-500/10 text-lime-400 border-lime-500/20"
-                        : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
-                    }`}
-                  >
-                    {selectedSwap.type === "offre" ? "Offre" : "Demande"}
-                  </Badge>
-                  <Badge className={getRiskColor(selectedSwap.riskLevel || "medium")}>
-                    Risque{" "}
-                    {selectedSwap.riskLevel === "low"
-                      ? "Faible"
-                      : selectedSwap.riskLevel === "medium"
-                        ? "Moyen"
-                        : "Élevé"}
-                  </Badge>
-                  <Badge className={getStatusColor(selectedSwap.status)}>
-                    {selectedSwap.status === "active"
-                      ? "Actif"
-                      : selectedSwap.status === "pending"
-                        ? "En attente"
-                        : "Nouveau"}
-                  </Badge>
-                  {selectedSwap.verified && (
-                    <Badge className="bg-lime-500/10 text-lime-400 border-lime-500/20">
-                      <CheckCircle className="h-3 w-3 mr-1" />
-                      Vérifié
-                    </Badge>
-                  )}
-                </div>
-
-                {/* Informations financières principales */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-white mb-2">
-                        {selectedSwap.amount.toLocaleString()}€
-                      </div>
-                      <p className="text-gray-400">Montant principal</p>
-                    </div>
-                  </Card>
-
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-lime-400 mb-2">
-                        {selectedSwap.interestRate}%
-                      </div>
-                      <p className="text-gray-400">Taux d'intérêt</p>
-                    </div>
-                  </Card>
-
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-cyan-400 mb-2">
-                        {selectedSwap.duration}
-                      </div>
-                      <p className="text-gray-400">Mois</p>
-                    </div>
-                  </Card>
-                </div>
-
-                {/* Informations détaillées */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Informations générales */}
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <Info className="h-5 w-5 mr-2 text-violet-400" />
-                      Informations générales
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Objectif :</span>
-                        <span className="text-white">{selectedSwap.purpose}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Catégorie :</span>
-                        <span className="text-white">{selectedSwap.category}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Localisation :</span>
-                        <span className="text-white">{selectedSwap.location}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Créé le :</span>
-                        <span className="text-white">
-                          {new Date(selectedSwap.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Matching :</span>
-                        <span className="text-cyan-400">
-                          {selectedSwap.matchingScore}%
-                        </span>
-                      </div>
-                    </div>
-                  </Card>
-
-                  {/* Conditions financières */}
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <Euro className="h-5 w-5 mr-2 text-lime-400" />
-                      Conditions financières
-                    </h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Intérêts totaux :</span>
-                        <span className="text-lime-400 font-semibold">
-                          {selectedSwap.totalInterest?.toLocaleString()}€
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Paiement mensuel :</span>
-                        <span className="text-white">
-                          {selectedSwap.monthlyPayment?.toLocaleString()}€
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Calendrier :</span>
-                        <span className="text-white">
-                          {selectedSwap.repaymentSchedule}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Remb. anticipé :</span>
-                        <span
-                          className={
-                            selectedSwap.earlyRepayment
-                              ? "text-lime-400"
-                              : "text-pink-400"
-                          }
-                        >
-                          {selectedSwap.earlyRepayment ? "Autorisé" : "Non autorisé"}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-400">Assurance :</span>
-                        <span
-                          className={
-                            selectedSwap.insurance ? "text-lime-400" : "text-gray-400"
-                          }
-                        >
-                          {selectedSwap.insurance ? "Incluse" : "Non incluse"}
-                        </span>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-
-                {/* Garanties et sécurité */}
-                <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                    <Shield className="h-5 w-5 mr-2 text-cyan-400" />
-                    Garanties et sécurité
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <p className="text-gray-400 mb-2">Garanties proposées :</p>
-                      <p className="text-white">{selectedSwap.guarantees}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-400 mb-2">Fonctionnalités :</p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedSwap.features?.map((feature, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="text-xs border-white/20 text-gray-300"
-                          >
-                            {feature}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-
-                {/* Profil de l'entreprise */}
-                {selectedSwap.createdBy && (
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-                      <User className="h-5 w-5 mr-2 text-pink-400" />
-                      Profil de l'entreprise
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="flex items-center space-x-4">
-                        <Avatar className="h-12 w-12 ring-2 ring-violet-500/50">
-                          <AvatarFallback className="bg-gradient-to-br from-violet-500 to-pink-500 text-white">
-                            {selectedSwap.createdBy?.[0]}
-                            {selectedSwap.createdByCompany?.[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="text-white font-semibold">
-                            {selectedSwap.createdBy}
-                          </p>
-                          <p className="text-gray-400">
-                            {selectedSwap.createdByCompany}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-gray-400">Score de confiance :</span>
-                          <div className="flex items-center">
-                            <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                            <span className="text-white">
-                              {selectedSwap.createdByTrustScore}/100
-                            </span>
-                          </div>
-                        </div>
-                        {selectedSwap.rating && (
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-400">Note moyenne :</span>
-                            <div className="flex items-center">
-                              <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                              <span className="text-white">{selectedSwap.rating}</span>
-                              <span className="text-gray-400 ml-1">
-                                ({selectedSwap.reviews} avis)
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                )}
-
-                {/* Tags */}
-                {selectedSwap.tags && selectedSwap.tags.length > 0 && (
-                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">Tags</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedSwap.tags.map((tag, index) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="border-white/20 text-gray-300"
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </Card>
-                )}
-
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
-                  <Button className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600">
-                    <Handshake className="h-4 w-4 mr-2" />
-                    Matcher avec ce swap
+                  <Button
+                    onClick={() => handleMatchSwap(selectedSwap.id)}
+                    disabled={matchingInProgress === selectedSwap.id}
+                    className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600"
+                  >
+                    {matchingInProgress === selectedSwap.id ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <Handshake className="h-4 w-4 mr-2" />
+                    )}
+                    {matchingInProgress === selectedSwap.id
+                      ? "Matching en cours..."
+                      : "Matcher avec ce swap"}
                   </Button>
                   <Button
                     variant="outline"
