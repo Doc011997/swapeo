@@ -238,6 +238,10 @@ const DashboardCompleteFixed = () => {
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [chatMessage, setChatMessage] = useState("");
 
+  // États pour la navigation mobile
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
   useEffect(() => {
     loadUserData();
   }, []);
