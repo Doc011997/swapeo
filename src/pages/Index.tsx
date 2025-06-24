@@ -277,62 +277,96 @@ const Index = () => {
             </p>
           </motion.div>
 
-          <div
-            className={`
-            max-w-lg mx-auto transition-all duration-1000 delay-300
-            ${isVisible.pricing ? "animate-scale" : "opacity-0 scale-90"}
-          `}
-          >
-            <Card className="swapeo-card p-10 text-center relative overflow-hidden group hover:scale-105 transition-all duration-500 neon-border">
-              {/* Background effects */}
-              <div className="absolute inset-0 bg-gradient-to-br from-swapeo-primary/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="max-w-2xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 backdrop-blur-xl border-2 border-gray-700/50 p-12 text-center relative overflow-hidden group hover:border-green-500/50 transition-all duration-700 hover:scale-105">
+                {/* Enhanced Background effects */}
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-emerald-500/5 to-teal-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 via-green-500/10 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-              <div className="relative z-10">
-                <div className="flex items-center justify-center mb-4">
-                  <Zap className="h-8 w-8 text-swapeo-primary animate-pulse mr-2" />
-                  <div className="text-2xl md:text-3xl font-bold text-white">
-                    Frais de plateforme
-                  </div>
-                  <Sparkles className="h-6 w-6 text-yellow-400 animate-spin-slow ml-2" />
-                </div>
-
-                <div className="text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-swapeo-primary via-blue-500 to-purple-500 mb-6 animate-text-glow">
-                  1%
-                </div>
-
-                <p className="text-gray-300 text-lg mb-8">
-                  Prélevé uniquement lors du{" "}
-                  <span className="text-swapeo-primary font-semibold">
-                    succès du swap
-                  </span>
-                </p>
-
-                <div className="space-y-4 mb-8">
-                  {pricingFeatures.map((feature, index) => (
-                    <div
-                      key={index}
-                      className={`
-                        text-gray-300 text-left flex items-center
-                        transition-all duration-500
-                        ${isVisible.pricing ? "animate-slide-in-from-left" : "opacity-0 translate-x-10"}
-                      `}
-                      style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-                    >
-                      <Zap className="h-4 w-4 text-swapeo-primary mr-2 animate-pulse" />
-                      {feature}
+                <div className="relative z-10">
+                  {/* Header with icon */}
+                  <div className="flex items-center justify-center mb-8">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                      <Zap className="h-8 w-8 text-white" />
                     </div>
-                  ))}
+                    <div className="text-left">
+                      <div className="text-2xl md:text-3xl font-bold text-white">
+                        Commission unique
+                      </div>
+                      <div className="text-green-400 font-medium">
+                        Payez au succès seulement
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Price display */}
+                  <div className="mb-8">
+                    <div className="flex items-center justify-center mb-4">
+                      <span className="text-7xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 animate-text-glow">
+                        1
+                      </span>
+                      <div className="text-left ml-2">
+                        <div className="text-3xl font-bold text-white">%</div>
+                        <div className="text-green-400 text-sm font-medium">
+                          seulement
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-lg">
+                      Prélevé uniquement lors du{" "}
+                      <span className="text-green-400 font-semibold bg-green-500/10 px-2 py-1 rounded">
+                        succès de votre swap
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Features */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    {pricingFeatures.map((feature, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                        viewport={{ once: true }}
+                        className="text-gray-300 text-left flex items-center bg-gray-800/30 rounded-lg p-3 group-hover:bg-gray-700/30 transition-colors duration-300"
+                      >
+                        <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center mr-3">
+                          <Zap className="h-3 w-3 text-green-400" />
+                        </div>
+                        <span className="text-sm">
+                          {feature.replace("✅ ", "")}
+                        </span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* CTA Button */}
+                  <div className="space-y-4">
+                    <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white text-lg py-4 rounded-xl font-semibold shadow-2xl group relative overflow-hidden">
+                      <span className="relative z-10 flex items-center justify-center">
+                        Démarrer gratuitement
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </Button>
+                    <p className="text-gray-400 text-sm">
+                      <Shield className="inline h-4 w-4 mr-1" />
+                      Aucun engagement • Annulation libre
+                    </p>
+                  </div>
                 </div>
 
-                <Button className="w-full swapeo-button text-lg py-4 group relative overflow-hidden">
-                  <span className="relative z-10 flex items-center justify-center">
-                    Commencer maintenant
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform duration-300" />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-swapeo-primary-light to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Button>
-              </div>
-            </Card>
+                {/* Glow border effect */}
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-green-500/0 via-green-500/20 to-emerald-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-sm" />
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
