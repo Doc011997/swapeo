@@ -421,7 +421,7 @@ const LoginSimple = () => {
                 {/* Login button */}
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold h-12 shadow-lg transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-emerald-500 to-blue-600 hover:from-emerald-600 hover:to-blue-700 text-white font-semibold h-12 shadow-xl transition-all duration-300 transform hover:scale-105 ring-2 ring-emerald-400/20"
                   disabled={loading}
                 >
                   {loading ? (
