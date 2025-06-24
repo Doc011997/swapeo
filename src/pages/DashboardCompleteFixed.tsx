@@ -573,7 +573,7 @@ const DashboardCompleteFixed = () => {
     };
     setTransactions([demoTransaction, ...transactions]);
 
-    setMessage(`✅ Dépôt de ${amount}€ effectué avec succès !`);
+    setMessage(`✅ Dépôt de ${amount}��� effectué avec succès !`);
     setTimeout(() => setMessage(""), 4000);
   };
 
@@ -887,7 +887,7 @@ const DashboardCompleteFixed = () => {
               <div className="flex items-center space-x-2">
                 {message.includes("SUCCÈS") || message.includes("✅") ? (
                   <CheckCircle className="h-6 w-6 text-green-600" />
-                ) : message.includes("❌") ? (
+                ) : message.includes("��") ? (
                   <AlertCircle className="h-6 w-6 text-red-600" />
                 ) : (
                   <Info className="h-6 w-6 text-blue-600" />
@@ -1320,9 +1320,12 @@ const DashboardCompleteFixed = () => {
 
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0">
+                    <Button className="bg-white/20 hover:bg-white/30 text-white border-0 text-sm">
                       <ArrowUpRight className="h-4 w-4 mr-2" />
-                      Retirer des fonds
+                      <span className="hidden sm:inline">
+                        Retirer des fonds
+                      </span>
+                      <span className="sm:hidden">Retirer</span>
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-md">
