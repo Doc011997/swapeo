@@ -96,6 +96,9 @@ import {
   Minus,
   Handshake,
   Calculator,
+  Trophy,
+  Target,
+  Award,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
@@ -1685,7 +1688,7 @@ const DashboardCompleteFixed = () => {
                   Mes Swaps
                 </h2>
                 <p className="text-gray-600 text-xs sm:text-base">
-                  Gérez vos swaps financiers
+                  G��rez vos swaps financiers
                 </p>
               </div>
               <div className="flex space-x-2 flex-shrink-0">
