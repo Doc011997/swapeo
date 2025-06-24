@@ -2959,6 +2959,272 @@ const DashboardCompleteFixed = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Modal Achievement Unlock */}
+      <AnimatePresence>
+        {showAchievementModal && newAchievement && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          >
+            <motion.div
+              initial={{ rotate: -5 }}
+              animate={{ rotate: 0 }}
+              className="bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 rounded-2xl p-6 text-center text-white shadow-2xl max-w-sm mx-4"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+                className="text-6xl mb-4"
+              >
+                {newAchievement.icon}
+              </motion.div>
+
+              <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="text-2xl font-bold mb-2"
+              >
+                Achievement Débloqué !
+              </motion.h3>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="text-lg font-semibold mb-1"
+              >
+                {newAchievement.name}
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="text-sm opacity-90"
+              >
+                {newAchievement.description}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+                className="mt-4"
+              >
+                <Badge className="bg-white/20 text-white border-white/30">
+                  +100 XP • +50 Points
+                </Badge>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal Level Up */}
+      <AnimatePresence>
+        {showLevelUp && userLevel && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+          >
+            <motion.div
+              initial={{ y: -100, rotate: -10 }}
+              animate={{ y: 0, rotate: 0 }}
+              transition={{ type: "spring", damping: 15 }}
+              className="bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 rounded-3xl p-8 text-center text-white shadow-2xl max-w-md mx-4"
+            >
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 360, 720],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="text-6xl mb-6"
+              >
+                🏆
+              </motion.div>
+
+              <motion.h2
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-3xl font-bold mb-4"
+              >
+                LEVEL UP !
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="space-y-2 mb-6"
+              >
+                <p className="text-xl">Niveau {userLevel.level}</p>
+                <p className="text-lg font-semibold">{userLevel.title}</p>
+                <p className="text-sm opacity-90">
+                  Nouveaux avantages débloqués !
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+                className="space-y-2"
+              >
+                {userLevel.benefits.slice(-1).map((benefit, index) => (
+                  <Badge
+                    key={index}
+                    className="bg-white/20 text-white border-white/30 mr-2"
+                  >
+                    ✨ {benefit}
+                  </Badge>
+                ))}
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal Tous les Achievements */}
+      <Dialog
+        open={showAchievementModal}
+        onOpenChange={setShowAchievementModal}
+      >
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Award className="h-6 w-6 mr-2 text-yellow-600" />
+              Tous mes Achievements
+            </DialogTitle>
+            <DialogDescription>
+              Votre collection de réussites sur Swapeo
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {/* Achievements débloqués */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <span className="text-green-600 mr-2">✓</span>
+                Débloqués ({achievements.filter((a) => a.unlockedAt).length})
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {achievements
+                  .filter((a) => a.unlockedAt)
+                  .map((achievement) => (
+                    <Card
+                      key={achievement.id}
+                      className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-green-200"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="text-3xl">{achievement.icon}</div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">
+                            {achievement.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {achievement.description}
+                          </p>
+                          <div className="flex items-center space-x-2 mt-2">
+                            <Badge
+                              className={`text-xs ${
+                                achievement.rarity === "legendary"
+                                  ? "bg-purple-100 text-purple-700"
+                                  : achievement.rarity === "epic"
+                                    ? "bg-blue-100 text-blue-700"
+                                    : achievement.rarity === "rare"
+                                      ? "bg-green-100 text-green-700"
+                                      : "bg-gray-100 text-gray-700"
+                              }`}
+                            >
+                              {achievement.rarity}
+                            </Badge>
+                            <span className="text-xs text-gray-500">
+                              {formatDate(achievement.unlockedAt!)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+              </div>
+            </div>
+
+            {/* Achievements en cours */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4 flex items-center">
+                <span className="text-orange-600 mr-2">⏳</span>
+                En cours ({achievements.filter((a) => !a.unlockedAt).length})
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {achievements
+                  .filter((a) => !a.unlockedAt)
+                  .map((achievement) => (
+                    <Card
+                      key={achievement.id}
+                      className="p-4 bg-gradient-to-br from-gray-50 to-slate-50 border-gray-200"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className="text-3xl opacity-60">
+                          {achievement.icon}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">
+                            {achievement.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {achievement.description}
+                          </p>
+                          {achievement.progress !== undefined && (
+                            <div className="mt-2">
+                              <div className="flex justify-between text-xs text-gray-500 mb-1">
+                                <span>
+                                  {achievement.progress}/
+                                  {achievement.maxProgress}
+                                </span>
+                                <span>
+                                  {Math.round(
+                                    (achievement.progress /
+                                      (achievement.maxProgress || 1)) *
+                                      100,
+                                  )}
+                                  %
+                                </span>
+                              </div>
+                              <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div
+                                  className="bg-orange-500 h-2 rounded-full transition-all duration-500"
+                                  style={{
+                                    width: `${(achievement.progress / (achievement.maxProgress || 1)) * 100}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </div>
+                          )}
+                          <Badge className="mt-2 text-xs bg-gray-100 text-gray-700">
+                            {achievement.rarity}
+                          </Badge>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
