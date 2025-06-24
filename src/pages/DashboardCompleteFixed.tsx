@@ -752,11 +752,14 @@ const DashboardCompleteFixed = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-violet-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <Handshake className="h-5 w-5 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                <Handshake className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-800">SWAPEO</h1>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-cyan-600 bg-clip-text text-transparent">
+                  SWAPEO
+                </h1>
+                <p className="text-xs text-gray-500 font-medium">Dashboard</p>
               </div>
             </div>
 
