@@ -930,7 +930,7 @@ const DashboardCompleteFixed = () => {
 
               <div className="flex items-center space-x-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-sm">
+                  <AvatarFallback className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm">
                     {user.firstName?.[0]}
                     {user.lastName?.[0]}
                   </AvatarFallback>
