@@ -2593,46 +2593,71 @@ const DashboardCompleteFixed = () => {
 
                 {/* Informations financières détaillées */}
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
-                    <Euro className="h-4 w-4 mr-2 text-green-600" />
-                    Détails financiers
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1 sm:mb-2 flex items-center">
+                    <Euro className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-green-600 flex-shrink-0" />
+                    <span className="hidden sm:inline">Détails financiers</span>
+                    <span className="sm:hidden">Financier</span>
                   </h3>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 p-2 sm:p-4 rounded-lg">
+                    <div className="space-y-2 sm:space-y-3">
                       {selectedSwap.estimatedReturn && (
-                        <div className="flex justify-between">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Rendement estimé :
+                            <span className="hidden sm:inline">
+                              Rendement estimé :
+                            </span>
+                            <span className="sm:hidden">Rendement :</span>
                           </span>
                           <span className="text-green-600 font-semibold">
-                            {selectedSwap.estimatedReturn.toLocaleString()}€
+                            {selectedSwap.estimatedReturn > 999999
+                              ? `${(selectedSwap.estimatedReturn / 1000000).toFixed(1)}M€`
+                              : selectedSwap.estimatedReturn > 999
+                                ? `${(selectedSwap.estimatedReturn / 1000).toFixed(0)}k€`
+                                : `${selectedSwap.estimatedReturn.toLocaleString()}€`}
                           </span>
                         </div>
                       )}
                       {selectedSwap.totalInterest && (
-                        <div className="flex justify-between">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Intérêts totaux :
+                            <span className="hidden sm:inline">
+                              Intérêts totaux :
+                            </span>
+                            <span className="sm:hidden">Intérêts :</span>
                           </span>
                           <span className="text-gray-900">
-                            {selectedSwap.totalInterest.toLocaleString()}€
+                            {selectedSwap.totalInterest > 999999
+                              ? `${(selectedSwap.totalInterest / 1000000).toFixed(1)}M€`
+                              : selectedSwap.totalInterest > 999
+                                ? `${(selectedSwap.totalInterest / 1000).toFixed(0)}k€`
+                                : `${selectedSwap.totalInterest.toLocaleString()}€`}
                           </span>
                         </div>
                       )}
                       {selectedSwap.monthlyPayment && (
-                        <div className="flex justify-between">
+                        <div className="flex justify-between text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Paiement mensuel :
+                            <span className="hidden sm:inline">
+                              Paiement mensuel :
+                            </span>
+                            <span className="sm:hidden">Mensuel :</span>
                           </span>
                           <span className="text-gray-900">
-                            {selectedSwap.monthlyPayment.toLocaleString()}€
+                            {selectedSwap.monthlyPayment > 999999
+                              ? `${(selectedSwap.monthlyPayment / 1000000).toFixed(1)}M€`
+                              : selectedSwap.monthlyPayment > 999
+                                ? `${(selectedSwap.monthlyPayment / 1000).toFixed(0)}k€`
+                                : `${selectedSwap.monthlyPayment.toLocaleString()}€`}
                           </span>
                         </div>
                       )}
                       {selectedSwap.riskLevel && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center text-xs sm:text-sm">
                           <span className="text-gray-600">
-                            Niveau de risque :
+                            <span className="hidden sm:inline">
+                              Niveau de risque :
+                            </span>
+                            <span className="sm:hidden">Risque :</span>
                           </span>
                           <Badge
                             className={`text-xs ${
