@@ -96,6 +96,7 @@ import {
   Minus,
   Handshake,
   Calculator,
+  Send,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
@@ -2226,7 +2227,7 @@ const DashboardCompleteFixed = () => {
 
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 bg-white rounded-lg border border-gray-100 space-y-1 sm:space-y-0">
                         <span className="text-gray-600 font-medium text-sm">
-                          Catégorie:
+                          Cat��gorie:
                         </span>
                         <Badge
                           variant="outline"
