@@ -474,7 +474,7 @@ const LoginSimple = () => {
                     <Button
                       type="button"
                       variant="outline"
-                      className="border-emerald-500/50 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 hover:text-emerald-200 transition-all"
+                      className="border-emerald-400/60 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 transition-all ring-1 ring-emerald-400/20"
                       onClick={() =>
                         handleQuickLogin(
                           "sarah@example.com",
