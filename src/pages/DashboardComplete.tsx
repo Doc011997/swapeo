@@ -1132,7 +1132,9 @@ const DashboardComplete = () => {
                       </div>
                       <div className="flex items-center text-green-600 mt-1">
                         <TrendingUp className="h-4 w-4 mr-1" />
-                        <span className="text-sm">+2.8% ce mois</span>
+                        <span className="text-sm">
+                          +{stats.averageReturn.toFixed(1)}% rendement moyen
+                        </span>
                       </div>
                     </div>
                     <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
