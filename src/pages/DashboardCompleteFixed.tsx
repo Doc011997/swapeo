@@ -1126,67 +1126,111 @@ const DashboardCompleteFixed = () => {
             </motion.div>
 
             {/* Liste des swaps récents */}
-            <Card className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Swaps Récents
-                </h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setActiveSection("swaps")}
-                >
-                  Voir tout
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {swaps.slice(0, 3).map((swap) => (
-                  <motion.div
-                    key={swap.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                    whileHover={{ scale: 1.02 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <Card className="p-6 bg-white/80 backdrop-blur-sm border-gray-200/50 shadow-lg">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
+                      <Handshake className="h-5 w-5 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Swaps Récents
+                    </h3>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveSection("swaps")}
+                    className="border-indigo-200 text-indigo-600 hover:bg-indigo-50 hover:border-indigo-300"
                   >
-                    <div className="flex items-center space-x-4">
-                      <div
-                        className={`w-3 h-3 rounded-full ${
-                          swap.status === "active"
-                            ? "bg-green-500"
-                            : swap.status === "pending"
-                              ? "bg-yellow-500"
-                              : "bg-gray-400"
-                        }`}
-                      ></div>
-                      <div>
-                        <p className="font-medium text-gray-900">
-                          {swap.type === "offre" ? "Offre de" : "Demande de"}{" "}
-                          {formatCurrency(swap.amount)}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {swap.counterparty} • {swap.interestRate}%
-                        </p>
+                    <Eye className="h-4 w-4 mr-1" />
+                    Voir tout
+                  </Button>
+                </div>
+                <div className="space-y-3">
+                  {swaps.slice(0, 3).map((swap, index) => (
+                    <motion.div
+                      key={swap.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                      className="group"
+                    >
+                      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50/80 to-white/80 rounded-xl hover:from-violet-50/80 hover:to-cyan-50/80 transition-all duration-300 hover:shadow-md border border-gray-100/50 hover:border-violet-200/50">
+                        <div className="flex items-center space-x-4">
+                          <div className="relative">
+                            <div
+                              className={`w-4 h-4 rounded-full ${
+                                swap.status === "active"
+                                  ? "bg-green-500 shadow-lg shadow-green-500/30"
+                                  : swap.status === "pending"
+                                    ? "bg-yellow-500 shadow-lg shadow-yellow-500/30"
+                                    : "bg-gray-400"
+                              } ${swap.status === "active" ? "animate-pulse" : ""}`}
+                            ></div>
+                            {swap.status === "active" && (
+                              <div className="absolute inset-0 w-4 h-4 bg-green-500 rounded-full animate-ping opacity-30"></div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300">
+                              {swap.type === "offre"
+                                ? "💼 Offre de"
+                                : "🎯 Demande de"}{" "}
+                              {formatCurrency(swap.amount)}
+                            </p>
+                            <p className="text-sm text-gray-600 group-hover:text-gray-700">
+                              {swap.counterparty} • {swap.interestRate}% •{" "}
+                              {swap.duration} mois
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <Badge
+                            className={`font-medium border-0 ${
+                              swap.status === "active"
+                                ? "bg-green-100 text-green-700 shadow-sm"
+                                : swap.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-700 shadow-sm"
+                                  : "bg-gray-100 text-gray-700"
+                            }`}
+                          >
+                            {swap.status === "active"
+                              ? "✅ Actif"
+                              : swap.status === "pending"
+                                ? "⏳ En attente"
+                                : "✓ Terminé"}
+                          </Badge>
+                          {swap.status === "active" && (
+                            <p className="text-xs text-green-600 mt-1 font-medium">
+                              {swap.daysRemaining || 45} jours restants
+                            </p>
+                          )}
+                        </div>
                       </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {swaps.length === 0 && (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Handshake className="h-8 w-8 text-gray-400" />
                     </div>
-                    <div className="text-right">
-                      <Badge
-                        className={
-                          swap.status === "active"
-                            ? "bg-green-100 text-green-700"
-                            : swap.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : "bg-gray-100 text-gray-700"
-                        }
-                      >
-                        {swap.status === "active"
-                          ? "Actif"
-                          : swap.status === "pending"
-                            ? "En attente"
-                            : "Terminé"}
-                      </Badge>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </Card>
+                    <p className="text-gray-500 font-medium">
+                      Aucun swap pour le moment
+                    </p>
+                    <p className="text-gray-400 text-sm mt-1">
+                      Créez votre premier swap pour commencer
+                    </p>
+                  </div>
+                )}
+              </Card>
+            </motion.div>
 
             {/* Notifications récentes */}
             <Card className="p-6">
