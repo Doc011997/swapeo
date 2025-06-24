@@ -880,43 +880,48 @@ const DashboardCompleteFixed = () => {
         </AnimatePresence>
 
         {/* Onglets de navigation */}
-        <Tabs
-          value={activeSection}
-          onValueChange={setActiveSection}
-          className="w-full"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
         >
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6">
-            <TabsTrigger
-              value="overview"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
-              <Home className="h-4 w-4" />
-              <span className="hidden sm:inline">Aperçu</span>
-              <span className="sm:hidden">Vue</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="swaps"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
-              <Handshake className="h-4 w-4" />
-              <span>Swaps</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="wallet"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
-              <Wallet className="h-4 w-4" />
-              <span className="hidden sm:inline">Portefeuille</span>
-              <span className="sm:hidden">Wallet</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="contacts"
-              className="flex items-center space-x-1 sm:space-x-2"
-            >
-              <Users className="h-4 w-4" />
-              <span>Contacts</span>
-            </TabsTrigger>
-          </TabsList>
+          <Tabs
+            value={activeSection}
+            onValueChange={setActiveSection}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-xl p-1">
+              <TabsTrigger
+                value="overview"
+                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+              >
+                <Home className="h-4 w-4" />
+                <span className="hidden sm:inline font-medium">Aperçu</span>
+                <span className="sm:hidden font-medium">Vue</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="swaps"
+                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+              >
+                <Handshake className="h-4 w-4" />
+                <span className="font-medium">Swaps</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="wallet"
+                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-500 data-[state=active]:to-emerald-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+              >
+                <Wallet className="h-4 w-4" />
+                <span className="hidden sm:inline font-medium">Portefeuille</span>
+                <span className="sm:hidden font-medium">Wallet</span>
+              </TabsTrigger>
+              <TabsTrigger
+                value="contacts"
+                className="flex items-center justify-center space-x-2 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 py-3"
+              >
+                <Users className="h-4 w-4" />
+                <span className="font-medium">Contacts</span>
+              </TabsTrigger>
+            </TabsList>
 
           {/* Contenu des onglets */}
           <TabsContent value="overview" className="space-y-6">
@@ -952,9 +957,7 @@ const DashboardCompleteFixed = () => {
 
                       <div className="grid grid-cols-2 gap-6">
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                          <p className="text-violet-100 text-sm font-medium mb-1">
-                            Solde total
-                          </p>
+                          <p className="text-violet-100 text-sm font-medium mb-1">Solde total</p>
                           <p className="text-3xl font-bold">
                             {formatCurrency(animatedBalance)}
                           </p>
@@ -964,18 +967,13 @@ const DashboardCompleteFixed = () => {
                           </div>
                         </div>
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                          <p className="text-violet-100 text-sm font-medium mb-1">
-                            Swaps actifs
-                          </p>
+                          <p className="text-violet-100 text-sm font-medium mb-1">Swaps actifs</p>
                           <p className="text-3xl font-bold">
                             {swaps.filter((s) => s.status === "active").length}
                           </p>
                           <div className="flex items-center mt-2 text-cyan-300 text-sm">
                             <Activity className="h-4 w-4 mr-1" />
-                            {
-                              swaps.filter((s) => s.status === "pending").length
-                            }{" "}
-                            en attente
+                            {swaps.filter((s) => s.status === "pending").length} en attente
                           </div>
                         </div>
                       </div>
@@ -1085,9 +1083,7 @@ const DashboardCompleteFixed = () => {
                       <Plus className="h-6 w-6" />
                     </div>
                     <span className="text-sm font-semibold">Créer un Swap</span>
-                    <span className="text-xs opacity-80 mt-1">
-                      Nouvelle proposition
-                    </span>
+                    <span className="text-xs opacity-80 mt-1">Nouvelle proposition</span>
                   </Button>
 
                   <Button
@@ -1098,12 +1094,8 @@ const DashboardCompleteFixed = () => {
                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-green-200 transition-all duration-300">
                       <Search className="h-6 w-6 text-green-600" />
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">
-                      Marketplace
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Chercher opportunités
-                    </span>
+                    <span className="text-sm font-semibold text-gray-900">Marketplace</span>
+                    <span className="text-xs text-gray-600 mt-1">Chercher opportunités</span>
                   </Button>
 
                   <Button
@@ -1114,12 +1106,8 @@ const DashboardCompleteFixed = () => {
                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-blue-200 transition-all duration-300">
                       <Mail className="h-6 w-6 text-blue-600" />
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">
-                      Inviter
-                    </span>
-                    <span className="text-xs text-gray-600 mt-1">
-                      Nouveaux contacts
-                    </span>
+                    <span className="text-sm font-semibold text-gray-900">Inviter</span>
+                    <span className="text-xs text-gray-600 mt-1">Nouveaux contacts</span>
                   </Button>
                 </div>
               </Card>
@@ -1178,14 +1166,11 @@ const DashboardCompleteFixed = () => {
                           </div>
                           <div>
                             <p className="font-semibold text-gray-900 group-hover:text-violet-700 transition-colors duration-300">
-                              {swap.type === "offre"
-                                ? "💼 Offre de"
-                                : "🎯 Demande de"}{" "}
+                              {swap.type === "offre" ? "💼 Offre de" : "🎯 Demande de"}{" "}
                               {formatCurrency(swap.amount)}
                             </p>
                             <p className="text-sm text-gray-600 group-hover:text-gray-700">
-                              {swap.counterparty} • {swap.interestRate}% •{" "}
-                              {swap.duration} mois
+                              {swap.counterparty} • {swap.interestRate}% • {swap.duration} mois
                             </p>
                           </div>
                         </div>
@@ -1221,12 +1206,8 @@ const DashboardCompleteFixed = () => {
                     <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Handshake className="h-8 w-8 text-gray-400" />
                     </div>
-                    <p className="text-gray-500 font-medium">
-                      Aucun swap pour le moment
-                    </p>
-                    <p className="text-gray-400 text-sm mt-1">
-                      Créez votre premier swap pour commencer
-                    </p>
+                    <p className="text-gray-500 font-medium">Aucun swap pour le moment</p>
+                    <p className="text-gray-400 text-sm mt-1">Créez votre premier swap pour commencer</p>
                   </div>
                 )}
               </Card>
@@ -1264,15 +1245,13 @@ const DashboardCompleteFixed = () => {
                       } rounded-xl p-4 border border-gray-100/50 hover:border-blue-200/50 hover:shadow-md`}
                     >
                       <div className="flex items-start space-x-4">
-                        <div
-                          className={`w-3 h-3 rounded-full mt-2 ${
-                            notification.type === "swap"
-                              ? "bg-violet-500 shadow-lg shadow-violet-500/30"
-                              : notification.type === "payment"
-                                ? "bg-green-500 shadow-lg shadow-green-500/30"
-                                : "bg-blue-500 shadow-lg shadow-blue-500/30"
-                          } ${!notification.read ? "animate-pulse" : ""}`}
-                        ></div>
+                        <div className={`w-3 h-3 rounded-full mt-2 ${
+                          notification.type === "swap"
+                            ? "bg-violet-500 shadow-lg shadow-violet-500/30"
+                            : notification.type === "payment"
+                              ? "bg-green-500 shadow-lg shadow-green-500/30"
+                              : "bg-blue-500 shadow-lg shadow-blue-500/30"
+                        } ${!notification.read ? "animate-pulse" : ""}`}></div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
                             <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700">
@@ -1289,20 +1268,15 @@ const DashboardCompleteFixed = () => {
                             <p className="text-xs text-gray-400 font-medium">
                               {notification.time}
                             </p>
-                            <div
-                              className={`text-xs px-2 py-1 rounded-full font-medium ${
-                                notification.type === "swap"
-                                  ? "bg-violet-100 text-violet-600"
-                                  : notification.type === "payment"
-                                    ? "bg-green-100 text-green-600"
-                                    : "bg-blue-100 text-blue-600"
-                              }`}
-                            >
-                              {notification.type === "swap"
-                                ? "🤝 Swap"
+                            <div className={`text-xs px-2 py-1 rounded-full font-medium ${
+                              notification.type === "swap"
+                                ? "bg-violet-100 text-violet-600"
                                 : notification.type === "payment"
-                                  ? "💰 Paiement"
-                                  : "📢 Système"}
+                                  ? "bg-green-100 text-green-600"
+                                  : "bg-blue-100 text-blue-600"
+                            }`}>
+                              {notification.type === "swap" ? "🤝 Swap" :
+                               notification.type === "payment" ? "💰 Paiement" : "📢 Système"}
                             </div>
                           </div>
                         </div>
