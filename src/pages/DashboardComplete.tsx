@@ -1692,16 +1692,17 @@ const DashboardComplete = () => {
                             type="number"
                             placeholder="1000"
                             className="mt-1"
+                            id="deposit-amount"
                           />
                         </div>
                         <div>
                           <Label>Méthode de paiement</Label>
                           <Select>
-                            <SelectTrigger className="mt-1">
+                            <SelectTrigger className="mt-1" id="deposit-method">
                               <SelectValue placeholder="Choisir une méthode" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="bank">
+                              <SelectItem value="bank_transfer">
                                 Virement bancaire
                               </SelectItem>
                               <SelectItem value="card">
@@ -1711,7 +1712,19 @@ const DashboardComplete = () => {
                             </SelectContent>
                           </Select>
                         </div>
-                        <Button className="w-full bg-blue-500 hover:bg-blue-600">
+                        <Button
+                          className="w-full bg-blue-500 hover:bg-blue-600"
+                          onClick={() => {
+                            const amountInput = document.getElementById(
+                              "deposit-amount",
+                            ) as HTMLInputElement;
+                            const amount = parseInt(amountInput?.value || "0");
+                            if (amount > 0) {
+                              handleWalletDeposit(amount, "bank_transfer");
+                              amountInput.value = "";
+                            }
+                          }}
+                        >
                           Confirmer l'ajout
                         </Button>
                       </div>
