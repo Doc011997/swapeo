@@ -615,7 +615,7 @@ const DashboardCompleteFixed = () => {
 
   const getLevelTitle = (level: number) => {
     if (level >= 10) return "🏆 Expert Swapeo";
-    if (level >= 7) return "���� Trader Avancé";
+    if (level >= 7) return "💎 Trader Avancé";
     if (level >= 5) return "⭐ Swapper Confirmé";
     if (level >= 3) return "🚀 Entrepreneur";
     return "🌱 Débutant";
@@ -879,9 +879,12 @@ const DashboardCompleteFixed = () => {
     });
 
     // Message de confirmation avec détails
-    setMessage(
-      `✅ Swap créé avec succès ! ID: ${newSwap.id} - En cours d'analyse par notre algorithme pour apparaître dans le marketplace...`,
-    );
+    setMessage(`✅ Swap créé avec succès ! ID: ${newSwap.id}`);
+
+    // Démarrer l'analyse algorithmique après un court délai
+    setTimeout(() => {
+      startAlgorithmAnalysis(newSwap.id);
+    }, 1500);
 
     // Highlight du nouveau swap et redirection vers l'onglet Swaps
     setHighlightedSwapId(newSwap.id);
