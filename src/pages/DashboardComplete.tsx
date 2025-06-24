@@ -2192,16 +2192,6 @@ const DashboardComplete = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p
-                        className={`font-semibold ${
-                          transaction.amount > 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {transaction.amount > 0 ? "+" : ""}
-                        {formatCurrency(transaction.amount)}
-                      </p>
                       <div className="space-y-1">
                         <p
                           className={`font-semibold ${
@@ -2213,7 +2203,7 @@ const DashboardComplete = () => {
                           {transaction.amount > 0 ? "+" : ""}
                           {formatCurrency(transaction.amount)}
                         </p>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center justify-end space-x-2">
                           <Badge
                             className={`text-xs ${
                               transaction.status === "completed"
