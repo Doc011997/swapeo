@@ -916,7 +916,6 @@ const DashboardCompleteFixed = () => {
           </div>
         </div>
       </header>
-      </header>
 
       {/* Message de feedback */}
       <AnimatePresence>
