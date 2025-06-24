@@ -1092,12 +1092,33 @@ const DashboardCompleteFixed = () => {
                     )}
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="font-semibold text-gray-900">
-                          {swap.counterparty}
-                        </h3>
+                        <div className="flex items-center space-x-2">
+                          <h3 className="font-semibold text-gray-900">
+                            {swap.counterparty === "Recherche en cours..."
+                              ? `Créé par ${swap.createdBy || user?.firstName + " " + user?.lastName}`
+                              : swap.counterparty}
+                          </h3>
+                          {swap.counterparty === "Recherche en cours..." && (
+                            <Badge
+                              variant="outline"
+                              className="text-xs bg-blue-50 text-blue-600"
+                            >
+                              Vous
+                            </Badge>
+                          )}
+                        </div>
                         <p className="text-sm text-gray-600">
                           {swap.description}
                         </p>
+                        {swap.createdBy &&
+                          swap.counterparty === "Recherche en cours..." && (
+                            <p className="text-xs text-gray-500 mt-1">
+                              📅 Créé le{" "}
+                              {new Date(swap.createdAt).toLocaleDateString(
+                                "fr-FR",
+                              )}
+                            </p>
+                          )}
                       </div>
                       <Badge
                         className={`${
