@@ -370,8 +370,9 @@ const DashboardCompleteFixed = () => {
   };
 
   const handleCreateSwap = () => {
+    const currentDate = new Date();
     const demoSwap: Swap = {
-      id: `swap-${Date.now()}`,
+      id: `SW-${Date.now()}`,
       type: newSwap.type as "demande" | "offre",
       amount: parseInt(newSwap.amount),
       duration: parseInt(newSwap.duration),
@@ -379,13 +380,33 @@ const DashboardCompleteFixed = () => {
       counterparty: "Recherche en cours...",
       status: "En recherche",
       progress: 0,
-      createdAt: new Date().toISOString(),
+      createdAt: currentDate.toISOString(),
       description: newSwap.description,
       daysRemaining: parseInt(newSwap.duration) * 30,
       matchingScore: Math.floor(Math.random() * 15) + 85,
       category: newSwap.category,
       riskLevel: "low",
       verified: false,
+      // Détails complets de création
+      purpose: newSwap.purpose,
+      guarantees: newSwap.guarantees,
+      repaymentSchedule: newSwap.repaymentSchedule,
+      earlyRepayment: newSwap.earlyRepayment,
+      insurance: newSwap.insurance,
+      createdBy: `${user.firstName} ${user.lastName}`,
+      createdByCompany: user.company || "Particulier",
+      createdByTrustScore: user.trustScore || 85,
+      estimatedReturn: Math.round((parseInt(newSwap.amount) * 3.2) / 100),
+      totalInterest: Math.round(
+        (parseInt(newSwap.amount) * 3.2 * parseInt(newSwap.duration)) /
+          (100 * 12),
+      ),
+      monthlyPayment: Math.round(
+        (parseInt(newSwap.amount) * (1 + 3.2 / 100)) /
+          parseInt(newSwap.duration),
+      ),
+      nextPaymentDate: null,
+      lastUpdated: currentDate.toISOString(),
     };
 
     setSwaps([demoSwap, ...swaps]);
@@ -397,9 +418,45 @@ const DashboardCompleteFixed = () => {
       duration: "",
       description: "",
       category: "",
+      purpose: "",
+      guarantees: "",
+      repaymentSchedule: "monthly",
+      earlyRepayment: true,
+      insurance: false,
     });
     setMessage("🎉 Votre swap a été créé avec succès !");
     setTimeout(() => setMessage(""), 4000);
+  };
+
+  const viewSwapDetails = (swap: Swap) => {
+    setSelectedSwap(swap);
+    setShowSwapDetails(true);
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "Actif":
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case "En recherche":
+        return <Clock className="h-5 w-5 text-yellow-500" />;
+      case "Terminé":
+        return <CheckCircle className="h-5 w-5 text-blue-500" />;
+      default:
+        return <AlertCircle className="h-5 w-5 text-gray-500" />;
+    }
+  };
+
+  const getRepaymentScheduleText = (schedule: string) => {
+    switch (schedule) {
+      case "monthly":
+        return "Mensuel";
+      case "quarterly":
+        return "Trimestriel";
+      case "end":
+        return "En fin de période";
+      default:
+        return "Mensuel";
+    }
   };
 
   const handleLogout = () => {
