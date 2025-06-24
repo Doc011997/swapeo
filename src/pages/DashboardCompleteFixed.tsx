@@ -166,40 +166,6 @@ interface Notification {
   actionUrl?: string;
 }
 
-interface Achievement {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  category: "swap" | "network" | "finance" | "milestone";
-  rarity: "common" | "rare" | "epic" | "legendary";
-  unlockedAt?: string;
-  progress?: number;
-  maxProgress?: number;
-}
-
-interface UserLevel {
-  level: number;
-  title: string;
-  currentXP: number;
-  requiredXP: number;
-  totalXP: number;
-  benefits: string[];
-}
-
-interface DailyQuest {
-  id: string;
-  title: string;
-  description: string;
-  type: "swap" | "contact" | "login" | "finance";
-  target: number;
-  current: number;
-  reward: number;
-  xpReward: number;
-  completed: boolean;
-  icon: string;
-}
-
 const DashboardCompleteFixed = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -782,7 +748,7 @@ const DashboardCompleteFixed = () => {
       return;
     }
 
-    // Créer le nouveau swap
+    // Cr��er le nouveau swap
     const newSwap: Swap = {
       id: `SW-${Date.now().toString().slice(-3)}`,
       type: newSwapForm.type as "demande" | "offre",
