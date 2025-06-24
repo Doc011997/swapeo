@@ -110,95 +110,57 @@ const LoginSimple = () => {
   ) => {
     setFormData({ email, password });
     setLoading(true);
-    setMessage(`🔄 Connexion compte ${role}...`);
+    setMessage(`🔄 Connexion ${role}...`);
 
-    try {
-      const response = await fetch(
-        "https://swapeo.netlify.app/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+    // Connexion directe en mode DEMO (pas d'API)
+    setTimeout(() => {
+      const demoUsers = {
+        emprunteur: {
+          id: "demo-emprunteur",
+          email: email,
+          firstName: "John",
+          lastName: "Dupont",
+          role: "emprunteur",
+          company: "Startup Tech",
+          kycStatus: "verified",
+          trustScore: 85,
+          wallet: {
+            balance: 12547,
+            totalDeposited: 15000,
+            totalWithdrawn: 2453,
           },
-          body: JSON.stringify({ email, password }),
         },
-      );
+        financeur: {
+          id: "demo-financeur",
+          email: email,
+          firstName: "Sarah",
+          lastName: "Martin",
+          role: "financeur",
+          company: "Investment Group",
+          kycStatus: "verified",
+          trustScore: 92,
+          wallet: {
+            balance: 45230,
+            totalDeposited: 50000,
+            totalWithdrawn: 4770,
+          },
+        },
+      };
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        setMessage(`❌ ${data.error || "Erreur lors de la connexion"}`);
-        return;
-      }
+      const demoUser = demoUsers[role as keyof typeof demoUsers];
+      const demoToken = "demo-token-" + Date.now();
 
-      const data = await response.json();
+      localStorage.setItem("swapeo_token", demoToken);
+      localStorage.setItem("swapeo_user", JSON.stringify(demoUser));
 
-      if (!data.token || !data.user) {
-        setMessage("❌ Réponse serveur incomplète");
-        return;
-      }
-
-      localStorage.setItem("swapeo_token", data.token);
-      localStorage.setItem("swapeo_user", JSON.stringify(data.user));
       setMessage(`✅ Connecté en tant que ${role} !`);
 
       setTimeout(() => {
         window.location.href = "/dashboard";
       }, 800);
-    } catch (error) {
-      console.error("Erreur de connexion rapide:", error);
 
-      // Mode DEMO pour les comptes de test
-      setMessage(`🔄 Mode DEMO - Connexion ${role}...`);
-
-      setTimeout(() => {
-        const demoUsers = {
-          emprunteur: {
-            id: "demo-emprunteur",
-            email: "john@example.com",
-            firstName: "John",
-            lastName: "Dupont",
-            role: "emprunteur",
-            company: "Startup Tech",
-            kycStatus: "verified",
-            trustScore: 85,
-            wallet: {
-              balance: 12547,
-              totalDeposited: 15000,
-              totalWithdrawn: 2453,
-            },
-          },
-          financeur: {
-            id: "demo-financeur",
-            email: "sarah@example.com",
-            firstName: "Sarah",
-            lastName: "Martin",
-            role: "financeur",
-            company: "Investment Group",
-            kycStatus: "verified",
-            trustScore: 92,
-            wallet: {
-              balance: 45230,
-              totalDeposited: 50000,
-              totalWithdrawn: 4770,
-            },
-          },
-        };
-
-        const demoUser = demoUsers[role as keyof typeof demoUsers];
-        const demoToken = "demo-token-" + Date.now();
-
-        localStorage.setItem("swapeo_token", demoToken);
-        localStorage.setItem("swapeo_user", JSON.stringify(demoUser));
-
-        setMessage(`✅ Connecté en DEMO ${role} !`);
-
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 800);
-      }, 500);
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   };
 
   return (
