@@ -1125,7 +1125,7 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <CheckCircle className="h-5 w-5 text-green-600" />
                           <span className="text-green-800 font-medium">
-                            ✨ Nouveau swap créé avec succès !
+                            ✨ Nouveau swap cré�� avec succès !
                           </span>
                         </div>
                       </div>
@@ -1827,6 +1827,162 @@ const DashboardCompleteFixed = () => {
               >
                 <Mail className="mr-2 h-4 w-4" />
                 Envoyer l'invitation
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Ajout de Contact */}
+      <Dialog
+        open={showAddContactDialog}
+        onOpenChange={setShowAddContactDialog}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Plus className="h-5 w-5 text-blue-600" />
+              </div>
+              <span>Ajouter un nouveau contact</span>
+            </DialogTitle>
+            <DialogDescription>
+              Ajoutez une personne à votre réseau professionnel
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="flex items-center">
+                  Prénom <span className="text-red-500 ml-1">*</span>
+                </Label>
+                <Input
+                  placeholder="Jean"
+                  value={contactForm.firstName}
+                  onChange={(e) =>
+                    setContactForm({
+                      ...contactForm,
+                      firstName: e.target.value,
+                    })
+                  }
+                  className={`mt-1 ${!contactForm.firstName ? "border-red-200" : ""}`}
+                />
+              </div>
+              <div>
+                <Label className="flex items-center">
+                  Nom <span className="text-red-500 ml-1">*</span>
+                </Label>
+                <Input
+                  placeholder="Dupont"
+                  value={contactForm.lastName}
+                  onChange={(e) =>
+                    setContactForm({ ...contactForm, lastName: e.target.value })
+                  }
+                  className={`mt-1 ${!contactForm.lastName ? "border-red-200" : ""}`}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label className="flex items-center">
+                Email professionnel <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                type="email"
+                placeholder="jean.dupont@entreprise.com"
+                value={contactForm.email}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, email: e.target.value })
+                }
+                className={`mt-1 ${!contactForm.email ? "border-red-200" : ""}`}
+              />
+            </div>
+
+            <div>
+              <Label>Téléphone (optionnel)</Label>
+              <Input
+                placeholder="+33 6 12 34 56 78"
+                value={contactForm.phone}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, phone: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="flex items-center">
+                Entreprise <span className="text-red-500 ml-1">*</span>
+              </Label>
+              <Input
+                placeholder="Nom de l'entreprise"
+                value={contactForm.company}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, company: e.target.value })
+                }
+                className={`mt-1 ${!contactForm.company ? "border-red-200" : ""}`}
+              />
+            </div>
+
+            <div>
+              <Label>Fonction/Poste (optionnel)</Label>
+              <Input
+                placeholder="Directeur, CEO, Fondateur..."
+                value={contactForm.role}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, role: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800">
+              <div className="flex items-start space-x-2">
+                <Info className="h-4 w-4 mt-0.5 text-blue-600" />
+                <div>
+                  <p className="font-medium mb-1">Informations importantes :</p>
+                  <ul className="text-xs space-y-1">
+                    <li>
+                      • Le contact sera ajouté à votre réseau immédiatement
+                    </li>
+                    <li>• Un Trust Score sera généré automatiquement</li>
+                    <li>• Vous pourrez initier des swaps ensemble</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowAddContactDialog(false);
+                  setContactForm({
+                    firstName: "",
+                    lastName: "",
+                    email: "",
+                    phone: "",
+                    company: "",
+                    role: "",
+                  });
+                }}
+                className="flex-1"
+              >
+                Annuler
+              </Button>
+              <Button
+                onClick={handleAddContact}
+                disabled={
+                  !contactForm.firstName ||
+                  !contactForm.lastName ||
+                  !contactForm.email ||
+                  !contactForm.company
+                }
+                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Ajouter
               </Button>
             </div>
           </div>
