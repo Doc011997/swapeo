@@ -1220,17 +1220,29 @@ const DashboardComplete = () => {
                       <Plus className="h-4 w-4 mr-3" />
                       Créer un nouveau swap
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <Search className="h-4 w-4 mr-3" />
-                      Rechercher des opportunités
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={addFictiveContact}
+                    >
+                      <Users className="h-4 w-4 mr-3" />
+                      Ajouter un contact
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleWalletDeposit(1000)}
+                    >
                       <Upload className="h-4 w-4 mr-3" />
-                      Ajouter des fonds
+                      Ajouter 1000€
                     </Button>
-                    <Button variant="outline" className="w-full justify-start">
-                      <MessageCircle className="h-4 w-4 mr-3" />
-                      Contacter support
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleWalletWithdraw(500)}
+                    >
+                      <ArrowUpRight className="h-4 w-4 mr-3" />
+                      Retirer 500€
                     </Button>
                   </div>
                 </Card>
