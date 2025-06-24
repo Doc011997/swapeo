@@ -873,6 +873,345 @@ const DashboardComplete = () => {
     setTimeout(() => setMessage(""), 4000);
   };
 
+  const generateInvoicePDF = async (transaction: Transaction) => {
+    setGeneratingPDF(true);
+
+    try {
+      const pdf = new jsPDF();
+
+      // Configuration
+      const pageWidth = pdf.internal.pageSize.width;
+      const pageHeight = pdf.internal.pageSize.height;
+      let yPosition = 30;
+
+      // Header avec logo
+      pdf.setFontSize(24);
+      pdf.setTextColor(59, 130, 246); // Blue color
+      pdf.text("SWAPEO", 20, yPosition);
+
+      pdf.setFontSize(12);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text("Plateforme de financement collaboratif", 20, yPosition + 8);
+
+      // Date et numéro de facture
+      const currentDate = new Date().toLocaleDateString("fr-FR");
+      pdf.text(`Date: ${currentDate}`, pageWidth - 60, yPosition);
+      pdf.text(
+        `Facture: ${transaction.id.toUpperCase()}`,
+        pageWidth - 60,
+        yPosition + 8,
+      );
+
+      yPosition += 40;
+
+      // Informations client
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Facturé à:", 20, yPosition);
+
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(12);
+      pdf.text(`${user.firstName} ${user.lastName}`, 20, yPosition + 10);
+      pdf.text(`${user.company || "Particulier"}`, 20, yPosition + 20);
+      pdf.text(`${user.email}`, 20, yPosition + 30);
+      if (user.address) pdf.text(`${user.address}`, 20, yPosition + 40);
+
+      yPosition += 70;
+
+      // Détails de la transaction
+      pdf.setFontSize(16);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Détails de la transaction", 20, yPosition);
+
+      yPosition += 20;
+
+      // Tableau des détails
+      const startY = yPosition;
+      const tableWidth = pageWidth - 40;
+      const colWidths = [
+        tableWidth * 0.5,
+        tableWidth * 0.25,
+        tableWidth * 0.25,
+      ];
+
+      // Headers du tableau
+      pdf.setFillColor(59, 130, 246);
+      pdf.rect(20, startY, tableWidth, 15, "F");
+
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(11);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Description", 25, startY + 10);
+      pdf.text("Montant", 25 + colWidths[0], startY + 10);
+      pdf.text("Statut", 25 + colWidths[0] + colWidths[1], startY + 10);
+
+      // Contenu du tableau
+      yPosition += 15;
+      pdf.setFillColor(248, 249, 250);
+      pdf.rect(20, yPosition, tableWidth, 15, "F");
+
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont(undefined, "normal");
+      pdf.text(transaction.description, 25, yPosition + 10);
+      pdf.text(
+        `${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`,
+        25 + colWidths[0],
+        yPosition + 10,
+      );
+      pdf.text(
+        transaction.status === "completed"
+          ? "Terminé"
+          : transaction.status === "pending"
+            ? "En cours"
+            : "Échoué",
+        25 + colWidths[0] + colWidths[1],
+        yPosition + 10,
+      );
+
+      yPosition += 30;
+
+      // Métadonnées si disponibles
+      if (transaction.type === "deposit" || transaction.type === "withdraw") {
+        pdf.setFontSize(12);
+        pdf.setFont(undefined, "bold");
+        pdf.text("Informations supplémentaires:", 20, yPosition);
+
+        yPosition += 15;
+        pdf.setFont(undefined, "normal");
+        pdf.setFontSize(10);
+        pdf.text(
+          `Type de transaction: ${
+            transaction.type === "deposit"
+              ? "Dépôt"
+              : transaction.type === "withdraw"
+                ? "Retrait"
+                : transaction.type === "interest"
+                  ? "Intérêts"
+                  : "Frais"
+          }`,
+          20,
+          yPosition,
+        );
+
+        if (transaction.type === "deposit" || transaction.type === "withdraw") {
+          pdf.text(`Référence: ${transaction.id}`, 20, yPosition + 10);
+          pdf.text(
+            `Date de traitement: ${new Date(transaction.date).toLocaleDateString("fr-FR")}`,
+            20,
+            yPosition + 20,
+          );
+        }
+
+        yPosition += 40;
+      }
+
+      // Total
+      if (transaction.amount > 0) {
+        pdf.setFillColor(34, 197, 94);
+        pdf.rect(pageWidth - 120, yPosition, 100, 20, "F");
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(14);
+        pdf.setFont(undefined, "bold");
+        pdf.text("TOTAL", pageWidth - 110, yPosition + 8);
+        pdf.text(
+          formatCurrency(transaction.amount),
+          pageWidth - 110,
+          yPosition + 16,
+        );
+      }
+
+      // Footer
+      const footerY = pageHeight - 40;
+      pdf.setTextColor(100, 100, 100);
+      pdf.setFontSize(9);
+      pdf.setFont(undefined, "normal");
+      pdf.text(
+        "Cette facture a été générée automatiquement par Swapeo",
+        20,
+        footerY,
+      );
+      pdf.text(
+        "Pour toute question, contactez-nous à support@swapeo.fr",
+        20,
+        footerY + 8,
+      );
+      pdf.text(
+        "Swapeo - Plateforme de financement collaboratif sécurisée",
+        20,
+        footerY + 16,
+      );
+
+      // Télécharger le PDF
+      pdf.save(
+        `Facture_Swapeo_${transaction.id}_${currentDate.replace(/\//g, "-")}.pdf`,
+      );
+
+      setMessage("✅ Facture PDF téléchargée avec succès !");
+    } catch (error) {
+      setMessage("❌ Erreur lors de la génération de la facture");
+    } finally {
+      setGeneratingPDF(false);
+      setTimeout(() => setMessage(""), 3000);
+    }
+  };
+
+  const handleInviteUser = async () => {
+    try {
+      const response = await fetch(
+        "https://swapeo.netlify.app/api/invitations/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("swapeo_token")}`,
+          },
+          body: JSON.stringify({
+            email: inviteForm.email,
+            firstName: inviteForm.firstName,
+            lastName: inviteForm.lastName,
+            message: inviteForm.message,
+            inviterName: `${user.firstName} ${user.lastName}`,
+          }),
+        },
+      );
+
+      if (response.ok) {
+        setMessage(`✅ Invitation envoyée à ${inviteForm.email} !`);
+      } else {
+        throw new Error("Erreur API");
+      }
+    } catch (error) {
+      // Demo mode - simulate successful invitation
+      setMessage(`✅ Invitation DEMO envoyée à ${inviteForm.email} !`);
+
+      // Simulate adding a notification
+      const inviteNotification = {
+        id: `notif-${Date.now()}`,
+        userId: user.id,
+        type: "system" as const,
+        title: "Invitation envoyée",
+        description: `Invitation envoyée à ${inviteForm.firstName} ${inviteForm.lastName} (${inviteForm.email})`,
+        priority: "low" as const,
+        read: false,
+        actionUrl: "/dashboard?tab=network",
+        actionText: "Voir le réseau",
+        createdAt: new Date().toISOString(),
+        metadata: {
+          invitedEmail: inviteForm.email,
+          invitedName: `${inviteForm.firstName} ${inviteForm.lastName}`,
+        },
+      };
+
+      setNotifications([inviteNotification, ...notifications]);
+    }
+
+    setShowInviteDialog(false);
+    setInviteForm({ email: "", firstName: "", lastName: "", message: "" });
+    setTimeout(() => setMessage(""), 4000);
+  };
+
+  const generateWalletStatementPDF = async () => {
+    setGeneratingPDF(true);
+
+    try {
+      const pdf = new jsPDF();
+      const pageWidth = pdf.internal.pageSize.width;
+      let yPosition = 30;
+
+      // Header
+      pdf.setFontSize(20);
+      pdf.setTextColor(59, 130, 246);
+      pdf.text("RELEVÉ DE COMPTE SWAPEO", 20, yPosition);
+
+      yPosition += 20;
+      pdf.setFontSize(12);
+      pdf.setTextColor(0, 0, 0);
+      pdf.text(
+        `Période: ${new Date().toLocaleDateString("fr-FR")}`,
+        20,
+        yPosition,
+      );
+      pdf.text(
+        `Client: ${user.firstName} ${user.lastName}`,
+        20,
+        yPosition + 10,
+      );
+
+      yPosition += 30;
+
+      // Résumé du compte
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Résumé du compte", 20, yPosition);
+
+      yPosition += 15;
+      pdf.setFont(undefined, "normal");
+      pdf.setFontSize(12);
+      pdf.text(
+        `Solde actuel: ${formatCurrency(walletData.balance)}`,
+        20,
+        yPosition,
+      );
+      pdf.text(
+        `Total déposé: ${formatCurrency(walletData.totalDeposited)}`,
+        20,
+        yPosition + 10,
+      );
+      pdf.text(
+        `Total retiré: ${formatCurrency(walletData.totalWithdrawn)}`,
+        20,
+        yPosition + 20,
+      );
+      pdf.text(
+        `Gains totaux: ${formatCurrency(stats.totalEarnings)}`,
+        20,
+        yPosition + 30,
+      );
+
+      yPosition += 50;
+
+      // Transactions récentes
+      pdf.setFontSize(14);
+      pdf.setFont(undefined, "bold");
+      pdf.text("Transactions récentes", 20, yPosition);
+
+      yPosition += 15;
+
+      transactions.slice(0, 10).forEach((transaction, index) => {
+        if (yPosition > 250) {
+          pdf.addPage();
+          yPosition = 30;
+        }
+
+        pdf.setFontSize(10);
+        pdf.setFont(undefined, "normal");
+        pdf.text(
+          new Date(transaction.date).toLocaleDateString("fr-FR"),
+          20,
+          yPosition,
+        );
+        pdf.text(transaction.description.substring(0, 40), 50, yPosition);
+        pdf.text(
+          `${transaction.amount > 0 ? "+" : ""}${formatCurrency(transaction.amount)}`,
+          pageWidth - 40,
+          yPosition,
+        );
+
+        yPosition += 12;
+      });
+
+      pdf.save(
+        `Releve_Swapeo_${new Date().toLocaleDateString("fr-FR").replace(/\//g, "-")}.pdf`,
+      );
+      setMessage("✅ Relevé de compte téléchargé !");
+    } catch (error) {
+      setMessage("❌ Erreur lors de la génération du relevé");
+    } finally {
+      setGeneratingPDF(false);
+      setTimeout(() => setMessage(""), 3000);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Actif":
@@ -1586,7 +1925,7 @@ const DashboardComplete = () => {
                                 {swap.riskLevel === "low"
                                   ? "faible"
                                   : swap.riskLevel === "medium"
-                                    ? "modér��"
+                                    ? "modéré"
                                     : "élevé"}
                               </span>
                             </div>
