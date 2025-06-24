@@ -1625,19 +1625,26 @@ const DashboardCompleteFixed = () => {
             )}
 
             <Button
-              onClick={handleCreateSwap}
+              onClick={() => {
+                console.log("🖱️ Bouton cliqué !");
+                console.log("📝 newSwap au clic:", newSwap);
+                handleCreateSwap();
+              }}
               disabled={
                 !newSwap.type ||
                 !newSwap.amount ||
                 !newSwap.duration ||
-                !newSwap.description ||
-                parseInt(newSwap.amount) < 1000 ||
-                parseInt(newSwap.duration) < 1
+                !newSwap.description
               }
               className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white h-12 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
             >
               <Plus className="mr-2 h-5 w-5" />
-              Créer le swap
+              {!newSwap.type ||
+              !newSwap.amount ||
+              !newSwap.duration ||
+              !newSwap.description
+                ? "Remplissez tous les champs"
+                : "Créer le swap"}
             </Button>
           </div>
         </DialogContent>
