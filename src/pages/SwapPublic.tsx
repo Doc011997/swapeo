@@ -980,7 +980,7 @@ const SwapPublic = () => {
 
                       <div>
                         <Label className="text-white mb-2 block">
-                          Durée (mois)
+                          Dur��e (mois)
                         </Label>
                         <Input
                           type="number"
@@ -1199,6 +1199,323 @@ const SwapPublic = () => {
               </p>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de détails du swap */}
+      <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
+        <DialogContent className="bg-black/90 backdrop-blur-xl border-white/10 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+          {selectedSwap && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent flex items-center">
+                  <Building className="h-6 w-6 mr-3 text-violet-400" />
+                  {selectedSwap.counterparty}
+                </DialogTitle>
+                <DialogDescription className="text-gray-300 text-lg">
+                  {selectedSwap.description}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-6 mt-6">
+                {/* Badges et statut */}
+                <div className="flex flex-wrap gap-3">
+                  <Badge
+                    className={`${
+                      selectedSwap.type === "offre"
+                        ? "bg-lime-500/10 text-lime-400 border-lime-500/20"
+                        : "bg-cyan-500/10 text-cyan-400 border-cyan-500/20"
+                    }`}
+                  >
+                    {selectedSwap.type === "offre" ? "Offre" : "Demande"}
+                  </Badge>
+                  <Badge
+                    className={getRiskColor(selectedSwap.riskLevel || "medium")}
+                  >
+                    Risque{" "}
+                    {selectedSwap.riskLevel === "low"
+                      ? "Faible"
+                      : selectedSwap.riskLevel === "medium"
+                        ? "Moyen"
+                        : "Élevé"}
+                  </Badge>
+                  <Badge className={getStatusColor(selectedSwap.status)}>
+                    {selectedSwap.status === "active"
+                      ? "Actif"
+                      : selectedSwap.status === "pending"
+                        ? "En attente"
+                        : "Nouveau"}
+                  </Badge>
+                  {selectedSwap.verified && (
+                    <Badge className="bg-lime-500/10 text-lime-400 border-lime-500/20">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Vérifié
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Informations financières principales */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-white mb-2">
+                        {selectedSwap.amount.toLocaleString()}€
+                      </div>
+                      <p className="text-gray-400">Montant principal</p>
+                    </div>
+                  </Card>
+
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-lime-400 mb-2">
+                        {selectedSwap.interestRate}%
+                      </div>
+                      <p className="text-gray-400">Taux d'intérêt</p>
+                    </div>
+                  </Card>
+
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-cyan-400 mb-2">
+                        {selectedSwap.duration}
+                      </div>
+                      <p className="text-gray-400">Mois</p>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Informations détaillées */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Informations générales */}
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <Info className="h-5 w-5 mr-2 text-violet-400" />
+                      Informations générales
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Objectif :</span>
+                        <span className="text-white">
+                          {selectedSwap.purpose}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Catégorie :</span>
+                        <span className="text-white">
+                          {selectedSwap.category}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Localisation :</span>
+                        <span className="text-white">
+                          {selectedSwap.location}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Créé le :</span>
+                        <span className="text-white">
+                          {new Date(
+                            selectedSwap.createdAt,
+                          ).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Matching :</span>
+                        <span className="text-cyan-400">
+                          {selectedSwap.matchingScore}%
+                        </span>
+                      </div>
+                    </div>
+                  </Card>
+
+                  {/* Conditions financières */}
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <Euro className="h-5 w-5 mr-2 text-lime-400" />
+                      Conditions financières
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Intérêts totaux :</span>
+                        <span className="text-lime-400 font-semibold">
+                          {selectedSwap.totalInterest?.toLocaleString()}€
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">
+                          Paiement mensuel :
+                        </span>
+                        <span className="text-white">
+                          {selectedSwap.monthlyPayment?.toLocaleString()}€
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Calendrier :</span>
+                        <span className="text-white">
+                          {selectedSwap.repaymentSchedule}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Remb. anticipé :</span>
+                        <span
+                          className={
+                            selectedSwap.earlyRepayment
+                              ? "text-lime-400"
+                              : "text-pink-400"
+                          }
+                        >
+                          {selectedSwap.earlyRepayment
+                            ? "Autorisé"
+                            : "Non autorisé"}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Assurance :</span>
+                        <span
+                          className={
+                            selectedSwap.insurance
+                              ? "text-lime-400"
+                              : "text-gray-400"
+                          }
+                        >
+                          {selectedSwap.insurance ? "Incluse" : "Non incluse"}
+                        </span>
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Garanties et sécurité */}
+                <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <Shield className="h-5 w-5 mr-2 text-cyan-400" />
+                    Garanties et sécurité
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <p className="text-gray-400 mb-2">
+                        Garanties proposées :
+                      </p>
+                      <p className="text-white">{selectedSwap.guarantees}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-400 mb-2">Fonctionnalités :</p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedSwap.features?.map((feature, index) => (
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="text-xs border-white/20 text-gray-300"
+                          >
+                            {feature}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Profil de l'entreprise */}
+                {selectedSwap.createdBy && (
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                      <User className="h-5 w-5 mr-2 text-pink-400" />
+                      Profil de l'entreprise
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex items-center space-x-4">
+                        <Avatar className="h-12 w-12 ring-2 ring-violet-500/50">
+                          <AvatarFallback className="bg-gradient-to-br from-violet-500 to-pink-500 text-white">
+                            {selectedSwap.createdBy?.[0]}
+                            {selectedSwap.createdByCompany?.[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-white font-semibold">
+                            {selectedSwap.createdBy}
+                          </p>
+                          <p className="text-gray-400">
+                            {selectedSwap.createdByCompany}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-400">
+                            Score de confiance :
+                          </span>
+                          <div className="flex items-center">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                            <span className="text-white">
+                              {selectedSwap.createdByTrustScore}/100
+                            </span>
+                          </div>
+                        </div>
+                        {selectedSwap.rating && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-400">
+                              Note moyenne :
+                            </span>
+                            <div className="flex items-center">
+                              <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                              <span className="text-white">
+                                {selectedSwap.rating}
+                              </span>
+                              <span className="text-gray-400 ml-1">
+                                ({selectedSwap.reviews} avis)
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                )}
+
+                {/* Tags */}
+                {selectedSwap.tags && selectedSwap.tags.length > 0 && (
+                  <Card className="bg-black/20 backdrop-blur-sm border-white/10 p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4">
+                      Tags
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedSwap.tags.map((tag, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="border-white/20 text-gray-300"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </Card>
+                )}
+
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-white/10">
+                  <Button className="flex-1 bg-gradient-to-r from-violet-500 to-cyan-500 hover:from-violet-600 hover:to-cyan-600">
+                    <Handshake className="h-4 w-4 mr-2" />
+                    Matcher avec ce swap
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-pink-500/30 text-pink-400 hover:bg-pink-500/10"
+                  >
+                    <Heart className="h-4 w-4 mr-2" />
+                    Ajouter aux favoris
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10"
+                  >
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Partager
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>
