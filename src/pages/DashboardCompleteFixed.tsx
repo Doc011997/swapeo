@@ -961,10 +961,12 @@ const DashboardCompleteFixed = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-10 w-10 hover:bg-violet-50"
+                className="h-12 w-12 hover:bg-violet-50 rounded-xl touch-manipulation"
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
+                aria-label="Menu principal"
+                aria-expanded={showMobileMenu}
               >
-                <Menu className="h-5 w-5 text-gray-600" />
+                <Menu className="h-6 w-6 text-gray-600" />
               </Button>
             </div>
           </div>
