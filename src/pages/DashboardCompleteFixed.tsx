@@ -1125,7 +1125,7 @@ const DashboardCompleteFixed = () => {
                         <div className="flex items-center space-x-2">
                           <CheckCircle className="h-5 w-5 text-green-600" />
                           <span className="text-green-800 font-medium">
-                            ✨ Nouveau swap cré�� avec succès !
+                            ✨ Nouveau swap créé avec succès !
                           </span>
                         </div>
                       </div>
@@ -1573,13 +1573,30 @@ const DashboardCompleteFixed = () => {
                           <h4 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                             {contact.name}
                           </h4>
-                          {contact.verified && (
+                          {contact.verified ? (
                             <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          ) : (
+                            <Badge
+                              variant="outline"
+                              className="text-xs bg-orange-50 text-orange-600 border-orange-200"
+                            >
+                              Nouveau
+                            </Badge>
                           )}
                         </div>
                         <p className="text-xs sm:text-sm text-gray-600 truncate">
                           {contact.company}
                         </p>
+                        {contact.email && (
+                          <p className="text-xs text-blue-600 truncate">
+                            ✉️ {contact.email}
+                          </p>
+                        )}
+                        {contact.phone && (
+                          <p className="text-xs text-green-600 truncate">
+                            📞 {contact.phone}
+                          </p>
+                        )}
                         <div className="flex items-center space-x-3 sm:space-x-4 mt-1">
                           <div className="flex items-center space-x-1">
                             <Star className="h-3 w-3 text-yellow-500" />
@@ -1589,6 +1606,12 @@ const DashboardCompleteFixed = () => {
                           </div>
                           <span className="text-xs text-gray-500">
                             {contact.totalSwaps} swaps
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            Actif{" "}
+                            {new Date(contact.lastActive).toLocaleDateString(
+                              "fr-FR",
+                            )}
                           </span>
                         </div>
                       </div>
