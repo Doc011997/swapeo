@@ -222,7 +222,7 @@ const LoginSimple = () => {
 
               <h1 className="text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight">
                 Révolutionnez vos
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-blue-400 to-indigo-400">
                   {" "}
                   échanges financiers
                 </span>
