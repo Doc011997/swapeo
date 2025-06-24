@@ -2172,15 +2172,29 @@ const DashboardCompleteFixed = () => {
 
       {/* Dialogue d'invitation */}
       <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Inviter un contact</DialogTitle>
-            <DialogDescription>
-              Invitez quelqu'un à rejoindre Swapeo
-            </DialogDescription>
+        <DialogContent className="w-full max-w-md m-2 sm:m-auto max-h-[90vh] overflow-y-auto">
+          <DialogHeader className="pb-4 border-b border-gray-100">
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle className="text-lg font-bold">
+                  Inviter un contact
+                </DialogTitle>
+                <DialogDescription className="text-sm">
+                  Invitez quelqu'un à rejoindre Swapeo
+                </DialogDescription>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowInviteDialog(false)}
+                className="sm:hidden h-8 w-8"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="space-y-4 pt-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="firstName">Prénom</Label>
