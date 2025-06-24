@@ -214,7 +214,7 @@ const LoginSimple = () => {
             {/* Logo and brand */}
             <div className="mb-12">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
                   <Handshake className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-bold text-3xl">SWAPEO</span>
@@ -506,7 +506,7 @@ const LoginSimple = () => {
                 <div className="flex items-center justify-center space-x-4 text-xs text-gray-400">
                   <div className="flex items-center space-x-1">
                     <Shield className="h-3 w-3" />
-                    <span>Sécurisé SSL</span>
+                    <span>S��curisé SSL</span>
                   </div>
                   <div className="flex items-center space-x-1">
                     <CheckCircle className="h-3 w-3" />
