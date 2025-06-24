@@ -2431,6 +2431,280 @@ const DashboardCompleteFixed = () => {
               transition={{ duration: 0.3 }}
               className="space-y-4 sm:space-y-6"
             >
+              {/* Informations principales */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-4 rounded-xl border border-violet-200">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-violet-700 mb-1">
+                      {selectedSwap.amount.toLocaleString()}€
+                    </div>
+                    <p className="text-sm text-violet-600">Montant</p>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-4 rounded-xl border border-cyan-200">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-cyan-700 mb-1">
+                      {selectedSwap.interestRate}%
+                    </div>
+                    <p className="text-sm text-cyan-600">Taux d'intérêt</p>
+                  </div>
+                </div>
+                <div className="bg-gradient-to-br from-lime-50 to-green-50 p-4 rounded-xl border border-lime-200">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-lime-700 mb-1">
+                      {selectedSwap.duration}
+                    </div>
+                    <p className="text-sm text-lime-600">Mois</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Description et détails */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                    <Building className="h-4 w-4 mr-2 text-violet-600" />
+                    Partenaire
+                  </h3>
+                  <p className="text-gray-700 bg-gray-50 p-3 rounded-lg">
+                    {selectedSwap.counterparty}
+                  </p>
+                </div>
+
+                {selectedSwap.description && (
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <Info className="h-4 w-4 mr-2 text-cyan-600" />
+                      Description
+                    </h3>
+                    <p className="text-gray-700 bg-gray-50 p-3 rounded-lg">
+                      {selectedSwap.description}
+                    </p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <Calendar className="h-4 w-4 mr-2 text-pink-600" />
+                      Informations temporelles
+                    </h3>
+                    <div className="bg-gray-50 p-3 rounded-lg space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Créé le :</span>
+                        <span className="text-gray-900">
+                          {selectedSwap.createdAt}
+                        </span>
+                      </div>
+                      {selectedSwap.daysRemaining && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Jours restants :
+                          </span>
+                          <span className="text-gray-900">
+                            {selectedSwap.daysRemaining}
+                          </span>
+                        </div>
+                      )}
+                      {selectedSwap.nextPaymentDate && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Prochain paiement :
+                          </span>
+                          <span className="text-gray-900">
+                            {selectedSwap.nextPaymentDate}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <TrendingUp className="h-4 w-4 mr-2 text-lime-600" />
+                      Performance
+                    </h3>
+                    <div className="bg-gray-50 p-3 rounded-lg space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Statut :</span>
+                        <Badge
+                          className={`text-xs ${
+                            selectedSwap.status === "Actif"
+                              ? "bg-lime-100 text-lime-700"
+                              : selectedSwap.status === "En attente"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {selectedSwap.status}
+                        </Badge>
+                      </div>
+                      {selectedSwap.progress !== undefined && (
+                        <div>
+                          <div className="flex justify-between text-sm mb-1">
+                            <span className="text-gray-600">Progression :</span>
+                            <span className="text-gray-900">
+                              {selectedSwap.progress}%
+                            </span>
+                          </div>
+                          <Progress
+                            value={selectedSwap.progress}
+                            className="h-2"
+                          />
+                        </div>
+                      )}
+                      {selectedSwap.matchingScore && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">
+                            Score de matching :
+                          </span>
+                          <span className="text-cyan-600 font-semibold">
+                            {selectedSwap.matchingScore}%
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Informations financières détaillées */}
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                    <Euro className="h-4 w-4 mr-2 text-green-600" />
+                    Détails financiers
+                  </h3>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {selectedSwap.estimatedReturn && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">
+                            Rendement estimé :
+                          </span>
+                          <span className="text-green-600 font-semibold">
+                            {selectedSwap.estimatedReturn.toLocaleString()}€
+                          </span>
+                        </div>
+                      )}
+                      {selectedSwap.totalInterest && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">
+                            Intérêts totaux :
+                          </span>
+                          <span className="text-gray-900">
+                            {selectedSwap.totalInterest.toLocaleString()}€
+                          </span>
+                        </div>
+                      )}
+                      {selectedSwap.monthlyPayment && (
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">
+                            Paiement mensuel :
+                          </span>
+                          <span className="text-gray-900">
+                            {selectedSwap.monthlyPayment.toLocaleString()}€
+                          </span>
+                        </div>
+                      )}
+                      {selectedSwap.riskLevel && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">
+                            Niveau de risque :
+                          </span>
+                          <Badge
+                            className={`text-xs ${
+                              selectedSwap.riskLevel === "low"
+                                ? "bg-green-100 text-green-700"
+                                : selectedSwap.riskLevel === "medium"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {selectedSwap.riskLevel === "low"
+                              ? "Faible"
+                              : selectedSwap.riskLevel === "medium"
+                                ? "Moyen"
+                                : "Élevé"}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Garanties et conditions */}
+                {(selectedSwap.guarantees ||
+                  selectedSwap.purpose ||
+                  selectedSwap.repaymentSchedule) && (
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2 flex items-center">
+                      <Shield className="h-4 w-4 mr-2 text-blue-600" />
+                      Conditions et garanties
+                    </h3>
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+                      {selectedSwap.purpose && (
+                        <div>
+                          <span className="text-gray-600 text-sm">
+                            Objectif :
+                          </span>
+                          <p className="text-gray-900 mt-1">
+                            {selectedSwap.purpose}
+                          </p>
+                        </div>
+                      )}
+                      {selectedSwap.guarantees && (
+                        <div>
+                          <span className="text-gray-600 text-sm">
+                            Garanties :
+                          </span>
+                          <p className="text-gray-900 mt-1">
+                            {selectedSwap.guarantees}
+                          </p>
+                        </div>
+                      )}
+                      {selectedSwap.repaymentSchedule && (
+                        <div>
+                          <span className="text-gray-600 text-sm">
+                            Calendrier de remboursement :
+                          </span>
+                          <p className="text-gray-900 mt-1">
+                            {selectedSwap.repaymentSchedule}
+                          </p>
+                        </div>
+                      )}
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {selectedSwap.earlyRepayment && (
+                          <Badge
+                            variant="outline"
+                            className="text-xs border-green-300 text-green-700"
+                          >
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Remboursement anticipé autorisé
+                          </Badge>
+                        )}
+                        {selectedSwap.insurance && (
+                          <Badge
+                            variant="outline"
+                            className="text-xs border-blue-300 text-blue-700"
+                          >
+                            <Shield className="h-3 w-3 mr-1" />
+                            Assurance incluse
+                          </Badge>
+                        )}
+                        {selectedSwap.verified && (
+                          <Badge
+                            variant="outline"
+                            className="text-xs border-violet-300 text-violet-700"
+                          >
+                            <CheckCircle className="h-3 w-3 mr-1" />
+                            Vérifié
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
               {/* Actions */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
