@@ -486,6 +486,54 @@ const DashboardCompleteFixed = () => {
       ];
 
       setNotifications(mockNotifications);
+
+      // Chargement des données de performance
+      const mockPerformanceData = [
+        { month: "Jan", gains: 1200, swaps: 4, volume: 15000 },
+        { month: "Fév", gains: 1450, swaps: 6, volume: 22000 },
+        { month: "Mar", gains: 1850, swaps: 8, volume: 35000 },
+        { month: "Avr", gains: 2100, swaps: 5, volume: 28000 },
+        { month: "Mai", gains: 2400, swaps: 7, volume: 31000 },
+        { month: "Jun", gains: 2850, swaps: 9, volume: 42000 },
+      ];
+
+      setPerformanceData(mockPerformanceData);
+
+      // Statistiques rapides calculées
+      const totalVolume = mockSwaps.reduce((sum, swap) => sum + swap.amount, 0);
+      const avgInterestRate =
+        mockSwaps.reduce((sum, swap) => sum + swap.interestRate, 0) /
+        mockSwaps.length;
+      const activeSwapsCount = mockSwaps.filter(
+        (s) => s.status === "active",
+      ).length;
+      const pendingSwapsCount = mockSwaps.filter(
+        (s) => s.status === "pending",
+      ).length;
+      const completedSwapsCount = mockSwaps.filter(
+        (s) => s.status === "completed",
+      ).length;
+      const successRate =
+        mockSwaps.length > 0
+          ? (completedSwapsCount / mockSwaps.length) * 100
+          : 0;
+
+      setQuickStats({
+        totalVolume,
+        avgInterestRate: avgInterestRate || 0,
+        activeSwapsCount,
+        pendingSwapsCount,
+        completedSwapsCount,
+        successRate,
+        monthlyGrowth: 12.5,
+        totalEarnings: 3847,
+        avgSwapDuration: 12,
+        riskDistribution: {
+          low: mockSwaps.filter((s) => s.riskLevel === "low").length,
+          medium: mockSwaps.filter((s) => s.riskLevel === "medium").length,
+          high: mockSwaps.filter((s) => s.riskLevel === "high").length,
+        },
+      });
     } catch (error) {
       console.error("Erreur lors du chargement:", error);
       setMessage("Erreur lors du chargement des données");
