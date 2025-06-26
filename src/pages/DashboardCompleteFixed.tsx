@@ -282,6 +282,67 @@ const DashboardCompleteFixed = () => {
     loadUserData();
   }, []);
 
+  // Données filtrées et triées avec useMemo pour les performances
+  const filteredAndSortedSwaps = useMemo(() => {
+    let filtered = swaps.filter((swap) => {
+      const matchesSearch =
+        swap.counterparty.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        swap.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        swap.purpose?.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        filterStatus === "all" || swap.status === filterStatus;
+      const matchesCategory =
+        selectedCategory === "all" || swap.category === selectedCategory;
+
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
+
+    // Tri
+    filtered.sort((a, b) => {
+      let aVal, bVal;
+
+      switch (sortBy) {
+        case "amount":
+          aVal = a.amount;
+          bVal = b.amount;
+          break;
+        case "date":
+          aVal = new Date(a.createdAt).getTime();
+          bVal = new Date(b.createdAt).getTime();
+          break;
+        case "status":
+          aVal = a.status;
+          bVal = b.status;
+          break;
+        case "progress":
+          aVal = a.progress || 0;
+          bVal = b.progress || 0;
+          break;
+        default:
+          return 0;
+      }
+
+      if (typeof aVal === "string") {
+        return sortOrder === "asc"
+          ? aVal.localeCompare(bVal)
+          : bVal.localeCompare(aVal);
+      }
+
+      return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
+    });
+
+    return filtered;
+  }, [swaps, searchTerm, sortBy, sortOrder, filterStatus, selectedCategory]);
+
+  // Rafraîchissement des données
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulation
+    await loadUserData();
+    setIsRefreshing(false);
+    setMessage("Données mises à jour !");
+  };
+
   const loadUserData = async () => {
     setLoading(true);
     try {
