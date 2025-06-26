@@ -1802,6 +1802,13 @@ const DashboardCompleteFixed = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                  <div className="space-y-3 sm:space-y-4">
+                    {filteredAndSortedSwaps.slice(0, 3).map((swap, index) => (
+                      <motion.div
+                        key={swap.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
                         className="group"
                       >
                         <div className="p-4 sm:p-5 bg-gradient-to-r from-white/90 to-gray-50/90 rounded-2xl hover:from-violet-50/90 hover:to-cyan-50/90 transition-all duration-300 hover:shadow-lg border-2 border-gray-200/50 hover:border-violet-300/50 backdrop-blur-md">
@@ -1834,13 +1841,26 @@ const DashboardCompleteFixed = () => {
                                 <p className="text-sm sm:text-base text-gray-700 group-hover:text-gray-800 font-medium mt-1">
                                   {swap.counterparty} • {swap.interestRate}%
                                 </p>
-                                <p className="text-xs sm:text-sm text-gray-500 sm:hidden mt-1">
-                                  Durée: {swap.duration} mois
-                                </p>
+                                <div className="flex items-center space-x-2 mt-1">
+                                  <p className="text-xs sm:text-sm text-gray-500">
+                                    Durée: {swap.duration} mois
+                                  </p>
+                                  {swap.category && (
+                                    <Badge variant="outline" className="text-xs px-2 py-0">
+                                      {swap.category}
+                                    </Badge>
+                                  )}
+                                  {swap.riskLevel && (
+                                    <div className={`w-2 h-2 rounded-full ${
+                                      swap.riskLevel === "low" ? "bg-green-400" :
+                                      swap.riskLevel === "medium" ? "bg-yellow-400" : "bg-red-400"
+                                    }`} title={`Risque ${swap.riskLevel}`}></div>
+                                  )}
+                                </div>
                               </div>
                             </div>
 
-                            {/* Mobile: Full width, Desktop: Right aligned */}
+                            {/* Enhanced right side with more info */}
                             <div className="flex items-center justify-between sm:block sm:text-right space-x-2 sm:space-x-0">
                               <Badge
                                 className={`font-medium border-0 text-xs ${
@@ -1858,13 +1878,38 @@ const DashboardCompleteFixed = () => {
                                     : "✓ Terminé"}
                               </Badge>
                               {swap.status === "active" && (
-                                <p className="text-xs text-green-600 font-medium sm:mt-1">
-                                  {swap.daysRemaining || 45}j restants
-                                </p>
+                                <>
+                                  <p className="text-xs text-green-600 font-medium sm:mt-1">
+                                    {swap.daysRemaining || 45}j restants
+                                  </p>
+                                  {swap.progress !== undefined && (
+                                    <div className="w-16 sm:w-20 mt-1">
+                                      <Progress value={swap.progress} className="h-1" />
+                                    </div>
+                                  )}
+                                </>
                               )}
-                              <p className="text-xs text-gray-500 hidden sm:block">
-                                {swap.duration} mois
-                              </p>
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0 mt-1">
+                                    <MoreHorizontal className="h-3 w-3" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                  <DropdownMenuItem>
+                                    <Eye className="h-4 w-4 mr-2" />
+                                    Voir détails
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem>
+                                    <MessageCircle className="h-4 w-4 mr-2" />
+                                    Messages
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem>
+                                    <FileText className="h-4 w-4 mr-2" />
+                                    Documents
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
                             </div>
                           </div>
                         </div>
@@ -1872,26 +1917,55 @@ const DashboardCompleteFixed = () => {
                     ))}
                   </div>
 
-                  {swaps.length === 0 && (
-                    <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Handshake className="h-8 w-8 text-gray-400" />
+                  {filteredAndSortedSwaps.length === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-12"
+                    >
+                      <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                        <Handshake className="h-10 w-10 text-gray-400" />
                       </div>
-                      <p className="text-gray-500 font-medium">
-                        Aucun swap pour le moment
+                      <p className="text-gray-500 font-medium text-lg">
+                        {searchTerm || filterStatus !== "all" || selectedCategory !== "all"
+                          ? "Aucun swap ne correspond à vos critères"
+                          : "Aucun swap pour le moment"
+                        }
                       </p>
-                      <p className="text-gray-400 text-sm mt-1">
-                        Créez votre premier swap pour commencer
+                      <p className="text-gray-400 text-sm mt-2">
+                        {searchTerm || filterStatus !== "all" || selectedCategory !== "all"
+                          ? "Essayez de modifier vos filtres de recherche"
+                          : "Créez votre premier swap pour commencer"
+                        }
                       </p>
+                      {(searchTerm || filterStatus !== "all" || selectedCategory !== "all") && (
+                        <Button
+                          onClick={() => {
+                            setSearchTerm("");
+                            setFilterStatus("all");
+                            setSelectedCategory("all");
+                          }}
+                          variant="outline"
+                          className="mt-4"
+                        >
+                          Effacer les filtres
+                        </Button>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {filteredAndSortedSwaps.length > 3 && (
+                    <div className="pt-4 border-t border-gray-200/50">
+                      <Button
+                        variant="ghost"
+                        onClick={() => setActiveSection("swaps")}
+                        className="w-full justify-center hover:bg-violet-50"
+                      >
+                        Voir tous les swaps ({filteredAndSortedSwaps.length})
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Button>
                     </div>
                   )}
-                </Card>
-              </motion.div>
-            </TabsContent>
-
-            <TabsContent value="swaps" className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-900">Mes Swaps</h2>
                 <Button
                   onClick={() => setShowCreateSwap(true)}
                   className="bg-gradient-to-r from-violet-600 to-cyan-600"
