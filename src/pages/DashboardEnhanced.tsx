@@ -201,6 +201,24 @@ const DashboardEnhanced = () => {
   const [showSwapDetails, setShowSwapDetails] = useState(false);
   const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
 
+  // États pour le chat
+  const [showChat, setShowChat] = useState(false);
+  const [chatContact, setChatContact] = useState<Contact | null>(null);
+  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [chatMessage, setChatMessage] = useState("");
+
+  // États pour l'ajout de contact
+  const [showAddContactDialog, setShowAddContactDialog] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    firstName: "",
+    lastName: "",
+    company: "",
+    email: "",
+    phone: "",
+    notes: "",
+    category: "",
+  });
+
   // États pour le formulaire de création de swap
   const [swapForm, setSwapForm] = useState({
     type: "demande",
