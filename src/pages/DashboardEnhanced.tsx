@@ -1147,89 +1147,101 @@ const DashboardEnhanced = () => {
         </div>
       </header>
 
-      {/* Enhanced Navigation Tabs - Moved after header */}
-      <div className="sticky top-16 sm:top-20 z-40 border-b border-gray-200/20 bg-white/80 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Enhanced Visible Navigation Bar */}
+      <div className="sticky top-16 sm:top-20 z-40 bg-white border-b border-gray-200 shadow-lg">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="py-4"
+            className="py-3 sm:py-4"
           >
             <Tabs
               value={activeSection}
               onValueChange={setActiveSection}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-4 bg-gradient-to-r from-white/90 via-gray-50/90 to-white/90 backdrop-blur-sm border-2 border-gray-200/30 shadow-2xl rounded-3xl p-3 relative overflow-hidden max-w-2xl mx-auto">
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 via-cyan-500/10 to-purple-500/10 rounded-3xl"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-3xl"></div>
+              {/* Desktop Navigation */}
+              <div className="hidden sm:block">
+                <TabsList className="w-full h-auto bg-gray-50 border border-gray-200 rounded-2xl p-2 grid grid-cols-4 gap-2">
+                  <TabsTrigger
+                    value="overview"
+                    className="flex items-center justify-center space-x-3 rounded-xl py-4 px-6 data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-600 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-xl transition-all duration-300 hover:bg-violet-50 text-gray-700 font-semibold group"
+                  >
+                    <Home className="h-5 w-5 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-sm font-semibold">Aperçu</span>
+                  </TabsTrigger>
 
-                <TabsTrigger
-                  value="overview"
-                  className="relative flex items-center justify-center rounded-2xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-violet-500 data-[state=active]:via-purple-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white data-[state=active]:shadow-2xl data-[state=active]:shadow-violet-500/25 transition-all duration-500 h-14 w-full touch-manipulation group hover:scale-105 hover:bg-violet-50/50"
-                  title="Aperçu général"
-                >
-                  <div className="relative flex flex-col items-center space-y-1">
-                    <div className="relative">
-                      <Home className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-data-[state=active]:scale-110" />
-                      <div className="absolute -inset-2 bg-violet-400/20 rounded-xl opacity-0 group-data-[state=active]:opacity-100 group-hover:opacity-60 transition-opacity duration-300 blur-sm -z-10" />
-                    </div>
-                    <span className="text-xs font-semibold opacity-80 group-data-[state=active]:opacity-100 transition-opacity duration-300">
+                  <TabsTrigger
+                    value="swaps"
+                    className="flex items-center justify-center space-x-3 rounded-xl py-4 px-6 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-xl transition-all duration-300 hover:bg-blue-50 text-gray-700 font-semibold group"
+                  >
+                    <Handshake className="h-5 w-5 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-sm font-semibold">Mes Swaps</span>
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="wallet"
+                    className="flex items-center justify-center space-x-3 rounded-xl py-4 px-6 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-600 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-xl transition-all duration-300 hover:bg-emerald-50 text-gray-700 font-semibold group"
+                  >
+                    <Wallet className="h-5 w-5 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-sm font-semibold">Portefeuille</span>
+                  </TabsTrigger>
+
+                  <TabsTrigger
+                    value="contacts"
+                    className="flex items-center justify-center space-x-3 rounded-xl py-4 px-6 data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-600 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-xl transition-all duration-300 hover:bg-cyan-50 text-gray-700 font-semibold group"
+                  >
+                    <Users className="h-5 w-5 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-sm font-semibold">Contacts</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Mobile Navigation */}
+              <div className="block sm:hidden">
+                <TabsList className="w-full h-auto bg-white border-2 border-gray-200 rounded-2xl p-1 grid grid-cols-2 gap-1">
+                  <TabsTrigger
+                    value="overview"
+                    className="flex flex-col items-center justify-center space-y-2 rounded-xl py-4 px-3 data-[state=active]:bg-gradient-to-br data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-violet-50 text-gray-700 group min-h-[70px]"
+                  >
+                    <Home className="h-6 w-6 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-xs font-semibold leading-none">
                       Aperçu
                     </span>
-                  </div>
-                </TabsTrigger>
+                  </TabsTrigger>
 
-                <TabsTrigger
-                  value="swaps"
-                  className="relative flex items-center justify-center rounded-2xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500 data-[state=active]:via-blue-500 data-[state=active]:to-cyan-500 data-[state=active]:text-white data-[state=active]:shadow-2xl data-[state=active]:shadow-blue-500/25 transition-all duration-500 h-14 w-full touch-manipulation group hover:scale-105 hover:bg-blue-50/50"
-                  title="Gestion des swaps"
-                >
-                  <div className="relative flex flex-col items-center space-y-1">
-                    <div className="relative">
-                      <Handshake className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-data-[state=active]:scale-110" />
-                      <div className="absolute -inset-2 bg-blue-400/20 rounded-xl opacity-0 group-data-[state=active]:opacity-100 group-hover:opacity-60 transition-opacity duration-300 blur-sm -z-10" />
-                    </div>
-                    <span className="text-xs font-semibold opacity-80 group-data-[state=active]:opacity-100 transition-opacity duration-300">
+                  <TabsTrigger
+                    value="swaps"
+                    className="flex flex-col items-center justify-center space-y-2 rounded-xl py-4 px-3 data-[state=active]:bg-gradient-to-br data-[state=active]:from-blue-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-blue-50 text-gray-700 group min-h-[70px]"
+                  >
+                    <Handshake className="h-6 w-6 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-xs font-semibold leading-none">
                       Swaps
                     </span>
-                  </div>
-                </TabsTrigger>
+                  </TabsTrigger>
 
-                <TabsTrigger
-                  value="wallet"
-                  className="relative flex items-center justify-center rounded-2xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-emerald-500 data-[state=active]:via-green-500 data-[state=active]:to-teal-500 data-[state=active]:text-white data-[state=active]:shadow-2xl data-[state=active]:shadow-emerald-500/25 transition-all duration-500 h-14 w-full touch-manipulation group hover:scale-105 hover:bg-emerald-50/50"
-                  title="Portefeuille et finances"
-                >
-                  <div className="relative flex flex-col items-center space-y-1">
-                    <div className="relative">
-                      <Wallet className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-data-[state=active]:scale-110" />
-                      <div className="absolute -inset-2 bg-emerald-400/20 rounded-xl opacity-0 group-data-[state=active]:opacity-100 group-hover:opacity-60 transition-opacity duration-300 blur-sm -z-10" />
-                    </div>
-                    <span className="text-xs font-semibold opacity-80 group-data-[state=active]:opacity-100 transition-opacity duration-300">
+                  <TabsTrigger
+                    value="wallet"
+                    className="flex flex-col items-center justify-center space-y-2 rounded-xl py-4 px-3 data-[state=active]:bg-gradient-to-br data-[state=active]:from-emerald-500 data-[state=active]:to-green-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-emerald-50 text-gray-700 group min-h-[70px]"
+                  >
+                    <Wallet className="h-6 w-6 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-xs font-semibold leading-none">
                       Wallet
                     </span>
-                  </div>
-                </TabsTrigger>
+                  </TabsTrigger>
 
-                <TabsTrigger
-                  value="contacts"
-                  className="relative flex items-center justify-center rounded-2xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-cyan-500 data-[state=active]:via-sky-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-2xl data-[state=active]:shadow-cyan-500/25 transition-all duration-500 h-14 w-full touch-manipulation group hover:scale-105 hover:bg-cyan-50/50"
-                  title="Réseau de contacts"
-                >
-                  <div className="relative flex flex-col items-center space-y-1">
-                    <div className="relative">
-                      <Users className="h-6 w-6 transition-all duration-300 group-hover:scale-110 group-data-[state=active]:scale-110" />
-                      <div className="absolute -inset-2 bg-cyan-400/20 rounded-xl opacity-0 group-data-[state=active]:opacity-100 group-hover:opacity-60 transition-opacity duration-300 blur-sm -z-10" />
-                    </div>
-                    <span className="text-xs font-semibold opacity-80 group-data-[state=active]:opacity-100 transition-opacity duration-300">
+                  <TabsTrigger
+                    value="contacts"
+                    className="flex flex-col items-center justify-center space-y-2 rounded-xl py-4 px-3 data-[state=active]:bg-gradient-to-br data-[state=active]:from-cyan-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 hover:bg-cyan-50 text-gray-700 group min-h-[70px]"
+                  >
+                    <Users className="h-6 w-6 group-data-[state=active]:scale-110 transition-transform duration-300" />
+                    <span className="text-xs font-semibold leading-none">
                       Contacts
                     </span>
-                  </div>
-                </TabsTrigger>
-              </TabsList>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
             </Tabs>
           </motion.div>
         </div>
