@@ -197,6 +197,10 @@ const DashboardEnhanced = () => {
   const [dateRange, setDateRange] = useState<string>("30d");
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  // États pour le modal de détails de swap
+  const [showSwapDetails, setShowSwapDetails] = useState(false);
+  const [selectedSwap, setSelectedSwap] = useState<Swap | null>(null);
+
   // États pour le formulaire de création de swap
   const [swapForm, setSwapForm] = useState({
     type: "demande",
