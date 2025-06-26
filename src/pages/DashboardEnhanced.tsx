@@ -290,7 +290,7 @@ const DashboardEnhanced = () => {
   const loadUserData = async () => {
     setLoading(true);
     try {
-      // Simulation de chargement des donn��es utilisateur
+      // Simulation de chargement des données utilisateur
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       const userData = {
@@ -2499,7 +2499,12 @@ const DashboardEnhanced = () => {
                       </div>
 
                       <div className="flex space-x-2">
-                        <Button variant="outline" size="sm" className="flex-1">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => openChat(contact)}
+                        >
                           <MessageCircle className="h-4 w-4 mr-2" />
                           Message
                         </Button>
@@ -2934,7 +2939,7 @@ const DashboardEnhanced = () => {
                       {selectedSwap.description && (
                         <div>
                           <p className="text-sm font-medium text-gray-700 mb-2">
-                            Description détaill��e
+                            Description détaillée
                           </p>
                           <p className="text-gray-900 bg-gray-50 p-4 rounded-lg leading-relaxed">
                             {selectedSwap.description}
