@@ -290,7 +290,7 @@ const DashboardEnhanced = () => {
   const loadUserData = async () => {
     setLoading(true);
     try {
-      // Simulation de chargement des données utilisateur
+      // Simulation de chargement des donn��es utilisateur
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       const userData = {
@@ -2420,7 +2420,7 @@ const DashboardEnhanced = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => openChat(contact)}>
                               <MessageCircle className="h-4 w-4 mr-2" />
                               Envoyer message
                             </DropdownMenuItem>
@@ -2934,7 +2934,7 @@ const DashboardEnhanced = () => {
                       {selectedSwap.description && (
                         <div>
                           <p className="text-sm font-medium text-gray-700 mb-2">
-                            Description détaillée
+                            Description détaill��e
                           </p>
                           <p className="text-gray-900 bg-gray-50 p-4 rounded-lg leading-relaxed">
                             {selectedSwap.description}
