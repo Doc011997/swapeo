@@ -1915,7 +1915,12 @@ const DashboardEnhanced = () => {
                           )}
                         </div>
                         <div className="flex space-x-2">
-                          <Button variant="ghost" size="sm" className="text-xs">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-xs"
+                            onClick={() => openSwapDetails(swap)}
+                          >
                             <Eye className="h-3 w-3 mr-1" />
                             Voir
                           </Button>
@@ -2442,7 +2447,7 @@ const DashboardEnhanced = () => {
                       🍽️ Restauration
                     </SelectItem>
                     <SelectItem value="Finance">🏦 Finance</SelectItem>
-                    <SelectItem value="Industrie">🏭 Industrie</SelectItem>
+                    <SelectItem value="Industrie">��� Industrie</SelectItem>
                     <SelectItem value="Commerce">🛍️ Commerce</SelectItem>
                   </SelectContent>
                 </Select>
