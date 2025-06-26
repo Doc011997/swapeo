@@ -1,4 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+// Fichier de redirection vers la version améliorée
+export { default } from "./DashboardEnhanced";
+export default { default: () => import("./DashboardEnhanced") };
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
