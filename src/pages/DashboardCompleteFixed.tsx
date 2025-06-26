@@ -1211,6 +1211,283 @@ const DashboardCompleteFixed = () => {
           )}
         </AnimatePresence>
 
+        {/* Enhanced Toolbar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-6"
+        >
+          <Card className="p-4 bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-2xl">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-4">
+              {/* Search and Quick Actions */}
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-3 flex-1">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <Input
+                    placeholder="Rechercher dans les swaps..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 h-10 bg-white/80 border-gray-200 rounded-xl focus:ring-violet-500 focus:border-violet-500"
+                  />
+                </div>
+
+                <Button
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  variant="outline"
+                  size="sm"
+                  className="h-10 px-4 rounded-xl border-gray-200 hover:bg-gray-50"
+                >
+                  {isRefreshing ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                  )}
+                  Actualiser
+                </Button>
+              </div>
+
+              {/* Filters and Controls */}
+              <div className="flex items-center space-x-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-10 px-3 rounded-xl"
+                    >
+                      <Filter className="h-4 w-4 mr-2" />
+                      Filtres
+                      <ChevronDown className="h-4 w-4 ml-1" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <div className="p-2">
+                      <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Statut
+                      </Label>
+                      <Select
+                        value={filterStatus}
+                        onValueChange={setFilterStatus}
+                      >
+                        <SelectTrigger className="h-8 mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tous les statuts</SelectItem>
+                          <SelectItem value="active">Actifs</SelectItem>
+                          <SelectItem value="pending">En attente</SelectItem>
+                          <SelectItem value="completed">Terminés</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <DropdownMenuSeparator />
+                    <div className="p-2">
+                      <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Catégorie
+                      </Label>
+                      <Select
+                        value={selectedCategory}
+                        onValueChange={setSelectedCategory}
+                      >
+                        <SelectTrigger className="h-8 mt-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Toutes catégories</SelectItem>
+                          <SelectItem value="Énergie">Énergie</SelectItem>
+                          <SelectItem value="Restauration">
+                            Restauration
+                          </SelectItem>
+                          <SelectItem value="Technology">Technology</SelectItem>
+                          <SelectItem value="Finance">Finance</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-10 px-3 rounded-xl"
+                    >
+                      {sortOrder === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSortBy("date");
+                        setSortOrder("desc");
+                      }}
+                    >
+                      Plus récents
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSortBy("date");
+                        setSortOrder("asc");
+                      }}
+                    >
+                      Plus anciens
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSortBy("amount");
+                        setSortOrder("desc");
+                      }}
+                    >
+                      Montant (décroissant)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSortBy("amount");
+                        setSortOrder("asc");
+                      }}
+                    >
+                      Montant (croissant)
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSortBy("progress");
+                        setSortOrder("desc");
+                      }}
+                    >
+                      Progression
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <div className="hidden sm:flex items-center border border-gray-200 rounded-xl p-1 bg-white/50">
+                  <Button
+                    variant={viewMode === "grid" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("grid")}
+                    className="h-8 w-8 p-0 rounded-lg"
+                  >
+                    <Grid className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === "list" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("list")}
+                    className="h-8 w-8 p-0 rounded-lg"
+                  >
+                    <List className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Enhanced Analytics Dashboard */}
+        {quickStats && Object.keys(quickStats).length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mb-6"
+          >
+            <Card className="p-6 bg-gradient-to-r from-violet-50 via-white to-cyan-50 border border-violet-200/50 shadow-lg rounded-2xl">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <BarChart3 className="h-5 w-5 mr-2 text-violet-500" />
+                    Analytics & Performance
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Vue d'ensemble de vos performances
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Select value={dateRange} onValueChange={setDateRange}>
+                    <SelectTrigger className="w-32 h-8">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="7d">7 jours</SelectItem>
+                      <SelectItem value="30d">30 jours</SelectItem>
+                      <SelectItem value="90d">3 mois</SelectItem>
+                      <SelectItem value="1y">1 an</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-violet-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                      <DollarSign className="h-4 w-4 text-green-600" />
+                    </div>
+                    <span className="text-xs text-green-600 font-medium">
+                      +{quickStats.monthlyGrowth}%
+                    </span>
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {formatCurrency(quickStats.totalVolume)}
+                  </p>
+                  <p className="text-sm text-gray-600">Volume total</p>
+                </div>
+
+                <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-blue-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Percent className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <span className="text-xs text-blue-600 font-medium">
+                      Avg
+                    </span>
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {quickStats.avgInterestRate.toFixed(1)}%
+                  </p>
+                  <p className="text-sm text-gray-600">Taux moyen</p>
+                </div>
+
+                <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-purple-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <span className="text-xs text-purple-600 font-medium">
+                      {quickStats.successRate.toFixed(0)}%
+                    </span>
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {quickStats.completedSwapsCount}
+                  </p>
+                  <p className="text-sm text-gray-600">Swaps réussis</p>
+                </div>
+
+                <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 border border-cyan-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 bg-cyan-100 rounded-lg flex items-center justify-center">
+                      <Trophy className="h-4 w-4 text-cyan-600" />
+                    </div>
+                    <span className="text-xs text-cyan-600 font-medium">
+                      ROI
+                    </span>
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {formatCurrency(quickStats.totalEarnings)}
+                  </p>
+                  <p className="text-sm text-gray-600">Gains totaux</p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
         {/* Onglets de navigation */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
