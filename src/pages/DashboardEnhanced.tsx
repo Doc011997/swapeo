@@ -2447,7 +2447,7 @@ const DashboardEnhanced = () => {
                       🍽️ Restauration
                     </SelectItem>
                     <SelectItem value="Finance">🏦 Finance</SelectItem>
-                    <SelectItem value="Industrie">��� Industrie</SelectItem>
+                    <SelectItem value="Industrie">🏭 Industrie</SelectItem>
                     <SelectItem value="Commerce">🛍️ Commerce</SelectItem>
                   </SelectContent>
                 </Select>
@@ -2579,6 +2579,332 @@ const DashboardEnhanced = () => {
               Créer le swap
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de détails de swap */}
+      <Dialog open={showSwapDetails} onOpenChange={setShowSwapDetails}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+          {selectedSwap && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <DialogTitle className="text-2xl font-bold text-gray-900 flex items-center">
+                      {selectedSwap.type === "offre" ? "💼" : "🎯"}
+                      <span className="ml-2">
+                        {selectedSwap.type === "offre"
+                          ? "Offre de"
+                          : "Demande de"}{" "}
+                        {formatCurrency(selectedSwap.amount)}
+                      </span>
+                    </DialogTitle>
+                    <DialogDescription className="text-lg mt-1">
+                      {selectedSwap.counterparty}
+                    </DialogDescription>
+                  </div>
+                  <Badge
+                    className={`text-sm px-3 py-1 font-medium ${
+                      selectedSwap.status === "active"
+                        ? "bg-green-100 text-green-700 border-green-300"
+                        : selectedSwap.status === "pending"
+                          ? "bg-yellow-100 text-yellow-700 border-yellow-300"
+                          : "bg-gray-100 text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    {selectedSwap.status === "active"
+                      ? "✅ Actif"
+                      : selectedSwap.status === "pending"
+                        ? "⏳ En attente"
+                        : "✓ Terminé"}
+                  </Badge>
+                </div>
+              </DialogHeader>
+
+              <div className="space-y-6 py-6">
+                {/* Informations principales */}
+                <Card className="p-6 bg-gradient-to-r from-violet-50 to-cyan-50 border border-violet-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <BarChart3 className="h-5 w-5 mr-2 text-violet-600" />
+                    Informations principales
+                  </h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="bg-white/70 rounded-xl p-4">
+                      <p className="text-sm text-gray-600 font-medium">
+                        Montant
+                      </p>
+                      <p className="text-xl font-bold text-violet-600">
+                        {formatCurrency(selectedSwap.amount)}
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-4">
+                      <p className="text-sm text-gray-600 font-medium">
+                        Taux d'intérêt
+                      </p>
+                      <p className="text-xl font-bold text-green-600">
+                        {selectedSwap.interestRate}%
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-4">
+                      <p className="text-sm text-gray-600 font-medium">Durée</p>
+                      <p className="text-xl font-bold text-blue-600">
+                        {selectedSwap.duration} mois
+                      </p>
+                    </div>
+                    <div className="bg-white/70 rounded-xl p-4">
+                      <p className="text-sm text-gray-600 font-medium">
+                        Créé le
+                      </p>
+                      <p className="text-lg font-bold text-gray-700">
+                        {formatDate(selectedSwap.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Progression et statut */}
+                {selectedSwap.status === "active" &&
+                  selectedSwap.progress !== undefined && (
+                    <Card className="p-6">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                        <Gauge className="h-5 w-5 mr-2 text-blue-600" />
+                        Progression du swap
+                      </h3>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Avancement</span>
+                            <span className="font-medium">
+                              {selectedSwap.progress}%
+                            </span>
+                          </div>
+                          <Progress
+                            value={selectedSwap.progress}
+                            className="h-3"
+                          />
+                        </div>
+                        {selectedSwap.daysRemaining && (
+                          <div className="flex items-center justify-between bg-blue-50 rounded-lg p-3">
+                            <div className="flex items-center">
+                              <Clock className="h-5 w-5 text-blue-600 mr-2" />
+                              <span className="font-medium text-blue-800">
+                                Temps restant
+                              </span>
+                            </div>
+                            <span className="text-blue-700 font-bold">
+                              {selectedSwap.daysRemaining} jours
+                            </span>
+                          </div>
+                        )}
+                        {selectedSwap.nextPaymentDate && (
+                          <div className="flex items-center justify-between bg-green-50 rounded-lg p-3">
+                            <div className="flex items-center">
+                              <Calendar className="h-5 w-5 text-green-600 mr-2" />
+                              <span className="font-medium text-green-800">
+                                Prochain paiement
+                              </span>
+                            </div>
+                            <span className="text-green-700 font-bold">
+                              {formatDate(selectedSwap.nextPaymentDate)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </Card>
+                  )}
+
+                {/* Détails financiers */}
+                {(selectedSwap.estimatedReturn ||
+                  selectedSwap.monthlyPayment) && (
+                  <Card className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <DollarSign className="h-5 w-5 mr-2 text-green-600" />
+                      Détails financiers
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {selectedSwap.estimatedReturn && (
+                        <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                          <p className="text-sm text-green-700 font-medium">
+                            Gain estimé
+                          </p>
+                          <p className="text-2xl font-bold text-green-600">
+                            +{formatCurrency(selectedSwap.estimatedReturn)}
+                          </p>
+                        </div>
+                      )}
+                      {selectedSwap.monthlyPayment && (
+                        <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                          <p className="text-sm text-blue-700 font-medium">
+                            Paiement mensuel
+                          </p>
+                          <p className="text-2xl font-bold text-blue-600">
+                            {formatCurrency(selectedSwap.monthlyPayment)}
+                          </p>
+                        </div>
+                      )}
+                      {selectedSwap.totalInterest && (
+                        <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                          <p className="text-sm text-purple-700 font-medium">
+                            Total intérêts
+                          </p>
+                          <p className="text-2xl font-bold text-purple-600">
+                            {formatCurrency(selectedSwap.totalInterest)}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                )}
+
+                {/* Description et objectif */}
+                {(selectedSwap.description || selectedSwap.purpose) && (
+                  <Card className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <FileText className="h-5 w-5 mr-2 text-gray-600" />
+                      Description du projet
+                    </h3>
+                    <div className="space-y-4">
+                      {selectedSwap.purpose && (
+                        <div>
+                          <p className="text-sm font-medium text-gray-700 mb-2">
+                            Objectif
+                          </p>
+                          <p className="text-gray-900 bg-gray-50 p-3 rounded-lg">
+                            {selectedSwap.purpose}
+                          </p>
+                        </div>
+                      )}
+                      {selectedSwap.description && (
+                        <div>
+                          <p className="text-sm font-medium text-gray-700 mb-2">
+                            Description détaillée
+                          </p>
+                          <p className="text-gray-900 bg-gray-50 p-4 rounded-lg leading-relaxed">
+                            {selectedSwap.description}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                )}
+
+                {/* Garanties */}
+                {selectedSwap.guarantees && (
+                  <Card className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <Shield className="h-5 w-5 mr-2 text-green-600" />
+                      Garanties proposées
+                    </h3>
+                    <p className="text-gray-900 bg-green-50 p-4 rounded-lg border border-green-200">
+                      {selectedSwap.guarantees}
+                    </p>
+                  </Card>
+                )}
+
+                {/* Métadonnées */}
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <Info className="h-5 w-5 mr-2 text-blue-600" />
+                    Informations complémentaires
+                  </h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {selectedSwap.category && (
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">
+                          Catégorie
+                        </p>
+                        <Badge variant="outline" className="mt-1">
+                          {selectedSwap.category}
+                        </Badge>
+                      </div>
+                    )}
+                    {selectedSwap.riskLevel && (
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">
+                          Niveau de risque
+                        </p>
+                        <div className="flex items-center mt-1">
+                          <div
+                            className={`w-3 h-3 rounded-full mr-2 ${
+                              selectedSwap.riskLevel === "low"
+                                ? "bg-green-400"
+                                : selectedSwap.riskLevel === "medium"
+                                  ? "bg-yellow-400"
+                                  : "bg-red-400"
+                            }`}
+                          ></div>
+                          <span className="text-sm font-medium capitalize">
+                            {selectedSwap.riskLevel === "low"
+                              ? "Faible"
+                              : selectedSwap.riskLevel === "medium"
+                                ? "Moyen"
+                                : "Élevé"}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {selectedSwap.verified !== undefined && (
+                      <div>
+                        <p className="text-sm text-gray-600 font-medium">
+                          Vérification
+                        </p>
+                        <div className="flex items-center mt-1">
+                          {selectedSwap.verified ? (
+                            <>
+                              <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
+                              <span className="text-sm font-medium text-green-700">
+                                Vérifié
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <AlertCircle className="h-4 w-4 text-yellow-500 mr-1" />
+                              <span className="text-sm font-medium text-yellow-700">
+                                En attente
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium">
+                        ID du swap
+                      </p>
+                      <code className="text-xs bg-gray-100 px-2 py-1 rounded mt-1 block">
+                        {selectedSwap.id}
+                      </code>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
+                  <Button className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Envoyer un message
+                  </Button>
+                  <Button variant="outline" className="flex-1">
+                    <Share2 className="h-4 w-4 mr-2" />
+                    Partager
+                  </Button>
+                  <Button variant="outline" className="flex-1">
+                    <Download className="h-4 w-4 mr-2" />
+                    Télécharger PDF
+                  </Button>
+                  {selectedSwap.status === "pending" && (
+                    <Button
+                      variant="outline"
+                      className="flex-1 border-green-500 text-green-700 hover:bg-green-50"
+                    >
+                      <CheckCircle className="h-4 w-4 mr-2" />
+                      Accepter
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </DialogContent>
       </Dialog>
     </div>
