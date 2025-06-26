@@ -63,6 +63,7 @@ import {
   Copy,
   MessageCircle,
   Phone,
+  Video,
   Edit,
   Share2,
   Handshake,
