@@ -1676,6 +1676,7 @@ const DashboardEnhanced = () => {
 
                     <Button
                       variant="outline"
+                      onClick={openMarketplace}
                       className="h-16 sm:h-20 border-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-400 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group"
                     >
                       <div className="flex flex-col items-center space-y-2">
@@ -1688,6 +1689,7 @@ const DashboardEnhanced = () => {
 
                     <Button
                       variant="outline"
+                      onClick={() => setShowReportsDialog(true)}
                       className="h-16 sm:h-20 border-2 border-cyan-300 text-cyan-700 hover:bg-cyan-50 hover:border-cyan-400 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group"
                     >
                       <div className="flex flex-col items-center space-y-2">
@@ -1700,6 +1702,7 @@ const DashboardEnhanced = () => {
 
                     <Button
                       variant="outline"
+                      onClick={() => setShowInviteDialog(true)}
                       className="h-16 sm:h-20 border-2 border-orange-300 text-orange-700 hover:bg-orange-50 hover:border-orange-400 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 group"
                     >
                       <div className="flex flex-col items-center space-y-2">
