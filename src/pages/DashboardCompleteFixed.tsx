@@ -263,6 +263,21 @@ const DashboardCompleteFixed = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
+  // États pour les nouvelles fonctionnalités
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState<
+    "amount" | "date" | "status" | "progress"
+  >("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [performanceData, setPerformanceData] = useState<any[]>([]);
+  const [quickStats, setQuickStats] = useState<any>({});
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [dateRange, setDateRange] = useState<string>("30d");
+
   useEffect(() => {
     loadUserData();
   }, []);
