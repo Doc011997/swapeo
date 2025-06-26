@@ -1774,7 +1774,7 @@ const DashboardEnhanced = () => {
                               <div className="min-w-0 flex-1">
                                 <p className="font-bold text-gray-900 group-hover:text-violet-700 transition-colors duration-300 text-base sm:text-lg leading-tight">
                                   {swap.type === "offre"
-                                    ? "💼 Offre de"
+                                    ? "��� Offre de"
                                     : "🎯 Demande de"}{" "}
                                   <span className="text-violet-600">
                                     {formatCurrency(swap.amount)}
@@ -3373,7 +3373,7 @@ const DashboardEnhanced = () => {
                   <SelectValue placeholder="Sélectionner une catégorie..." />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Finance">🏦 Finance</SelectItem>
+                  <SelectItem value="Finance">���� Finance</SelectItem>
                   <SelectItem value="Technology">💻 Technology</SelectItem>
                   <SelectItem value="Énergie">🌱 Énergie</SelectItem>
                   <SelectItem value="Restauration">🍽️ Restauration</SelectItem>
@@ -3417,6 +3417,327 @@ const DashboardEnhanced = () => {
             >
               <Plus className="h-4 w-4 mr-2" />
               Ajouter le contact
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de rapports */}
+      <Dialog open={showReportsDialog} onOpenChange={setShowReportsDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <BarChart3 className="h-6 w-6 mr-2 text-cyan-600" />
+              Générer un rapport
+            </DialogTitle>
+            <DialogDescription>
+              Choisissez le type de rapport que vous souhaitez télécharger.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-6">
+            <Card
+              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-cyan-300"
+              onClick={() => generateReport("monthly")}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-cyan-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    Rapport mensuel
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Performance du mois en cours
+                  </p>
+                </div>
+                <div className="ml-auto">
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+            </Card>
+
+            <Card
+              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-purple-300"
+              onClick={() => generateReport("annual")}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    Rapport annuel
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Analyse complète de l'année
+                  </p>
+                </div>
+                <div className="ml-auto">
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+            </Card>
+
+            <Card
+              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-green-300"
+              onClick={() => generateReport("custom")}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Filter className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    Rapport personnalisé
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Choisissez vos critères
+                  </p>
+                </div>
+                <div className="ml-auto">
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </div>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal d'invitation */}
+      <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <Users className="h-6 w-6 mr-2 text-orange-600" />
+              Inviter un utilisateur
+            </DialogTitle>
+            <DialogDescription>
+              Invitez quelqu'un à rejoindre votre réseau Swapeo.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label
+                  htmlFor="inviteFirstName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Prénom *
+                </Label>
+                <Input
+                  id="inviteFirstName"
+                  placeholder="ex: Marie"
+                  value={inviteForm.firstName}
+                  onChange={(e) =>
+                    setInviteForm({ ...inviteForm, firstName: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label
+                  htmlFor="inviteLastName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Nom *
+                </Label>
+                <Input
+                  id="inviteLastName"
+                  placeholder="ex: Dupont"
+                  value={inviteForm.lastName}
+                  onChange={(e) =>
+                    setInviteForm({ ...inviteForm, lastName: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label
+                htmlFor="inviteEmail"
+                className="text-sm font-medium text-gray-700"
+              >
+                Adresse email *
+              </Label>
+              <Input
+                id="inviteEmail"
+                type="email"
+                placeholder="ex: marie.dupont@example.com"
+                value={inviteForm.email}
+                onChange={(e) =>
+                  setInviteForm({ ...inviteForm, email: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div>
+              <Label
+                htmlFor="inviteMessage"
+                className="text-sm font-medium text-gray-700"
+              >
+                Message personnalisé
+              </Label>
+              <Textarea
+                id="inviteMessage"
+                placeholder="Ajoutez un message personnel à votre invitation..."
+                value={inviteForm.message}
+                onChange={(e) =>
+                  setInviteForm({ ...inviteForm, message: e.target.value })
+                }
+                className="mt-1 min-h-[100px]"
+              />
+            </div>
+
+            <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <Info className="h-5 w-5 text-orange-600 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-medium text-orange-800">
+                    Aperçu de l'invitation
+                  </h4>
+                  <p className="text-sm text-orange-700 mt-1">
+                    {inviteForm.firstName && inviteForm.lastName
+                      ? `${inviteForm.firstName} ${inviteForm.lastName}`
+                      : "La personne"}{" "}
+                    recevra un email l'invitant à rejoindre Swapeo avec un lien
+                    d'inscription personnalisé.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={() => setShowInviteDialog(false)}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleInviteUser}
+              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+            >
+              <Send className="h-4 w-4 mr-2" />
+              Envoyer l'invitation
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Marketplace */}
+      <Dialog
+        open={showMarketplaceDialog}
+        onOpenChange={setShowMarketplaceDialog}
+      >
+        <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <Search className="h-6 w-6 mr-2 text-emerald-600" />
+              Marketplace Swapeo
+            </DialogTitle>
+            <DialogDescription>
+              Découvrez les swaps disponibles sur la marketplace.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {/* Filtres rapides */}
+            <div className="flex flex-wrap gap-2">
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-emerald-50"
+              >
+                Tous les swaps
+              </Badge>
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-blue-50"
+              >
+                Énergie
+              </Badge>
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-purple-50"
+              >
+                Technology
+              </Badge>
+              <Badge
+                variant="outline"
+                className="cursor-pointer hover:bg-orange-50"
+              >
+                Finance
+              </Badge>
+            </div>
+
+            {/* Swaps disponibles */}
+            <div className="space-y-3">
+              {swaps
+                .filter((s) => s.status === "pending")
+                .map((swap) => (
+                  <Card
+                    key={swap.id}
+                    className="p-4 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">
+                            {swap.type === "offre" ? "💼 Offre" : "🎯 Demande"}{" "}
+                            - {formatCurrency(swap.amount)}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {swap.counterparty} • {swap.interestRate}% •{" "}
+                            {swap.duration} mois
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => openSwapDetails(swap)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          Voir
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-emerald-600 hover:bg-emerald-700"
+                        >
+                          <Handshake className="h-4 w-4 mr-1" />
+                          Accepter
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+            </div>
+
+            {swaps.filter((s) => s.status === "pending").length === 0 && (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-gray-400" />
+                </div>
+                <p className="text-gray-500">
+                  Aucun swap disponible pour le moment
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={() => setShowMarketplaceDialog(false)}
+            >
+              Fermer
             </Button>
           </div>
         </DialogContent>
