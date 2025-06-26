@@ -714,15 +714,13 @@ const DashboardEnhanced = () => {
         {
           id: 1,
           sender: contact.name,
-          message:
-            "Bonjour ! J'ai vu votre proposition de swap, c'est intéressant.",
+          message: "Bonjour ! J'ai vu votre proposition de swap, c'est intéressant.",
           timestamp: "14:30",
         },
         {
           id: 2,
           sender: "me",
-          message:
-            "Bonjour ! Merci pour votre intérêt. Souhaitez-vous plus de détails ?",
+          message: "Bonjour ! Merci pour votre intérêt. Souhaitez-vous plus de détails ?",
           timestamp: "14:32",
         },
         {
@@ -740,7 +738,7 @@ const DashboardEnhanced = () => {
         name: "Support Swapeo",
         company: "Swapeo",
         category: "Support",
-        status: "active",
+        status: "active"
       });
       setChatMessages([
         {
@@ -762,8 +760,8 @@ const DashboardEnhanced = () => {
       sender: "me",
       message: chatMessage,
       timestamp: new Date().toLocaleTimeString("fr-FR", {
-        hour: "2-digit",
-        minute: "2-digit",
+        hour: '2-digit',
+        minute: '2-digit'
       }),
     };
 
@@ -785,8 +783,8 @@ const DashboardEnhanced = () => {
         sender: chatContact!.name,
         message: responses[Math.floor(Math.random() * responses.length)],
         timestamp: new Date().toLocaleTimeString("fr-FR", {
-          hour: "2-digit",
-          minute: "2-digit",
+          hour: '2-digit',
+          minute: '2-digit'
         }),
       };
 
@@ -796,11 +794,7 @@ const DashboardEnhanced = () => {
 
   const handleAddContact = async () => {
     try {
-      if (
-        !contactForm.firstName ||
-        !contactForm.lastName ||
-        !contactForm.company
-      ) {
+      if (!contactForm.firstName || !contactForm.lastName || !contactForm.company) {
         setMessage("Veuillez remplir au moins le nom, prénom et l'entreprise");
         return;
       }
@@ -850,11 +844,9 @@ const DashboardEnhanced = () => {
       }
 
       // Simulation d'envoi d'invitation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
-      setMessage(
-        `Invitation envoyée à ${inviteForm.firstName} ${inviteForm.lastName} (${inviteForm.email})`,
-      );
+      setMessage(`Invitation envoyée à ${inviteForm.firstName} ${inviteForm.lastName} (${inviteForm.email})`);
 
       setInviteForm({
         email: "",
@@ -871,16 +863,12 @@ const DashboardEnhanced = () => {
     }
   };
 
-  const generateReport = (type: "monthly" | "annual" | "custom") => {
-    setMessage(
-      `Génération du rapport ${type === "monthly" ? "mensuel" : type === "annual" ? "annuel" : "personnalisé"} en cours...`,
-    );
+  const generateReport = (type: 'monthly' | 'annual' | 'custom') => {
+    setMessage(`Génération du rapport ${type === 'monthly' ? 'mensuel' : type === 'annual' ? 'annuel' : 'personnalisé'} en cours...`);
 
     // Simulation de génération de rapport
     setTimeout(() => {
-      setMessage(
-        `Rapport ${type === "monthly" ? "mensuel" : type === "annual" ? "annuel" : "personnalisé"} téléchargé avec succès !`,
-      );
+      setMessage(`Rapport ${type === 'monthly' ? 'mensuel' : type === 'annual' ? 'annuel' : 'personnalisé'} téléchargé avec succès !`);
       setTimeout(() => setMessage(""), 3000);
     }, 2000);
 
@@ -1541,59 +1529,7 @@ const DashboardEnhanced = () => {
           </motion.div>
         )}
 
-        {/* Onglets de navigation */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <Tabs
-            value={activeSection}
-            onValueChange={setActiveSection}
-            className="w-full"
-          >
-            <TabsList className="grid w-full grid-cols-4 mb-6 sm:mb-8 bg-white/90 backdrop-blur-sm border border-gray-200/50 shadow-lg rounded-2xl p-2 sticky top-20 sm:top-24 z-30 max-w-sm mx-auto sm:max-w-md">
-              <TabsTrigger
-                value="overview"
-                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
-                title="Aperçu"
-              >
-                <div className="relative">
-                  <Home className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                  <div className="absolute -inset-1 bg-violet-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                value="swaps"
-                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-indigo-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
-                title="Swaps"
-              >
-                <div className="relative">
-                  <Handshake className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                  <div className="absolute -inset-1 bg-indigo-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                value="wallet"
-                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-green-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
-                title="Portefeuille"
-              >
-                <div className="relative">
-                  <Wallet className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                  <div className="absolute -inset-1 bg-green-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
-                </div>
-              </TabsTrigger>
-              <TabsTrigger
-                value="contacts"
-                className="flex items-center justify-center rounded-xl data-[state=active]:bg-gradient-to-br data-[state=active]:from-blue-500 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 h-12 w-full touch-manipulation group relative"
-                title="Contacts"
-              >
-                <div className="relative">
-                  <Users className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                  <div className="absolute -inset-1 bg-blue-400/20 rounded-lg opacity-0 group-data-[state=active]:opacity-100 transition-opacity duration-300 -z-10" />
-                </div>
-              </TabsTrigger>
-            </TabsList>
+        {/* Navigation moved to header area */}
 
             {/* Contenu des onglets */}
             <TabsContent value="overview" className="space-y-6 sm:space-y-8">
@@ -1942,9 +1878,7 @@ const DashboardEnhanced = () => {
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                  <DropdownMenuItem
-                                    onClick={() => openSwapDetails(swap)}
-                                  >
+                                  <DropdownMenuItem onClick={() => openSwapDetails(swap)}>
                                     <Eye className="h-4 w-4 mr-2" />
                                     Voir détails
                                   </DropdownMenuItem>
@@ -2118,9 +2052,7 @@ const DashboardEnhanced = () => {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() => openSwapDetails(swap)}
-                              >
+                              <DropdownMenuItem onClick={() => openSwapDetails(swap)}>
                                 <Eye className="h-4 w-4 mr-2" />
                                 Voir détails
                               </DropdownMenuItem>
@@ -2907,9 +2839,7 @@ const DashboardEnhanced = () => {
                     <DialogTitle className="text-2xl font-bold text-gray-900 flex items-center">
                       {selectedSwap.type === "offre" ? "💼" : "🎯"}
                       <span className="ml-2">
-                        {selectedSwap.type === "offre"
-                          ? "Offre de"
-                          : "Demande de"}{" "}
+                        {selectedSwap.type === "offre" ? "Offre de" : "Demande de"}{" "}
                         {formatCurrency(selectedSwap.amount)}
                       </span>
                     </DialogTitle>
@@ -2944,17 +2874,13 @@ const DashboardEnhanced = () => {
                   </h3>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="bg-white/70 rounded-xl p-4">
-                      <p className="text-sm text-gray-600 font-medium">
-                        Montant
-                      </p>
+                      <p className="text-sm text-gray-600 font-medium">Montant</p>
                       <p className="text-xl font-bold text-violet-600">
                         {formatCurrency(selectedSwap.amount)}
                       </p>
                     </div>
                     <div className="bg-white/70 rounded-xl p-4">
-                      <p className="text-sm text-gray-600 font-medium">
-                        Taux d'intérêt
-                      </p>
+                      <p className="text-sm text-gray-600 font-medium">Taux d'intérêt</p>
                       <p className="text-xl font-bold text-green-600">
                         {selectedSwap.interestRate}%
                       </p>
@@ -2966,9 +2892,7 @@ const DashboardEnhanced = () => {
                       </p>
                     </div>
                     <div className="bg-white/70 rounded-xl p-4">
-                      <p className="text-sm text-gray-600 font-medium">
-                        Créé le
-                      </p>
+                      <p className="text-sm text-gray-600 font-medium">Créé le</p>
                       <p className="text-lg font-bold text-gray-700">
                         {formatDate(selectedSwap.createdAt)}
                       </p>
@@ -2977,59 +2901,48 @@ const DashboardEnhanced = () => {
                 </Card>
 
                 {/* Progression et statut */}
-                {selectedSwap.status === "active" &&
-                  selectedSwap.progress !== undefined && (
-                    <Card className="p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <Gauge className="h-5 w-5 mr-2 text-blue-600" />
-                        Progression du swap
-                      </h3>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm text-gray-600 mb-2">
-                            <span>Avancement</span>
-                            <span className="font-medium">
-                              {selectedSwap.progress}%
-                            </span>
-                          </div>
-                          <Progress
-                            value={selectedSwap.progress}
-                            className="h-3"
-                          />
+                {selectedSwap.status === "active" && selectedSwap.progress !== undefined && (
+                  <Card className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                      <Gauge className="h-5 w-5 mr-2 text-blue-600" />
+                      Progression du swap
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between text-sm text-gray-600 mb-2">
+                          <span>Avancement</span>
+                          <span className="font-medium">{selectedSwap.progress}%</span>
                         </div>
-                        {selectedSwap.daysRemaining && (
-                          <div className="flex items-center justify-between bg-blue-50 rounded-lg p-3">
-                            <div className="flex items-center">
-                              <Clock className="h-5 w-5 text-blue-600 mr-2" />
-                              <span className="font-medium text-blue-800">
-                                Temps restant
-                              </span>
-                            </div>
-                            <span className="text-blue-700 font-bold">
-                              {selectedSwap.daysRemaining} jours
-                            </span>
-                          </div>
-                        )}
-                        {selectedSwap.nextPaymentDate && (
-                          <div className="flex items-center justify-between bg-green-50 rounded-lg p-3">
-                            <div className="flex items-center">
-                              <Calendar className="h-5 w-5 text-green-600 mr-2" />
-                              <span className="font-medium text-green-800">
-                                Prochain paiement
-                              </span>
-                            </div>
-                            <span className="text-green-700 font-bold">
-                              {formatDate(selectedSwap.nextPaymentDate)}
-                            </span>
-                          </div>
-                        )}
+                        <Progress value={selectedSwap.progress} className="h-3" />
                       </div>
-                    </Card>
-                  )}
+                      {selectedSwap.daysRemaining && (
+                        <div className="flex items-center justify-between bg-blue-50 rounded-lg p-3">
+                          <div className="flex items-center">
+                            <Clock className="h-5 w-5 text-blue-600 mr-2" />
+                            <span className="font-medium text-blue-800">Temps restant</span>
+                          </div>
+                          <span className="text-blue-700 font-bold">
+                            {selectedSwap.daysRemaining} jours
+                          </span>
+                        </div>
+                      )}
+                      {selectedSwap.nextPaymentDate && (
+                        <div className="flex items-center justify-between bg-green-50 rounded-lg p-3">
+                          <div className="flex items-center">
+                            <Calendar className="h-5 w-5 text-green-600 mr-2" />
+                            <span className="font-medium text-green-800">Prochain paiement</span>
+                          </div>
+                          <span className="text-green-700 font-bold">
+                            {formatDate(selectedSwap.nextPaymentDate)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                )}
 
                 {/* Détails financiers */}
-                {(selectedSwap.estimatedReturn ||
-                  selectedSwap.monthlyPayment) && (
+                {(selectedSwap.estimatedReturn || selectedSwap.monthlyPayment) && (
                   <Card className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                       <DollarSign className="h-5 w-5 mr-2 text-green-600" />
@@ -3038,9 +2951,7 @@ const DashboardEnhanced = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {selectedSwap.estimatedReturn && (
                         <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                          <p className="text-sm text-green-700 font-medium">
-                            Gain estimé
-                          </p>
+                          <p className="text-sm text-green-700 font-medium">Gain estimé</p>
                           <p className="text-2xl font-bold text-green-600">
                             +{formatCurrency(selectedSwap.estimatedReturn)}
                           </p>
@@ -3048,9 +2959,7 @@ const DashboardEnhanced = () => {
                       )}
                       {selectedSwap.monthlyPayment && (
                         <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
-                          <p className="text-sm text-blue-700 font-medium">
-                            Paiement mensuel
-                          </p>
+                          <p className="text-sm text-blue-700 font-medium">Paiement mensuel</p>
                           <p className="text-2xl font-bold text-blue-600">
                             {formatCurrency(selectedSwap.monthlyPayment)}
                           </p>
@@ -3058,9 +2967,7 @@ const DashboardEnhanced = () => {
                       )}
                       {selectedSwap.totalInterest && (
                         <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
-                          <p className="text-sm text-purple-700 font-medium">
-                            Total intérêts
-                          </p>
+                          <p className="text-sm text-purple-700 font-medium">Total intérêts</p>
                           <p className="text-2xl font-bold text-purple-600">
                             {formatCurrency(selectedSwap.totalInterest)}
                           </p>
@@ -3080,9 +2987,7 @@ const DashboardEnhanced = () => {
                     <div className="space-y-4">
                       {selectedSwap.purpose && (
                         <div>
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Objectif
-                          </p>
+                          <p className="text-sm font-medium text-gray-700 mb-2">Objectif</p>
                           <p className="text-gray-900 bg-gray-50 p-3 rounded-lg">
                             {selectedSwap.purpose}
                           </p>
@@ -3090,9 +2995,7 @@ const DashboardEnhanced = () => {
                       )}
                       {selectedSwap.description && (
                         <div>
-                          <p className="text-sm font-medium text-gray-700 mb-2">
-                            Description détaillée
-                          </p>
+                          <p className="text-sm font-medium text-gray-700 mb-2">Description détaillée</p>
                           <p className="text-gray-900 bg-gray-50 p-4 rounded-lg leading-relaxed">
                             {selectedSwap.description}
                           </p>
@@ -3124,9 +3027,7 @@ const DashboardEnhanced = () => {
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     {selectedSwap.category && (
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">
-                          Catégorie
-                        </p>
+                        <p className="text-sm text-gray-600 font-medium">Catégorie</p>
                         <Badge variant="outline" className="mt-1">
                           {selectedSwap.category}
                         </Badge>
@@ -3134,9 +3035,7 @@ const DashboardEnhanced = () => {
                     )}
                     {selectedSwap.riskLevel && (
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">
-                          Niveau de risque
-                        </p>
+                        <p className="text-sm text-gray-600 font-medium">Niveau de risque</p>
                         <div className="flex items-center mt-1">
                           <div
                             className={`w-3 h-3 rounded-full mr-2 ${
@@ -3148,43 +3047,32 @@ const DashboardEnhanced = () => {
                             }`}
                           ></div>
                           <span className="text-sm font-medium capitalize">
-                            {selectedSwap.riskLevel === "low"
-                              ? "Faible"
-                              : selectedSwap.riskLevel === "medium"
-                                ? "Moyen"
-                                : "Élevé"}
+                            {selectedSwap.riskLevel === "low" ? "Faible" :
+                             selectedSwap.riskLevel === "medium" ? "Moyen" : "Élevé"}
                           </span>
                         </div>
                       </div>
                     )}
                     {selectedSwap.verified !== undefined && (
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">
-                          Vérification
-                        </p>
+                        <p className="text-sm text-gray-600 font-medium">Vérification</p>
                         <div className="flex items-center mt-1">
                           {selectedSwap.verified ? (
                             <>
                               <CheckCircle className="h-4 w-4 text-green-500 mr-1" />
-                              <span className="text-sm font-medium text-green-700">
-                                Vérifié
-                              </span>
+                              <span className="text-sm font-medium text-green-700">Vérifié</span>
                             </>
                           ) : (
                             <>
                               <AlertCircle className="h-4 w-4 text-yellow-500 mr-1" />
-                              <span className="text-sm font-medium text-yellow-700">
-                                En attente
-                              </span>
+                              <span className="text-sm font-medium text-yellow-700">En attente</span>
                             </>
                           )}
                         </div>
                       </div>
                     )}
                     <div>
-                      <p className="text-sm text-gray-600 font-medium">
-                        ID du swap
-                      </p>
+                      <p className="text-sm text-gray-600 font-medium">ID du swap</p>
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded mt-1 block">
                         {selectedSwap.id}
                       </code>
@@ -3210,10 +3098,7 @@ const DashboardEnhanced = () => {
                     Télécharger PDF
                   </Button>
                   {selectedSwap.status === "pending" && (
-                    <Button
-                      variant="outline"
-                      className="flex-1 border-green-500 text-green-700 hover:bg-green-50"
-                    >
+                    <Button variant="outline" className="flex-1 border-green-500 text-green-700 hover:bg-green-50">
                       <CheckCircle className="h-4 w-4 mr-2" />
                       Accepter
                     </Button>
@@ -3247,9 +3132,7 @@ const DashboardEnhanced = () => {
                     <DialogTitle className="text-lg font-semibold text-gray-900">
                       {chatContact.name}
                     </DialogTitle>
-                    <p className="text-sm text-gray-600">
-                      {chatContact.company}
-                    </p>
+                    <p className="text-sm text-gray-600">{chatContact.company}</p>
                   </div>
                 </div>
               </DialogHeader>
@@ -3276,9 +3159,7 @@ const DashboardEnhanced = () => {
                       <p className="text-sm">{msg.message}</p>
                       <p
                         className={`text-xs mt-1 ${
-                          msg.sender === "me"
-                            ? "text-violet-200"
-                            : "text-gray-500"
+                          msg.sender === "me" ? "text-violet-200" : "text-gray-500"
                         }`}
                       >
                         {msg.timestamp}
@@ -3332,28 +3213,21 @@ const DashboardEnhanced = () => {
       </Dialog>
 
       {/* Modal d'ajout de contact */}
-      <Dialog
-        open={showAddContactDialog}
-        onOpenChange={setShowAddContactDialog}
-      >
+      <Dialog open={showAddContactDialog} onOpenChange={setShowAddContactDialog}>
         <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-gray-900">
               Ajouter un nouveau contact
             </DialogTitle>
             <DialogDescription>
-              Ajoutez un contact à votre réseau professionnel pour faciliter les
-              échanges.
+              Ajoutez un contact à votre réseau professionnel pour faciliter les échanges.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label
-                  htmlFor="firstName"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="firstName" className="text-sm font-medium text-gray-700">
                   Prénom *
                 </Label>
                 <Input
@@ -3361,19 +3235,13 @@ const DashboardEnhanced = () => {
                   placeholder="ex: Jean"
                   value={contactForm.firstName}
                   onChange={(e) =>
-                    setContactForm({
-                      ...contactForm,
-                      firstName: e.target.value,
-                    })
+                    setContactForm({ ...contactForm, firstName: e.target.value })
                   }
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label
-                  htmlFor="lastName"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="lastName" className="text-sm font-medium text-gray-700">
                   Nom *
                 </Label>
                 <Input
@@ -3389,10 +3257,7 @@ const DashboardEnhanced = () => {
             </div>
 
             <div>
-              <Label
-                htmlFor="company"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="company" className="text-sm font-medium text-gray-700">
                 Entreprise *
               </Label>
               <Input
@@ -3408,10 +3273,7 @@ const DashboardEnhanced = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label
-                  htmlFor="email"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                   Email
                 </Label>
                 <Input
@@ -3426,10 +3288,7 @@ const DashboardEnhanced = () => {
                 />
               </div>
               <div>
-                <Label
-                  htmlFor="phone"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
                   Téléphone
                 </Label>
                 <Input
@@ -3445,10 +3304,7 @@ const DashboardEnhanced = () => {
             </div>
 
             <div>
-              <Label
-                htmlFor="category"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="category" className="text-sm font-medium text-gray-700">
                 Catégorie
               </Label>
               <Select
@@ -3474,10 +3330,7 @@ const DashboardEnhanced = () => {
             </div>
 
             <div>
-              <Label
-                htmlFor="notes"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="notes" className="text-sm font-medium text-gray-700">
                 Notes
               </Label>
               <Textarea
@@ -3524,21 +3377,15 @@ const DashboardEnhanced = () => {
           </DialogHeader>
 
           <div className="space-y-4 py-6">
-            <Card
-              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-cyan-300"
-              onClick={() => generateReport("monthly")}
-            >
+            <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-cyan-300"
+                  onClick={() => generateReport('monthly')}>
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center">
                   <Calendar className="h-6 w-6 text-cyan-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">
-                    Rapport mensuel
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Performance du mois en cours
-                  </p>
+                  <h3 className="font-semibold text-gray-900">Rapport mensuel</h3>
+                  <p className="text-sm text-gray-600">Performance du mois en cours</p>
                 </div>
                 <div className="ml-auto">
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -3546,21 +3393,15 @@ const DashboardEnhanced = () => {
               </div>
             </Card>
 
-            <Card
-              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-purple-300"
-              onClick={() => generateReport("annual")}
-            >
+            <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-purple-300"
+                  onClick={() => generateReport('annual')}>
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                   <TrendingUp className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">
-                    Rapport annuel
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Analyse complète de l'année
-                  </p>
+                  <h3 className="font-semibold text-gray-900">Rapport annuel</h3>
+                  <p className="text-sm text-gray-600">Analyse complète de l'année</p>
                 </div>
                 <div className="ml-auto">
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -3568,21 +3409,15 @@ const DashboardEnhanced = () => {
               </div>
             </Card>
 
-            <Card
-              className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-green-300"
-              onClick={() => generateReport("custom")}
-            >
+            <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer border-2 hover:border-green-300"
+                  onClick={() => generateReport('custom')}>
               <div className="flex items-center space-x-3">
                 <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                   <Filter className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">
-                    Rapport personnalisé
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Choisissez vos critères
-                  </p>
+                  <h3 className="font-semibold text-gray-900">Rapport personnalisé</h3>
+                  <p className="text-sm text-gray-600">Choisissez vos critères</p>
                 </div>
                 <div className="ml-auto">
                   <ChevronRight className="h-5 w-5 text-gray-400" />
@@ -3609,10 +3444,7 @@ const DashboardEnhanced = () => {
           <div className="space-y-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label
-                  htmlFor="inviteFirstName"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="inviteFirstName" className="text-sm font-medium text-gray-700">
                   Prénom *
                 </Label>
                 <Input
@@ -3626,10 +3458,7 @@ const DashboardEnhanced = () => {
                 />
               </div>
               <div>
-                <Label
-                  htmlFor="inviteLastName"
-                  className="text-sm font-medium text-gray-700"
-                >
+                <Label htmlFor="inviteLastName" className="text-sm font-medium text-gray-700">
                   Nom *
                 </Label>
                 <Input
@@ -3645,10 +3474,7 @@ const DashboardEnhanced = () => {
             </div>
 
             <div>
-              <Label
-                htmlFor="inviteEmail"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="inviteEmail" className="text-sm font-medium text-gray-700">
                 Adresse email *
               </Label>
               <Input
@@ -3664,10 +3490,7 @@ const DashboardEnhanced = () => {
             </div>
 
             <div>
-              <Label
-                htmlFor="inviteMessage"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Label htmlFor="inviteMessage" className="text-sm font-medium text-gray-700">
                 Message personnalisé
               </Label>
               <Textarea
@@ -3691,9 +3514,7 @@ const DashboardEnhanced = () => {
                   <p className="text-sm text-orange-700 mt-1">
                     {inviteForm.firstName && inviteForm.lastName
                       ? `${inviteForm.firstName} ${inviteForm.lastName}`
-                      : "La personne"}{" "}
-                    recevra un email l'invitant à rejoindre Swapeo avec un lien
-                    d'inscription personnalisé.
+                      : "La personne"} recevra un email l'invitant à rejoindre Swapeo avec un lien d'inscription personnalisé.
                   </p>
                 </div>
               </div>
@@ -3701,10 +3522,7 @@ const DashboardEnhanced = () => {
           </div>
 
           <div className="flex justify-end space-x-3 pt-4 border-t">
-            <Button
-              variant="outline"
-              onClick={() => setShowInviteDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowInviteDialog(false)}>
               Annuler
             </Button>
             <Button
@@ -3719,10 +3537,7 @@ const DashboardEnhanced = () => {
       </Dialog>
 
       {/* Modal Marketplace */}
-      <Dialog
-        open={showMarketplaceDialog}
-        onOpenChange={setShowMarketplaceDialog}
-      >
+      <Dialog open={showMarketplaceDialog} onOpenChange={setShowMarketplaceDialog}>
         <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-gray-900 flex items-center">
@@ -3737,94 +3552,67 @@ const DashboardEnhanced = () => {
           <div className="space-y-4 py-4">
             {/* Filtres rapides */}
             <div className="flex flex-wrap gap-2">
-              <Badge
-                variant="outline"
-                className="cursor-pointer hover:bg-emerald-50"
-              >
+              <Badge variant="outline" className="cursor-pointer hover:bg-emerald-50">
                 Tous les swaps
               </Badge>
-              <Badge
-                variant="outline"
-                className="cursor-pointer hover:bg-blue-50"
-              >
+              <Badge variant="outline" className="cursor-pointer hover:bg-blue-50">
                 Énergie
               </Badge>
-              <Badge
-                variant="outline"
-                className="cursor-pointer hover:bg-purple-50"
-              >
+              <Badge variant="outline" className="cursor-pointer hover:bg-purple-50">
                 Technology
               </Badge>
-              <Badge
-                variant="outline"
-                className="cursor-pointer hover:bg-orange-50"
-              >
+              <Badge variant="outline" className="cursor-pointer hover:bg-orange-50">
                 Finance
               </Badge>
             </div>
 
             {/* Swaps disponibles */}
             <div className="space-y-3">
-              {swaps
-                .filter((s) => s.status === "pending")
-                .map((swap) => (
-                  <Card
-                    key={swap.id}
-                    className="p-4 hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">
-                            {swap.type === "offre" ? "💼 Offre" : "🎯 Demande"}{" "}
-                            - {formatCurrency(swap.amount)}
-                          </h4>
-                          <p className="text-sm text-gray-600">
-                            {swap.counterparty} • {swap.interestRate}% •{" "}
-                            {swap.duration} mois
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => openSwapDetails(swap)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Voir
-                        </Button>
-                        <Button
-                          size="sm"
-                          className="bg-emerald-600 hover:bg-emerald-700"
-                        >
-                          <Handshake className="h-4 w-4 mr-1" />
-                          Accepter
-                        </Button>
+              {swaps.filter(s => s.status === "pending").map((swap) => (
+                <Card key={swap.id} className="p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900">
+                          {swap.type === "offre" ? "�� Offre" : "🎯 Demande"} - {formatCurrency(swap.amount)}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {swap.counterparty} • {swap.interestRate}% • {swap.duration} mois
+                        </p>
                       </div>
                     </div>
-                  </Card>
-                ))}
+                    <div className="flex space-x-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => openSwapDetails(swap)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Voir
+                      </Button>
+                      <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                        <Handshake className="h-4 w-4 mr-1" />
+                        Accepter
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
 
-            {swaps.filter((s) => s.status === "pending").length === 0 && (
+            {swaps.filter(s => s.status === "pending").length === 0 && (
               <div className="text-center py-8">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="h-8 w-8 text-gray-400" />
                 </div>
-                <p className="text-gray-500">
-                  Aucun swap disponible pour le moment
-                </p>
+                <p className="text-gray-500">Aucun swap disponible pour le moment</p>
               </div>
             )}
           </div>
 
           <div className="flex justify-end pt-4 border-t">
-            <Button
-              variant="outline"
-              onClick={() => setShowMarketplaceDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowMarketplaceDialog(false)}>
               Fermer
             </Button>
           </div>
