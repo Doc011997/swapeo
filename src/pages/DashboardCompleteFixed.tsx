@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +23,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import {
   Wallet,
   Plus,
@@ -100,6 +107,20 @@ import {
   Menu,
   ChevronDown,
   ChevronUp,
+  SortAsc,
+  SortDesc,
+  MoreHorizontal,
+  Layout,
+  Grid,
+  List,
+  Command,
+  Loader2,
+  Database,
+  Layers,
+  Gauge,
+  LineChart,
+  DotSquare,
+  MousePointer2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
