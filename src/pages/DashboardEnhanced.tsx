@@ -514,7 +514,7 @@ const DashboardEnhanced = () => {
           id: "notif1",
           type: "swap",
           title: "Nouveau swap disponible",
-          description: "Un swap de 15k€ correspond �� vos critères",
+          description: "Un swap de 15k€ correspond à vos critères",
           time: "Il y a 2h",
           read: false,
         },
@@ -3070,6 +3070,291 @@ const DashboardEnhanced = () => {
               </div>
             </>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de chat */}
+      <Dialog open={showChat} onOpenChange={setShowChat}>
+        <DialogContent className="sm:max-w-[500px] h-[600px] flex flex-col">
+          {chatContact && (
+            <>
+              <DialogHeader className="border-b pb-4">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage
+                      src={`https://api.dicebear.com/6.x/avataaars/svg?seed=${chatContact.name}`}
+                    />
+                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-bold">
+                      {chatContact.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <DialogTitle className="text-lg font-semibold text-gray-900">
+                      {chatContact.name}
+                    </DialogTitle>
+                    <p className="text-sm text-gray-600">
+                      {chatContact.company}
+                    </p>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              {/* Messages */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                {chatMessages.map((msg, index) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className={`flex ${
+                      msg.sender === "me" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        msg.sender === "me"
+                          ? "bg-violet-600 text-white"
+                          : "bg-white text-gray-900 shadow-sm border"
+                      }`}
+                    >
+                      <p className="text-sm">{msg.message}</p>
+                      <p
+                        className={`text-xs mt-1 ${
+                          msg.sender === "me"
+                            ? "text-violet-200"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {msg.timestamp}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Zone de saisie */}
+              <div className="border-t p-4">
+                <div className="flex space-x-2">
+                  <Input
+                    placeholder="Tapez votre message..."
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        sendChatMessage();
+                      }
+                    }}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={sendChatMessage}
+                    disabled={!chatMessage.trim()}
+                    className="bg-violet-600 hover:bg-violet-700"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex justify-center space-x-2 mt-3">
+                  <Button variant="ghost" size="sm">
+                    <Phone className="h-4 w-4 mr-2" />
+                    Appeler
+                  </Button>
+                  <Button variant="ghost" size="sm">
+                    <Video className="h-4 w-4 mr-2" />
+                    Vidéo
+                  </Button>
+                  <Button variant="ghost" size="sm">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Fichier
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal d'ajout de contact */}
+      <Dialog
+        open={showAddContactDialog}
+        onOpenChange={setShowAddContactDialog}
+      >
+        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-gray-900">
+              Ajouter un nouveau contact
+            </DialogTitle>
+            <DialogDescription>
+              Ajoutez un contact à votre réseau professionnel pour faciliter les
+              échanges.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label
+                  htmlFor="firstName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Prénom *
+                </Label>
+                <Input
+                  id="firstName"
+                  placeholder="ex: Jean"
+                  value={contactForm.firstName}
+                  onChange={(e) =>
+                    setContactForm({
+                      ...contactForm,
+                      firstName: e.target.value,
+                    })
+                  }
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label
+                  htmlFor="lastName"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Nom *
+                </Label>
+                <Input
+                  id="lastName"
+                  placeholder="ex: Martin"
+                  value={contactForm.lastName}
+                  onChange={(e) =>
+                    setContactForm({ ...contactForm, lastName: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label
+                htmlFor="company"
+                className="text-sm font-medium text-gray-700"
+              >
+                Entreprise *
+              </Label>
+              <Input
+                id="company"
+                placeholder="ex: TechStart Solutions"
+                value={contactForm.company}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, company: e.target.value })
+                }
+                className="mt-1"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label
+                  htmlFor="email"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="ex: jean.martin@example.com"
+                  value={contactForm.email}
+                  onChange={(e) =>
+                    setContactForm({ ...contactForm, email: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+              <div>
+                <Label
+                  htmlFor="phone"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Téléphone
+                </Label>
+                <Input
+                  id="phone"
+                  placeholder="ex: +33 1 23 45 67 89"
+                  value={contactForm.phone}
+                  onChange={(e) =>
+                    setContactForm({ ...contactForm, phone: e.target.value })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label
+                htmlFor="category"
+                className="text-sm font-medium text-gray-700"
+              >
+                Catégorie
+              </Label>
+              <Select
+                value={contactForm.category}
+                onValueChange={(value) =>
+                  setContactForm({ ...contactForm, category: value })
+                }
+              >
+                <SelectTrigger className="mt-1">
+                  <SelectValue placeholder="Sélectionner une catégorie..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Finance">🏦 Finance</SelectItem>
+                  <SelectItem value="Technology">💻 Technology</SelectItem>
+                  <SelectItem value="Énergie">🌱 Énergie</SelectItem>
+                  <SelectItem value="Restauration">🍽️ Restauration</SelectItem>
+                  <SelectItem value="Industrie">🏭 Industrie</SelectItem>
+                  <SelectItem value="Commerce">🛍️ Commerce</SelectItem>
+                  <SelectItem value="Conseil">💼 Conseil</SelectItem>
+                  <SelectItem value="Autre">📋 Autre</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label
+                htmlFor="notes"
+                className="text-sm font-medium text-gray-700"
+              >
+                Notes
+              </Label>
+              <Textarea
+                id="notes"
+                placeholder="Ajoutez des notes sur ce contact..."
+                value={contactForm.notes}
+                onChange={(e) =>
+                  setContactForm({ ...contactForm, notes: e.target.value })
+                }
+                className="mt-1 min-h-[80px]"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <Button
+              variant="outline"
+              onClick={() => setShowAddContactDialog(false)}
+            >
+              Annuler
+            </Button>
+            <Button
+              onClick={handleAddContact}
+              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Ajouter le contact
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
