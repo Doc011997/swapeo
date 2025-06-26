@@ -514,7 +514,7 @@ const DashboardEnhanced = () => {
           id: "notif1",
           type: "swap",
           title: "Nouveau swap disponible",
-          description: "Un swap de 15k€ correspond à vos critères",
+          description: "Un swap de 15k€ correspond �� vos critères",
           time: "Il y a 2h",
           read: false,
         },
@@ -3042,7 +3042,10 @@ const DashboardEnhanced = () => {
 
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t">
-                  <Button className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700">
+                  <Button
+                    className="flex-1 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700"
+                    onClick={() => openChat()}
+                  >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Envoyer un message
                   </Button>
