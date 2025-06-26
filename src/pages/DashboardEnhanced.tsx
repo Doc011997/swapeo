@@ -220,6 +220,17 @@ const DashboardEnhanced = () => {
     category: "",
   });
 
+  // États pour les rapports et invitations
+  const [showReportsDialog, setShowReportsDialog] = useState(false);
+  const [showInviteDialog, setShowInviteDialog] = useState(false);
+  const [showMarketplaceDialog, setShowMarketplaceDialog] = useState(false);
+  const [inviteForm, setInviteForm] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+    message: "",
+  });
+
   // États pour le formulaire de création de swap
   const [swapForm, setSwapForm] = useState({
     type: "demande",
@@ -3298,7 +3309,7 @@ const DashboardEnhanced = () => {
                 htmlFor="category"
                 className="text-sm font-medium text-gray-700"
               >
-                Catégorie
+                Cat��gorie
               </Label>
               <Select
                 value={contactForm.category}
