@@ -842,6 +842,55 @@ const DashboardEnhanced = () => {
     }
   };
 
+  const handleInviteUser = async () => {
+    try {
+      if (!inviteForm.email || !inviteForm.firstName || !inviteForm.lastName) {
+        setMessage("Veuillez remplir tous les champs obligatoires");
+        return;
+      }
+
+      // Simulation d'envoi d'invitation
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setMessage(
+        `Invitation envoyée à ${inviteForm.firstName} ${inviteForm.lastName} (${inviteForm.email})`,
+      );
+
+      setInviteForm({
+        email: "",
+        firstName: "",
+        lastName: "",
+        message: "",
+      });
+
+      setShowInviteDialog(false);
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de l'invitation:", error);
+      setMessage("Erreur lors de l'envoi de l'invitation");
+    }
+  };
+
+  const generateReport = (type: "monthly" | "annual" | "custom") => {
+    setMessage(
+      `Génération du rapport ${type === "monthly" ? "mensuel" : type === "annual" ? "annuel" : "personnalisé"} en cours...`,
+    );
+
+    // Simulation de génération de rapport
+    setTimeout(() => {
+      setMessage(
+        `Rapport ${type === "monthly" ? "mensuel" : type === "annual" ? "annuel" : "personnalisé"} téléchargé avec succès !`,
+      );
+      setTimeout(() => setMessage(""), 3000);
+    }, 2000);
+
+    setShowReportsDialog(false);
+  };
+
+  const openMarketplace = () => {
+    setShowMarketplaceDialog(true);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-violet-50/30 flex items-center justify-center">
@@ -3309,7 +3358,7 @@ const DashboardEnhanced = () => {
                 htmlFor="category"
                 className="text-sm font-medium text-gray-700"
               >
-                Cat��gorie
+                Catégorie
               </Label>
               <Select
                 value={contactForm.category}
