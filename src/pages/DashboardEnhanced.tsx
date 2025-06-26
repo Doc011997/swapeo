@@ -666,6 +666,16 @@ const DashboardEnhanced = () => {
     return `Il y a ${Math.floor(diffDays / 30)}mois`;
   };
 
+  const openSwapDetails = (swap: Swap) => {
+    setSelectedSwap(swap);
+    setShowSwapDetails(true);
+  };
+
+  const closeSwapDetails = () => {
+    setShowSwapDetails(false);
+    setSelectedSwap(null);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-violet-50/30 flex items-center justify-center">
