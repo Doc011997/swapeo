@@ -694,6 +694,142 @@ const DashboardEnhanced = () => {
     setSelectedSwap(null);
   };
 
+  const openChat = (contact?: Contact) => {
+    if (contact) {
+      setChatContact(contact);
+      // Messages d'exemple pour le contact
+      const exampleMessages = [
+        {
+          id: 1,
+          sender: contact.name,
+          message:
+            "Bonjour ! J'ai vu votre proposition de swap, c'est intéressant.",
+          timestamp: "14:30",
+        },
+        {
+          id: 2,
+          sender: "me",
+          message:
+            "Bonjour ! Merci pour votre intérêt. Souhaitez-vous plus de détails ?",
+          timestamp: "14:32",
+        },
+        {
+          id: 3,
+          sender: contact.name,
+          message: "Oui, pouvez-vous m'expliquer les conditions exactes ?",
+          timestamp: "14:35",
+        },
+      ];
+      setChatMessages(exampleMessages);
+    } else {
+      // Chat général pour un swap
+      setChatContact({
+        id: "general",
+        name: "Support Swapeo",
+        company: "Swapeo",
+        category: "Support",
+        status: "active",
+      });
+      setChatMessages([
+        {
+          id: 1,
+          sender: "Support Swapeo",
+          message: "Bonjour ! Comment puis-je vous aider avec ce swap ?",
+          timestamp: "maintenant",
+        },
+      ]);
+    }
+    setShowChat(true);
+  };
+
+  const sendChatMessage = () => {
+    if (!chatMessage.trim()) return;
+
+    const newMessage = {
+      id: chatMessages.length + 1,
+      sender: "me",
+      message: chatMessage,
+      timestamp: new Date().toLocaleTimeString("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    };
+
+    setChatMessages([...chatMessages, newMessage]);
+    setChatMessage("");
+
+    // Réponse automatique après 2 secondes
+    setTimeout(() => {
+      const responses = [
+        "Merci pour votre message !",
+        "C'est une excellente proposition.",
+        "Je vais étudier cela et vous revenir rapidement.",
+        "Parfait, nous sommes sur la même longueur d'onde.",
+        "Pouvons-nous planifier un appel pour approfondir ?",
+      ];
+
+      const autoResponse = {
+        id: chatMessages.length + 2,
+        sender: chatContact!.name,
+        message: responses[Math.floor(Math.random() * responses.length)],
+        timestamp: new Date().toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      };
+
+      setChatMessages((prev) => [...prev, autoResponse]);
+    }, 2000);
+  };
+
+  const handleAddContact = async () => {
+    try {
+      if (
+        !contactForm.firstName ||
+        !contactForm.lastName ||
+        !contactForm.company
+      ) {
+        setMessage("Veuillez remplir au moins le nom, prénom et l'entreprise");
+        return;
+      }
+
+      const newContact: Contact = {
+        id: `contact_${Date.now()}`,
+        name: `${contactForm.firstName} ${contactForm.lastName}`,
+        company: contactForm.company,
+        email: contactForm.email,
+        phone: contactForm.phone,
+        notes: contactForm.notes,
+        category: contactForm.category || "Général",
+        status: "active",
+        swapsCount: 0,
+        trustScore: 75,
+        addedDate: new Date().toISOString().split("T")[0],
+        rating: 0,
+        totalSwapVolume: 0,
+      };
+
+      setContacts([newContact, ...contacts]);
+      setMessage(`Contact ${newContact.name} ajouté avec succès`);
+
+      setContactForm({
+        firstName: "",
+        lastName: "",
+        company: "",
+        email: "",
+        phone: "",
+        notes: "",
+        category: "",
+      });
+
+      setShowAddContactDialog(false);
+      setTimeout(() => setMessage(""), 3000);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout du contact:", error);
+      setMessage("Erreur lors de l'ajout du contact");
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-50 to-violet-50/30 flex items-center justify-center">
