@@ -1795,13 +1795,6 @@ const DashboardCompleteFixed = () => {
                       Voir tout
                     </Button>
                   </div>
-                  <div className="space-y-3">
-                    {swaps.slice(0, 3).map((swap, index) => (
-                      <motion.div
-                        key={swap.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
                   <div className="space-y-3 sm:space-y-4">
                     {filteredAndSortedSwaps.slice(0, 3).map((swap, index) => (
                       <motion.div
